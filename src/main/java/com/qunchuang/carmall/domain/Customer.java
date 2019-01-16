@@ -2,7 +2,9 @@ package com.qunchuang.carmall.domain;
 
 import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
+import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 
@@ -31,11 +33,26 @@ public class Customer extends BosEntity{
     @Column(length = 10)
     private String gender;
 
+    @SchemaDocumentation("名称")
+    private String name;
+
+    @SchemaDocumentation("手机号")
+    private String phone;
+
+    @SchemaDocumentation("所属销售顾问")
+    private String salesConsultantId;
+
+    @SchemaDocumentation("积分")
+    private int integral;
+
+    @SchemaDocumentation("是否是销售顾问")
+    private boolean salesConsultant;
 
     public void setOpenid(String openid) {
-        if (openid!=null){
-            this.openid = openid;
+        if (openid==null){
+          throw new CarMallException(CarMallExceptionEnum.USER_ARGS_NOT_TRUE);
+
         }
-        throw new CarMallException("openid不能为空");
+        this.openid = openid;
     }
 }

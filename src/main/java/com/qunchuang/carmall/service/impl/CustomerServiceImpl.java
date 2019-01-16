@@ -1,9 +1,11 @@
 package com.qunchuang.carmall.service.impl;
 
 import com.qunchuang.carmall.domain.Customer;
+import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.CustomerRepository;
 import com.qunchuang.carmall.service.CustomerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
  * @date 2019/1/14 9:09
  */
 @Service
+@Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
@@ -25,7 +28,8 @@ public class CustomerServiceImpl implements CustomerService {
         if (optional.isPresent()){
             return optional.get();
         }
-       throw new CarMallException("用户未找到");
+        log.error("用户未找到：openid = ",openid);
+       throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
     }
 
     @Override
