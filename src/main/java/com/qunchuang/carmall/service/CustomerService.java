@@ -21,4 +21,11 @@ public interface CustomerService {
      * @return
      */
     Customer save(Customer customer);
+
+    /**
+     * 用户注册
+     * @param customer
+     * @return
+     */
+    Customer register(Customer customer);
 }

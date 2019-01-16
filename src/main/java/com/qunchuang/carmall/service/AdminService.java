@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public interface AdminService extends UserDetailsService{
     /**
-     * 普管理员添加用户
+     * 管理员添加用户
      * @param admin
      * @return
      */
@@ -37,4 +37,11 @@ public interface AdminService extends UserDetailsService{
      * @return
      */
     Admin findOne(String id);
+
+    /**
+     * 删除管理员
+     * @param admin
+     * @return
+     */
+    Admin delete(Admin admin);
 }

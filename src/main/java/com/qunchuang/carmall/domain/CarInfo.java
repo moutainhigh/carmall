@@ -20,4 +20,17 @@ public class CarInfo extends BosEntity{
 
     @SchemaDocumentation("汽车名称")
     private String name;
+
+    @SchemaDocumentation("品牌")
+    String brand;
+
+    @SchemaDocumentation("型号")
+    String model;
+
+    @SchemaDocumentation("厂商指导价")
+    String price;
+
+    public void delete(){
+        this.isAble();
+    }
 }

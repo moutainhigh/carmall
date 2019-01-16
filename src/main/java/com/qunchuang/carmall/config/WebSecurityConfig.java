@@ -4,6 +4,11 @@ package com.qunchuang.carmall.config;
 import com.qunchuang.carmall.auth.WeChatMiniAuthenticationFilter;
 import com.qunchuang.carmall.auth.WeChatMiniAuthenticationProvider;
 import com.qunchuang.carmall.auth.WeChatMiniUserInfo;
+import com.qunchuang.carmall.service.AdminService;
+import graphql.security.RestAccessDeniedHandler;
+import graphql.security.RestAuthenticationFailureHandler;
+import graphql.security.RestAuthenticationSuccessHandler;
+import graphql.security.RestLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -48,7 +54,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
     @Autowired
-    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+    private RestAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private RestAuthenticationFailureHandler myAuthenticationFailHandler;
+
+    @Autowired
+    private RestAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private RestLogoutHandler mySimpleLogoutHandler;
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private MyPasswordEncoder myPasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -59,23 +80,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ssoFilter(am), BasicAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/wechatmini").permitAll()
-                .antMatchers("/**").permitAll();
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .successHandler(myAuthenticationSuccessHandler)
-//                .failureHandler(my)
-//                .and()
-//                .logout().logoutSuccessHandler(mySimpleLogoutHandler);
+                .antMatchers("/login/wechatmini", "/login").permitAll()
+                .antMatchers("/**").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailHandler)
+                .and()
+                .logout().logoutSuccessHandler(mySimpleLogoutHandler);
 
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo));
+        auth.userDetailsService(this.adminService)
+                .passwordEncoder(myPasswordEncoder).
+                and()
+                .authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo));
     }
 
     @Bean
@@ -104,4 +129,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //解决静态资源被拦截的问题
+        web.ignoring().mvcMatchers("/api/**");
+    }
 }

@@ -19,9 +19,16 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @SchemaDocumentation("添加用户")
-    @GraphqlMutation(path = "/add")
-    public Customer add(Customer customer){
-        return customerService.save(customer);
+    @SchemaDocumentation("用户注册")
+    @GraphqlMutation(path = "/register")
+    public Customer register(Customer customer){
+        return customerService.register(customer);
+    }
+
+    @SchemaDocumentation("用户咨询")
+    @GraphqlMutation(path = "/consult")
+    public Customer consult(){
+        //todo 用户咨询时 还没有注册 算
+        return null;
     }
 }

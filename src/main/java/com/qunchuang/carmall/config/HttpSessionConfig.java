@@ -3,8 +3,8 @@ package com.qunchuang.carmall.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
-import org.springframework.session.web.http.HeaderHttpSessionStrategy;
-import org.springframework.session.web.http.HttpSessionStrategy;
+import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 /**
  * @author Curtain
@@ -16,9 +16,8 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 public class HttpSessionConfig {
 
     @Bean
-    public HttpSessionStrategy httpSessionStrategy(){
-        return  new HeaderHttpSessionStrategy();
+    public HttpSessionIdResolver httpSessionIdResolver() {
+        return HeaderHttpSessionIdResolver.xAuthToken();
     }
 
 }
-

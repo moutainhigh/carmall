@@ -36,4 +36,17 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }
+
+    @Override
+    public Customer register(Customer customer) {
+        //todo  如果是被邀请 增加积分  或绑定销售顾问
+
+        Optional<Customer> optional = customerRepository.findByPhone(customer.getPhone());
+        if (optional.isPresent()){
+            throw new CarMallException(CarMallExceptionEnum.USER_PHONE_IS_REGISTER);
+        }
+
+
+        return customerRepository.save(customer);
+    }
 }

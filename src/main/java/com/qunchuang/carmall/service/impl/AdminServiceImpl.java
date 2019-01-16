@@ -40,6 +40,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin delete(Admin admin) {
+        return null;
+    }
+
+    @Override
     public Admin findOne(String id) {
         Optional<Admin> admin = adminRepository.findById(id);
         if (!admin.isPresent()) {
