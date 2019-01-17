@@ -24,7 +24,7 @@ public class WeChatMiniUserInfo {
         if (customer == null) {
             Customer rs = new Customer();
             rs.setOpenid(openid);
-            Customer result = customerService.save(rs);
+            Customer result = customerService.register(rs);
             return result;
         }
         return customer;

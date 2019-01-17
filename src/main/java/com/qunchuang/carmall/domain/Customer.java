@@ -7,6 +7,7 @@ import com.qunchuang.carmall.exception.CarMallException;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 import graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import javax.xml.bind.ValidationException;
 @Bostype("C01")
 @SchemaDocumentation("顾客")
 @Getter
+@Setter
 public class Customer extends BosEntity{
 
     @SchemaDocumentation("昵称")

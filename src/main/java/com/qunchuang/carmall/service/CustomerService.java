@@ -1,6 +1,7 @@
 package com.qunchuang.carmall.service;
 
 import com.qunchuang.carmall.domain.Customer;
+import com.qunchuang.carmall.domain.Store;
 
 /**
  * @author Curtain
@@ -16,11 +17,11 @@ public interface CustomerService {
     Customer findByOpenid(String openid);
 
     /**
-     * 保存
+     * 销售顾问创建
      * @param customer
      * @return
      */
-    Customer save(Customer customer);
+    Customer createSalesConsultant(Customer customer);
 
     /**
      * 用户注册
@@ -28,4 +29,26 @@ public interface CustomerService {
      * @return
      */
     Customer register(Customer customer);
+
+    /**
+     * 分享
+     * @param customer
+     * @param shareId
+     * @return
+     */
+    Customer share(Customer customer,String shareId);
+
+    /**
+     * 用户信息修改
+     * @param customer
+     * @return
+     */
+    Customer modify(Customer customer);
+
+    /**
+     * 删除用户
+     * @param customer
+     * @return
+     */
+    Customer delete(Customer customer);
 }

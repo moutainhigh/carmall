@@ -2,10 +2,12 @@ package com.qunchuang.carmall.controller;
 
 import cn.wzvtcsoft.validator.anntations.DomainRule;
 import com.qunchuang.carmall.domain.Customer;
+import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.service.CustomerService;
 import graphql.annotation.GraphqlController;
 import graphql.annotation.GraphqlMutation;
 import graphql.annotation.SchemaDocumentation;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -31,4 +33,17 @@ public class CustomerController {
         //todo 用户咨询时 还没有注册 算
         return null;
     }
+
+    @SchemaDocumentation("用户修改")
+    @GraphqlMutation(path = "/modify")
+    public Customer modify(Customer customer){
+        return customerService.modify(customer);
+    }
+
+    @SchemaDocumentation("用户修改")
+    @GraphqlMutation(path = "/modify")
+    public Customer delete(Customer customer){
+        return customerService.delete(customer);
+    }
+
 }

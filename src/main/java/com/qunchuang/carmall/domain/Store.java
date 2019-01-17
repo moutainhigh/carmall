@@ -4,6 +4,7 @@ import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Bostype("S01")
 @SchemaDocumentation("门店")
 @Getter
+@Setter
 public class Store extends BosEntity {
 
     @SchemaDocumentation("门店名称")
@@ -26,6 +28,12 @@ public class Store extends BosEntity {
 
     @SchemaDocumentation("地址")
     private String address;
+
+    @SchemaDocumentation("门店负责人")
+    private String people;
+
+    @SchemaDocumentation("联系方式")
+    private String phone;
 
     @SchemaDocumentation("销售顾问")
     @OneToMany

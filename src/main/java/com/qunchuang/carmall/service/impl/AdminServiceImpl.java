@@ -69,6 +69,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin register(Admin admin) {
+        //todo 分为提供 每个角色创建接头  隐藏具体细节
+
         Optional<Admin> result = adminRepository.findByUsername(admin.getUsername());
         if (result.isPresent()) {
             throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);

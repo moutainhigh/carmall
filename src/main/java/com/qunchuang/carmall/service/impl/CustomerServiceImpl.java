@@ -33,7 +33,24 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer save(Customer customer) {
+    public Customer createSalesConsultant(Customer customer) {
+        //todo 创建销售顾问
+        return customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer share(Customer customer, String shareId) {
+        return null;
+    }
+
+    @Override
+    public Customer delete(Customer customer) {
+        customer.isAble();
+        return customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer modify(Customer customer) {
         return customerRepository.save(customer);
     }
 

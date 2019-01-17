@@ -4,6 +4,7 @@ import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 
@@ -16,6 +17,7 @@ import javax.persistence.Entity;
 @Bostype("C02")
 @SchemaDocumentation("车辆信息")
 @Getter
+@Setter
 public class CarInfo extends BosEntity{
 
     @SchemaDocumentation("汽车名称")
@@ -30,7 +32,4 @@ public class CarInfo extends BosEntity{
     @SchemaDocumentation("厂商指导价")
     String price;
 
-    public void delete(){
-        this.isAble();
-    }
 }

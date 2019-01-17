@@ -25,5 +25,12 @@ public interface CarInfoService {
      * @return
      */
     CarInfo delete(CarInfo carInfo);
+
+    /**
+     * 通过id查找
+     * @param id
+     * @return
+     */
+    CarInfo findOne(String id);
 }
 

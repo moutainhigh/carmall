@@ -48,9 +48,12 @@ public class Admin extends BosEntity implements UserDetails{
     @SchemaDocumentation("手机号")
     private String phone;
 
-    @SchemaDocumentation("门店id")
-    private String storeId;
+//    @SchemaDocumentation("门店id")
+//    private String storeId;
     //TODO 销售员 一定是属于门店的吗
+
+    @SchemaDocumentation("销售员用户账号id")
+    private String customerId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RoleItem> roleItems = new HashSet<>();

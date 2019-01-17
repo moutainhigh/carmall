@@ -1,16 +1,23 @@
 package com.qunchuang.carmall.service.impl;
 
+import com.qunchuang.carmall.domain.CarInfo;
 import com.qunchuang.carmall.domain.Store;
+import com.qunchuang.carmall.enums.CarMallExceptionEnum;
+import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.StoreRepository;
 import com.qunchuang.carmall.service.StoreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @author Curtain
  * @date 2019/1/16 11:18
  */
 @Service
+@Slf4j
 public class StoreServiceImpl implements StoreService {
 
     @Autowired
@@ -24,16 +31,28 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store delete(Store store) {
-        return null;
+        store.isAble();
+        return storeRepository.save(store);
     }
 
     @Override
     public Store modify(Store store) {
-        return null;
+        //todo 有时需要确保 重要字段 不被修改
+        return storeRepository.save(store);
+    }
+
+    @Override
+    public Store findOne(String id) {
+        Optional<Store> store = storeRepository.findById(id);
+        if (!store.isPresent()){
+            log.error("");
+            throw new CarMallException(CarMallExceptionEnum.STORE_NOT_EXISTS);
+        }
+        return store.get();
     }
 
     @Override
     public Store add(Store store) {
-        return null;
+        return storeRepository.save(store);
     }
 }
