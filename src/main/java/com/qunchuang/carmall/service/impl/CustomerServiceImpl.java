@@ -44,7 +44,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer delete(Customer customer) {
+    public Customer findOne(String id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (!customer.isPresent()){
+            log.error("");
+            throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
+        }
+        return customer.get();
+    }
+
+    @Override
+    public Customer delete(String id) {
+        Customer customer = findOne(id);
         customer.isAble();
         return customerRepository.save(customer);
     }

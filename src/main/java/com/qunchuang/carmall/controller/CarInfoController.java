@@ -33,7 +33,7 @@ public class CarInfoController {
 
     @SchemaDocumentation("删除车辆")
     @GraphqlMutation(path = "/delete")
-    public CarInfo delete(CarInfo carInfo){
-        return carInfoService.delete(carInfo);
+    public CarInfo delete(String id){
+        return carInfoService.delete(id);
     }
 }

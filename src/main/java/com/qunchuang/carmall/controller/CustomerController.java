@@ -40,10 +40,10 @@ public class CustomerController {
         return customerService.modify(customer);
     }
 
-    @SchemaDocumentation("用户修改")
-    @GraphqlMutation(path = "/modify")
-    public Customer delete(Customer customer){
-        return customerService.delete(customer);
+    @SchemaDocumentation("用户拉黑")
+    @GraphqlMutation(path = "/delete")
+    public Customer delete(String id){
+        return customerService.delete(id);
     }
 
 }

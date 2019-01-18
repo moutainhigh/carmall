@@ -46,8 +46,7 @@ public class StoreControllerTest {
 
     @Test
     public void delete() throws Exception {
-        Store carInfo = storeService.findOne("tQyJHm8NGYKdUj9FKH6j93S01");
-        Assert.assertNotNull(storeService.delete(carInfo));
+        Assert.assertNotNull(storeService.delete("tQyJHm8NGYKdUj9FKH6j93S01"));
     }
 
     @Test

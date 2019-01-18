@@ -40,8 +40,8 @@ public interface AdminService extends UserDetailsService{
 
     /**
      * 删除管理员
-     * @param admin
+     * @param id
      * @return
      */
-    Admin delete(Admin admin);
+    Admin delete(String id);
 }

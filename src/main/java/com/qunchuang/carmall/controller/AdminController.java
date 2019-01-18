@@ -31,8 +31,8 @@ public class AdminController {
 
     @SchemaDocumentation("删除管理员")
     @GraphqlMutation(path = "/delete")
-    public Admin delete(Admin admin){
-        return adminService.delete(admin);
+    public Admin delete(String id){
+        return adminService.delete(id);
     }
 
 

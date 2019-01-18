@@ -6,6 +6,7 @@ import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.AdminRepository;
 import com.qunchuang.carmall.service.AdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @date 2019/1/16 9:39
  */
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
@@ -32,16 +34,22 @@ public class AdminServiceImpl implements AdminService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Admin> admin = adminRepository.findByUsername(username);
         if (!admin.isPresent()) {
+            log.error("登录失败，用户名不存在 username = ", username);
             throw new UsernameNotFoundException("user not exist");
         }
         return admin.get();
-
-
     }
 
     @Override
-    public Admin delete(Admin admin) {
-        return null;
+    public Admin delete(String id) {
+        Admin admin = findOne(id);
+        //将权限清空
+        admin.setRoleItems(null);
+        //将用户名无效化
+        admin.setUsername("invalid username " + admin.getCreatetime());
+        //拉黑
+        admin.isAble();
+        return adminRepository.save(admin);
     }
 
     @Override
@@ -55,6 +63,7 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 配置了修改权限  只有用户本身能修改 或者 包含B1(用户管理这个权限)
+     *
      * @param admin
      * @return
      */
@@ -75,7 +84,7 @@ public class AdminServiceImpl implements AdminService {
         if (result.isPresent()) {
             throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);
         }
-        Admin rs =new Admin();
+        Admin rs = new Admin();
         rs.setPhone(admin.getPhone());
         rs.setUsername(admin.getUsername());
         rs.setPassword(admin.getPassword());

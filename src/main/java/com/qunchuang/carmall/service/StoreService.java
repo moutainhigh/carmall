@@ -15,10 +15,10 @@ public interface StoreService {
 
     /**
      * 删除
-     * @param store
+     * @param id
      * @return
      */
-    Store delete(Store store);
+    Store delete(String id);
 
     /**
      * 修改

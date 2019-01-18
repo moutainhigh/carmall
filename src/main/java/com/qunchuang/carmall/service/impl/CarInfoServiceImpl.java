@@ -33,7 +33,8 @@ public class CarInfoServiceImpl implements CarInfoService {
     }
 
     @Override
-    public CarInfo delete(CarInfo carInfo) {
+    public CarInfo delete(String id) {
+        CarInfo carInfo = findOne(id);
         carInfo.isAble();
         return carInfoRepository.save(carInfo);
     }

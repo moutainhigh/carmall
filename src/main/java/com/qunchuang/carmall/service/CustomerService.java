@@ -47,8 +47,15 @@ public interface CustomerService {
 
     /**
      * 删除用户
-     * @param customer
+     * @param id
      * @return
      */
-    Customer delete(Customer customer);
+    Customer delete(String id);
+
+    /**
+     * 通过id查找
+     * @param id
+     * @return
+     */
+    Customer findOne(String id);
 }

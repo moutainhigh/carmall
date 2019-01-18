@@ -30,7 +30,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store delete(Store store) {
+    public Store delete(String id) {
+        Store store = findOne(id);
         store.isAble();
         return storeRepository.save(store);
     }

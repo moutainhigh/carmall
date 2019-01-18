@@ -48,8 +48,7 @@ public class CarInfoControllerTest {
 
     @Test
     public void delete() throws Exception {
-        CarInfo carInfo = carInfoService.findOne("KWh690RLEoeHFIoDiWgbV0C02");
-        Assert.assertNotNull(carInfoService.delete(carInfo));
+        Assert.assertNotNull(carInfoService.delete("KWh690RLEoeHFIoDiWgbV0C02"));
     }
 
 }

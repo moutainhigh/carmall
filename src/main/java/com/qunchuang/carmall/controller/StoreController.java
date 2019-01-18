@@ -32,8 +32,8 @@ public class StoreController {
 
     @SchemaDocumentation("删除门店")
     @GraphqlMutation(path = "/delete")
-    public Store delete(Store store){
-        return storeService.delete(store);
+    public Store delete(String id){
+        return storeService.delete(id);
     }
 
     @SchemaDocumentation("转单")

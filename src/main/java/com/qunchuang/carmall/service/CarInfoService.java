@@ -21,10 +21,10 @@ public interface CarInfoService {
 
     /**
      * 删除车辆
-     * @param carInfo
+     * @param id
      * @return
      */
-    CarInfo delete(CarInfo carInfo);
+    CarInfo delete(String id);
 
     /**
      * 通过id查找
