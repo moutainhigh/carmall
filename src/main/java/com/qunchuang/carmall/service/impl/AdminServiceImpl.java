@@ -56,7 +56,8 @@ public class AdminServiceImpl implements AdminService {
     public Admin findOne(String id) {
         Optional<Admin> admin = adminRepository.findById(id);
         if (!admin.isPresent()) {
-            throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
+            log.error("查找管理员：用户不存在 id = ", id);
+            throw new CarMallException(CarMallExceptionEnum.ADMIN_NOT_EXISTS);
         }
         return admin.get();
     }
@@ -93,12 +94,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('B1')")
+//    @PreAuthorize("hasAuthority('B1')")
     public Admin save(Admin admin) {
         //todo 应该只保存  用户注册时应该 处理的数据
         //todo  管理员添加用户另外一个接口
         Optional<Admin> result = adminRepository.findByUsername(admin.getUsername());
         if (result.isPresent()) {
+            log.error("账号创建失败，用户名已存在 username = ", admin.getUsername());
             throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);
         }
         admin.privilegeCheck();

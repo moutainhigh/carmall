@@ -17,6 +17,7 @@ public enum CarMallExceptionEnum {
     USER_ARGS_NOT_TRUE(20003,"用户参数不正确"),
     USERNAME_IS_EXISTS(20004,"用户名已被注册"),
     USER_PHONE_IS_REGISTER(20005,"手机号已经被注册"),
+    ADMIN_NOT_EXISTS(20006,"管理员账号不存在"),
 
     CAR_INFO_NOT_EXISTS(30001,"车辆信息不存在"),
 

@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+//@Transactional
 public class AdminControllerTest {
 
     @Autowired
@@ -46,7 +47,6 @@ public class AdminControllerTest {
      * @throws Exception
      */
     @Test
-    @Transactional
     public void add() throws Exception {
         Admin admin = new Admin();
 
@@ -75,7 +75,6 @@ public class AdminControllerTest {
         privilege4.setPrivilege(PrivilegeAuthorityEnum.STORE_MANAGEMENT.getIdentifier());
         privilege4.setCategory(4);
         privilege4.setName("门店管理");
-
 
         privilege1 = privilegeRepository.save(privilege1);
         privilege2 = privilegeRepository.save(privilege2);
@@ -114,6 +113,7 @@ public class AdminControllerTest {
 
     @Test
     public void delete() throws Exception {
+        Assert.assertNotNull(adminService.delete("rKFZ19zLHNKbEiuqcBJ2n0A01"));
     }
 
 }
