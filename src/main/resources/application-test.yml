@@ -15,6 +15,7 @@ spring:
     port: 6379
 
 
+
 #小程序认证配置
 wechatmini:
   #appid
@@ -23,4 +24,9 @@ wechatmini:
   secret: 65568ccf41d0e3ed967d547bf1e71166
   #code获取openid连接
   authUrl: https://api.weixin.qq.com/sns/jscode2session
+
+
+server:
+  port: 8005
+
 
