@@ -1,8 +1,10 @@
 package com.qunchuang.carmall.controller;
 
 import cn.wzvtcsoft.validator.anntations.DomainRule;
+import com.qunchuang.carmall.domain.Consult;
 import com.qunchuang.carmall.domain.Customer;
 import com.qunchuang.carmall.domain.Store;
+import com.qunchuang.carmall.service.ConsultService;
 import com.qunchuang.carmall.service.CustomerService;
 import graphql.annotation.GraphqlController;
 import graphql.annotation.GraphqlMutation;
@@ -21,17 +23,11 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+
     @SchemaDocumentation("用户注册")
     @GraphqlMutation(path = "/register")
     public Customer register(Customer customer){
         return customerService.register(customer);
-    }
-
-    @SchemaDocumentation("用户咨询")
-    @GraphqlMutation(path = "/consult")
-    public Customer consult(){
-        //todo 用户咨询时 还没有注册 算
-        return null;
     }
 
     @SchemaDocumentation("用户修改")

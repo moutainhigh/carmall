@@ -47,8 +47,8 @@ public class Customer extends BosEntity{
     @SchemaDocumentation("积分")
     private int integral;
 
-    @SchemaDocumentation("是否是销售顾问")
-    private boolean salesConsultant;
+//    @SchemaDocumentation("是否是销售顾问")
+//    private boolean salesConsultant;
 
     public void setOpenid(String openid) {
         if (openid==null){

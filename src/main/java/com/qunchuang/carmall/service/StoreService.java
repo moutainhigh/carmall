@@ -40,4 +40,10 @@ public interface StoreService {
      * @return
      */
     Store findOne(String id);
+
+    /**
+     * 获取一个有效的Id  第一期接口使用  后续删除
+     * @return
+     */
+    String getValidId();
 }

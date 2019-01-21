@@ -20,6 +20,7 @@ public enum CarMallExceptionEnum {
     ADMIN_NOT_EXISTS(20006,"管理员账号不存在"),
 
     CAR_INFO_NOT_EXISTS(30001,"车辆信息不存在"),
+    CONSULT_NOT_EXISTE(30002,"咨询单不存在"),
 
     STORE_NOT_EXISTS(40001,"门店不存在"),
 

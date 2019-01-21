@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,9 +44,18 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public String getValidId() {
+        List<Store> all = storeRepository.findAll();
+        if (all.size() <= 0) {
+            throw new RuntimeException("一个门店也没有");
+        }
+        return all.get(0).getId();
+    }
+
+    @Override
     public Store findOne(String id) {
         Optional<Store> store = storeRepository.findById(id);
-        if (!store.isPresent()){
+        if (!store.isPresent()) {
             log.error("");
             throw new CarMallException(CarMallExceptionEnum.STORE_NOT_EXISTS);
         }

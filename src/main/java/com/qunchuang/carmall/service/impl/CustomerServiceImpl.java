@@ -25,11 +25,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByOpenid(String openid) {
         Optional<Customer> optional = customerRepository.findByOpenid(openid);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             return optional.get();
         }
-        log.error("用户未找到：openid = ",openid);
-       throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
+        log.error("用户未找到：openid = ", openid);
+        throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findOne(String id) {
         Optional<Customer> customer = customerRepository.findById(id);
-        if (!customer.isPresent()){
+        if (!customer.isPresent()) {
             log.error("");
             throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
         }
@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         //todo  如果是被邀请 增加积分  或绑定销售顾问
 
         Optional<Customer> optional = customerRepository.findByPhone(customer.getPhone());
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             throw new CarMallException(CarMallExceptionEnum.USER_PHONE_IS_REGISTER);
         }
 
