@@ -1,7 +1,6 @@
 package com.qunchuang.carmall.service;
 
 import com.qunchuang.carmall.domain.Admin;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -44,4 +43,11 @@ public interface AdminService extends UserDetailsService{
      * @return
      */
     Admin delete(String id);
+
+    /**
+     * 初始化管理员账号
+     * @param curtain
+     * @return
+     */
+    String init(String curtain);
 }
