@@ -18,18 +18,20 @@ public class ConsultController {
     private ConsultService consultService;
 
     @SchemaDocumentation("发起咨询")
-    @GraphqlMutation(path = "/consult")
-    public Consult consult(Consult consult){
+    @GraphqlMutation(path = "/add")
+    public Consult add(Consult consult){
         //todo 用户咨询时 还没有注册 。。
         return consultService.add(consult);
     }
 
-    @SchemaDocumentation("派单")
+    @SchemaDocumentation("派咨询单")
+    @GraphqlMutation(path = "/allocate")
     public Consult allocate(String id,String salesId){
         return consultService.allocate(id,salesId);
     }
 
     @SchemaDocumentation("修改")
+    @GraphqlMutation(path = "/modify")
     public Consult modify(Consult consult){
         return consultService.modify(consult);
     }

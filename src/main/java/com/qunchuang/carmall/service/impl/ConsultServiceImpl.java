@@ -38,8 +38,9 @@ public class ConsultServiceImpl implements ConsultService {
     @Override
     public Consult allocate(String id,String salesId) {
         Consult consult = findOne(id);
+        //todo 判断销售员是否真的存在
         consult.setSalesConsultantId(salesId);
-        return null;
+        return consultRepository.save(consult);
     }
 
     @Override
