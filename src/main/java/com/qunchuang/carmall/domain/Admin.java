@@ -6,7 +6,6 @@ import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
 import graphql.annotation.SchemaDocumentation;
-import graphql.query.dataprivilege.PrivilegeConstraint;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.access.AccessDeniedException;

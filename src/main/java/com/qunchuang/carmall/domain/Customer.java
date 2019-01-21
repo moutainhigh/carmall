@@ -4,15 +4,12 @@ import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.xml.bind.ValidationException;
 
 /**
  * @author Curtain
