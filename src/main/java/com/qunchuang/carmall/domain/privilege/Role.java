@@ -4,7 +4,7 @@ package com.qunchuang.carmall.domain.privilege;
 import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.domain.Admin;
-import graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.access.AccessDeniedException;

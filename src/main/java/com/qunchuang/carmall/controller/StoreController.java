@@ -1,13 +1,11 @@
 package com.qunchuang.carmall.controller;
 
-import com.qunchuang.carmall.domain.CarInfo;
-import com.qunchuang.carmall.domain.Consult;
 import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.service.ConsultService;
 import com.qunchuang.carmall.service.StoreService;
-import graphql.annotation.GraphqlController;
-import graphql.annotation.GraphqlMutation;
-import graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.annotation.GraphqlController;
+import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
+import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

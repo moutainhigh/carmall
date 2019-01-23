@@ -2,7 +2,9 @@ package com.qunchuang.carmall.domain;
 
 import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
-import graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.query.QueryFilter;
+import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,5 +33,17 @@ public class CarInfo extends BosEntity{
 
     @SchemaDocumentation("厂商指导价")
     String price;
+
+    @PrivilegeConstraint
+    public QueryFilter getPrivilegeConstraint(){
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Object principal = authentication.getPrincipal();
+//
+//        String constraint = "#p.id == 1 ? #builder.start('name = zlm').end() : false";
+
+        //todo  获取princpal 并进行权限判断
+       return null;
+    }
 
 }

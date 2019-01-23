@@ -3,7 +3,7 @@ package com.qunchuang.carmall.domain.privilege;
 
 import cn.wzvtcsoft.bosdomain.Entry;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
-import graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

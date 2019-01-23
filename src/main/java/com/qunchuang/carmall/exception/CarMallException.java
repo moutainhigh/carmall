@@ -1,7 +1,7 @@
 package com.qunchuang.carmall.exception;
 
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
-import graphql.errors.BusinessException;
+import com.qunchuang.carmall.graphql.errors.BusinessException;
 import lombok.Getter;
 
 /**

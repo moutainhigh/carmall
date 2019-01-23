@@ -5,7 +5,7 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
-import graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.access.AccessDeniedException;

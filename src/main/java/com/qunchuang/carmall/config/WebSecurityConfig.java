@@ -5,10 +5,6 @@ import com.qunchuang.carmall.auth.WeChatMiniAuthenticationFilter;
 import com.qunchuang.carmall.auth.WeChatMiniAuthenticationProvider;
 import com.qunchuang.carmall.auth.WeChatMiniUserInfo;
 import com.qunchuang.carmall.service.AdminService;
-import graphql.security.RestAccessDeniedHandler;
-import graphql.security.RestAuthenticationFailureHandler;
-import graphql.security.RestAuthenticationSuccessHandler;
-import graphql.security.RestLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,16 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
     @Autowired
-    private RestAuthenticationSuccessHandler authenticationSuccessHandler;
+    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
     @Autowired
-    private RestAuthenticationFailureHandler myAuthenticationFailHandler;
+    private MyRestAuthenticationFailureHandler restAuthenticationFailureHandler;
 
     @Autowired
-    private RestAccessDeniedHandler accessDeniedHandler;
+    private MyRestAccessDeniedHandler restAccessDeniedHandler;
 
     @Autowired
-    private RestLogoutHandler mySimpleLogoutHandler;
+    private MyRestLogoutHandler restLogoutHandler;
 
     @Autowired
     private AdminService adminService;
@@ -80,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ssoFilter(am), BasicAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
+                .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login/wechatmini", "/login").permitAll()
@@ -88,10 +84,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailHandler)
+                .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(restAuthenticationFailureHandler)
                 .and()
-                .logout().logoutSuccessHandler(mySimpleLogoutHandler);
+                .logout().logoutSuccessHandler(restLogoutHandler);
 
     }
 
