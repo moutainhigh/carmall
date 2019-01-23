@@ -34,6 +34,9 @@ public class Store extends BosEntity {
     @SchemaDocumentation("联系方式")
     private String phone;
 
+    @SchemaDocumentation("门店图片")
+    private String img;
+
     @SchemaDocumentation("销售顾问")
     @OneToMany
     private Set<Admin> admins = new HashSet<>();

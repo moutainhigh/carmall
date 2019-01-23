@@ -28,5 +28,9 @@ wechatmini:
 
 server:
   port: 8005
+  #session过期时间配置
+  servlet:
+    session:
+      timeout: 28800
 
 

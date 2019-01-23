@@ -26,13 +26,22 @@ public class CarInfo extends BosEntity{
     private String name;
 
     @SchemaDocumentation("品牌")
-    String brand;
+    private String brand;
 
     @SchemaDocumentation("型号")
-    String model;
+    private String model;
 
     @SchemaDocumentation("厂商指导价")
-    String price;
+    private String price;
+
+    @SchemaDocumentation("权重(越高越前面)")
+    private String sort;
+
+    @SchemaDocumentation("图片")
+    private String img;
+
+//    @SchemaDocumentation("金融方案")
+
 
     @PrivilegeConstraint
     public QueryFilter getPrivilegeConstraint(){

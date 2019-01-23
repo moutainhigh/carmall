@@ -62,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer modify(Customer customer) {
+        //todo 只有所属的门店或者所属的销售顾问才能修改   保证了转单后之前用户不能修改客户信息
         return customerRepository.save(customer);
     }
 
