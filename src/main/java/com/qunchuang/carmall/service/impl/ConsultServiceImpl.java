@@ -4,7 +4,6 @@ import com.qunchuang.carmall.domain.Consult;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.ConsultRepository;
-import com.qunchuang.carmall.repository.StoreRepository;
 import com.qunchuang.carmall.service.ConsultService;
 import com.qunchuang.carmall.service.StoreService;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +47,7 @@ public class ConsultServiceImpl implements ConsultService {
         Optional<Consult> consult = consultRepository.findById(id);
         if (!consult.isPresent()){
             log.error("咨询单未找到 id = ",id);
-            throw new CarMallException(CarMallExceptionEnum.CONSULT_NOT_EXISTE);
+            throw new CarMallException(CarMallExceptionEnum.CONSULT_NOT_EXISTS);
         }
         return consult.get();
     }

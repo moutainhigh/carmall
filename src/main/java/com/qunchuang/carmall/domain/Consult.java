@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Curtain
@@ -20,14 +21,18 @@ import javax.persistence.Entity;
 @Setter
 public class Consult extends BosEntity{
 
-    @SchemaDocumentation("名称")
-    private String name;
+//    @SchemaDocumentation("名称")
+//    private String name;
 
     @SchemaDocumentation("手机号")
     private String phone;
 
-    @SchemaDocumentation("备注")
-    private String remark;
+    @SchemaDocumentation("用户")
+    @ManyToOne
+    private Customer customer;
+
+    @SchemaDocumentation("状态")
+    private String status;
 
     @SchemaDocumentation("门店Id")
     private String storeId;

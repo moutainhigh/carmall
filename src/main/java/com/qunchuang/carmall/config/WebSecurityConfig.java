@@ -4,6 +4,7 @@ package com.qunchuang.carmall.config;
 import com.qunchuang.carmall.auth.WeChatMiniAuthenticationFilter;
 import com.qunchuang.carmall.auth.WeChatMiniAuthenticationProvider;
 import com.qunchuang.carmall.auth.WeChatMiniUserInfo;
+import com.qunchuang.carmall.graphql.security.*;
 import com.qunchuang.carmall.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -47,19 +48,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private WeChatMiniUserInfo weChatMiniUserInfo;
 
     @Autowired
-    private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
-    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+    private RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
 
     @Autowired
-    private MyRestAuthenticationFailureHandler restAuthenticationFailureHandler;
+    private RestAuthenticationFailureHandler restAuthenticationFailureHandler;
 
     @Autowired
-    private MyRestAccessDeniedHandler restAccessDeniedHandler;
+    private RestAccessDeniedHandler restAccessDeniedHandler;
 
     @Autowired
-    private MyRestLogoutHandler restLogoutHandler;
+    private RestLogoutHandler restLogoutHandler;
 
     @Autowired
     private AdminService adminService;
@@ -75,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .addFilterBefore(ssoFilter(am), BasicAuthenticationFilter.class)
                 .exceptionHandling()
-                .authenticationEntryPoint(myAuthenticationEntryPoint)
+                .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
@@ -84,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .successHandler(myAuthenticationSuccessHandler)
+                .successHandler(restAuthenticationSuccessHandler)
                 .failureHandler(restAuthenticationFailureHandler)
                 .and()
                 .logout().logoutSuccessHandler(restLogoutHandler);

@@ -19,10 +19,15 @@ public enum CarMallExceptionEnum {
     USER_PHONE_IS_REGISTER(20005,"手机号已经被注册"),
     ADMIN_NOT_EXISTS(20006,"管理员账号不存在"),
 
+
+    GET_VERIFICATION_CODE_FAIL(22001,"获取验证码失败"),
+    VERIFY_CODE_FAIL(22002,"验证失败，验证码不正确"),
+
     CAR_INFO_NOT_EXISTS(30001,"车辆信息不存在"),
-    CONSULT_NOT_EXISTE(30002,"咨询单不存在"),
+    CONSULT_NOT_EXISTS(30002,"咨询单不存在"),
 
     STORE_NOT_EXISTS(40001,"门店不存在"),
+
 
     ;
 

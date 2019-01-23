@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -31,17 +34,24 @@ public class CarInfo extends BosEntity{
     @SchemaDocumentation("型号")
     private String model;
 
+    @SchemaDocumentation("详细信息文件")
+    String filename;
+
     @SchemaDocumentation("厂商指导价")
     private String price;
 
     @SchemaDocumentation("权重(越高越前面)")
     private String sort;
 
+    @SchemaDocumentation("上架")
+    private boolean upperShelf = false;
+
     @SchemaDocumentation("图片")
     private String img;
 
-//    @SchemaDocumentation("金融方案")
-
+    @SchemaDocumentation("金融方案")
+    @OneToMany
+    private Set<FinancialScheme> financialSchemes = new HashSet<>();
 
     @PrivilegeConstraint
     public QueryFilter getPrivilegeConstraint(){
