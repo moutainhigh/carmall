@@ -10,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Curtain
  * @date 2019/1/21 9:56
@@ -42,7 +40,6 @@ public class ConsultControllerTest {
         Consult consult = new Consult();
         consult.setId("WhJAeigeEoS1VCxKKqOPx0C03");
         consult.setName("小里");
-        consult.setRemark("喜欢xx车");
         Assert.assertNotNull(consultService.modify(consult));
     }
 
