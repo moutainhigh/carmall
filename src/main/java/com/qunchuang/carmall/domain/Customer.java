@@ -47,26 +47,6 @@ public class Customer extends BosEntity{
     @SchemaDocumentation("积分")
     private int integral;
 
-    @SchemaDocumentation("意向")
-    private String intention;
-
-    @SchemaDocumentation("车型")
-    private String carModel;
-
-    @SchemaDocumentation("工作")
-    private String job;
-
-    @SchemaDocumentation("收入")
-    private String income;
-
-    @SchemaDocumentation("婚姻状况")
-    private String maritalStatus;
-
-    @SchemaDocumentation("图片信息")
-    private String img;
-
-
-
 
 //    @SchemaDocumentation("是否是销售顾问")
 //    private boolean salesConsultant;

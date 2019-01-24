@@ -30,9 +30,27 @@ public class ConsultController {
         return consultService.allocate(id,salesId);
     }
 
-    @SchemaDocumentation("修改")
+    @SchemaDocumentation("修改咨询单信息")
     @GraphqlMutation(path = "/modify")
     public Consult modify(Consult consult){
         return consultService.modify(consult);
+    }
+
+    @SchemaDocumentation("完结咨询单")
+    @GraphqlMutation(path = "/finish")
+    public Consult finish(String id){
+        return consultService.finish(id);
+    }
+
+    @SchemaDocumentation("转咨询单到门店")
+    @GraphqlMutation(path = "/changeToStore")
+    public Consult changeToStore(String id,String storeId){
+        return consultService.changeToStore(id,storeId);
+    }
+
+    @SchemaDocumentation("转咨询单到销售顾问")
+    @GraphqlMutation(path = "/changeToSalesConsultant")
+    public Consult changeToSalesConsultant(String id,String salesId){
+        return consultService.changeToSalesConsultant(id,salesId);
     }
 }

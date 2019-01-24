@@ -44,6 +44,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer findByPhone(String phone) {
+        Optional<Customer> customer = customerRepository.findByPhone(phone);
+        if (!customer.isPresent()){
+            log.error("用户未找到，phone = %s",phone);
+            throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
+        }
+        return customer.get();
+    }
+
+    @Override
     public Customer findOne(String id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent()) {

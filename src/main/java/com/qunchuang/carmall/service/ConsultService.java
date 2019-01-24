@@ -1,6 +1,5 @@
 package com.qunchuang.carmall.service;
 
-import ch.qos.logback.core.ConsoleAppender;
 import com.qunchuang.carmall.domain.Consult;
 
 /**
@@ -17,7 +16,7 @@ public interface ConsultService {
     Consult add(Consult consult);
 
     /**
-     *
+     * 派单
      * @param id
      * @param salesId 销售员id
      * @return
@@ -37,4 +36,28 @@ public interface ConsultService {
      * @return
      */
     Consult findOne(String id);
+
+    /**
+     * 转单到门店
+     * @param id
+     * @param storeId
+     * @return
+     */
+    Consult changeToStore(String id, String storeId);
+
+    /**
+     * 转单到销售人员
+     * @param id
+     * @param salesId
+     * @return
+     */
+    Consult changeToSalesConsultant(String id, String salesId);
+
+    /**
+     * 订单完结
+     * @param id
+     * @return
+     */
+    Consult finish(String id);
+
 }

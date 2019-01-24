@@ -1,11 +1,10 @@
 package com.qunchuang.carmall.controller;
 
 import com.qunchuang.carmall.domain.Store;
-import com.qunchuang.carmall.service.ConsultService;
-import com.qunchuang.carmall.service.StoreService;
 import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -17,9 +16,6 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
-
-    @Autowired
-    private ConsultService consultService;
 
     @SchemaDocumentation("添加门店")
     @GraphqlMutation(path = "/add")
@@ -39,9 +35,4 @@ public class StoreController {
         return storeService.delete(id);
     }
 
-    @SchemaDocumentation("转单")
-    @GraphqlMutation(path = "/changeOrder")
-    public Store changeOrder(Store store){
-        return storeService.changeOrder(store);
-    }
 }

@@ -1,7 +1,6 @@
 package com.qunchuang.carmall.service;
 
 import com.qunchuang.carmall.domain.Customer;
-import com.qunchuang.carmall.domain.Store;
 
 /**
  * @author Curtain
@@ -58,4 +57,11 @@ public interface CustomerService {
      * @return
      */
     Customer findOne(String id);
+
+    /**
+     * 通过手机号查找用户
+     * @param phone
+     * @return
+     */
+    Customer findByPhone(String phone);
 }
