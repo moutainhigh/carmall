@@ -1,10 +1,11 @@
 package com.qunchuang.carmall.controller;
 
+import cn.wzvtcsoft.validator.anntations.DomainRule;
 import com.qunchuang.carmall.domain.Consult;
-import com.qunchuang.carmall.service.ConsultService;
 import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.service.ConsultService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -19,8 +20,7 @@ public class ConsultController {
 
     @SchemaDocumentation("发起咨询")
     @GraphqlMutation(path = "/add")
-    public Consult add(Consult consult){
-        //todo 用户咨询时 还没有注册 。。
+    public Consult add(@DomainRule("phone")Consult consult){
         return consultService.add(consult);
     }
 
@@ -52,5 +52,11 @@ public class ConsultController {
     @GraphqlMutation(path = "/changeToSalesConsultant")
     public Consult changeToSalesConsultant(String id,String salesId){
         return consultService.changeToSalesConsultant(id,salesId);
+    }
+
+    @SchemaDocumentation("删除咨询单")
+    @GraphqlMutation(path = "/delete")
+    public Consult delete(String id){
+        return consultService.delete(id);
     }
 }

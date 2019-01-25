@@ -7,6 +7,7 @@ import com.qunchuang.carmall.domain.privilege.Role;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.enums.PrivilegeAuthorityEnum;
+import com.qunchuang.carmall.enums.RoleEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.AdminRepository;
 import com.qunchuang.carmall.repository.PrivilegeRepository;
@@ -37,6 +38,19 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     PrivilegeRepository privilegeRepository;
 
+    @Override
+    //todo 需要门店管理员权限
+    public Admin storeAdministrator(Admin admin) {
+        return register(admin, RoleEnum.STORE_ADMINISTRATOR.getRoleName());
+    }
+
+    @Override
+    //todo 只有销售顾问管理员权限 才行
+    public Admin salesConsultant(Admin admin) {
+        //todo 同时关联到门店
+        return register(admin, RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName());
+
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -49,8 +63,83 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    //todo 需要平台 管理权限
+    public Admin platformAdministrator(Admin admin) {
+        //平台管理员无任何操作权限  只能浏览
+        return register(admin, RoleEnum.PLATFORM_ADMINISTRATOR.getRoleName());
+
+    }
+
+
+    private Admin register(Admin admin, String roleName) {
+        Admin rs = new Admin();
+        Role role = new Role();
+        Optional<Role> roleOptional;
+        RoleItem roleItem = new RoleItem();
+
+        Optional<Admin> result = adminRepository.findByUsername(admin.getUsername());
+        if (result.isPresent()) {
+            log.error("用户名已被注册，username = %s", admin.getUsername());
+            throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);
+        }
+
+        switch (roleName) {
+            case "平台管理员":
+                roleOptional = roleRepository.findByName(RoleEnum.PLATFORM_ADMINISTRATOR.getRoleName());
+                if (!roleOptional.isPresent()) {
+                    role.setName(RoleEnum.PLATFORM_ADMINISTRATOR.getRoleName());
+                    role = roleRepository.save(role);
+                } else {
+                    role = roleOptional.get();
+                }
+                break;
+            case "销售顾问":
+                roleOptional = roleRepository.findByName(RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName());
+                if (!roleOptional.isPresent()) {
+                    role.setName(RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName());
+                    Optional<Privilege> privilege = privilegeRepository.findByName(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
+                    PrivilegeItem privilegeItem = new PrivilegeItem();
+                    privilegeItem.setPrivilege(privilege.get());
+                    role.getPrivilegeItems().add(privilegeItem);
+                    role = roleRepository.save(role);
+                } else {
+                    role = roleOptional.get();
+                }
+                break;
+            case "门店管理员":
+                roleOptional = roleRepository.findByName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
+                if (!roleOptional.isPresent()) {
+                    role.setName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
+                    Optional<Privilege> privilege = privilegeRepository.findByName(PrivilegeAuthorityEnum.SALES_CONSULTANT_MANAGEMENT.getIdentifier());
+                    PrivilegeItem privilegeItem = new PrivilegeItem();
+                    privilegeItem.setPrivilege(privilege.get());
+                    privilege = privilegeRepository.findByName(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
+                    privilegeItem.setPrivilege(privilege.get());
+                    role.getPrivilegeItems().add(privilegeItem);
+                    role = roleRepository.save(role);
+                } else {
+                    role = roleOptional.get();
+                }
+                break;
+            default:
+                break;
+
+        }
+
+        rs.setPhone(admin.getPhone());
+        rs.setUsername(admin.getUsername());
+        rs.setPassword(admin.getPassword());
+        roleItem.setRole(role);
+        rs.getRoleItems().add(roleItem);
+
+
+        return adminRepository.save(rs);
+
+    }
+
+    @Override
     public String init(String curtain) {
-        if (curtain.equals("wcp")){
+        if (curtain.equals("wcp")) {
             Admin admin = new Admin();
 
             admin.setUsername("test");
@@ -111,6 +200,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+//    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
     public Admin delete(String id) {
         Admin admin = findOne(id);
         //将权限清空
@@ -133,7 +223,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     * 配置了修改权限  只有用户本身能修改 或者 包含B1(用户管理这个权限)
+     * 配置了修改权限  只有用户本身能修改 或者 包含(管理这个权限)
      *
      * @param admin
      * @return
@@ -147,23 +237,8 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.save(admin);
     }
 
-    @Override
-    public Admin register(Admin admin) {
-        //todo 分为提供 每个角色创建接头  隐藏具体细节
 
-        Optional<Admin> result = adminRepository.findByUsername(admin.getUsername());
-        if (result.isPresent()) {
-            throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);
-        }
-        Admin rs = new Admin();
-        rs.setPhone(admin.getPhone());
-        rs.setUsername(admin.getUsername());
-        rs.setPassword(admin.getPassword());
-
-        return adminRepository.save(rs);
-    }
-
-    @Override
+/*    @Override
 //    @PreAuthorize("hasAuthority('B1')")
     public Admin save(Admin admin) {
         //todo 应该只保存  用户注册时应该 处理的数据
@@ -175,7 +250,7 @@ public class AdminServiceImpl implements AdminService {
         }
         admin.privilegeCheck();
         return adminRepository.save(admin);
-    }
+    }*/
 
 
 }

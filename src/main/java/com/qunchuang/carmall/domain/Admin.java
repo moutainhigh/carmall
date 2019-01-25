@@ -8,6 +8,7 @@ import com.qunchuang.carmall.domain.privilege.RoleItem;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,14 +46,18 @@ public class Admin extends BosEntity implements UserDetails{
     private String password;
 
     @SchemaDocumentation("手机号")
+    @Length(min = 11,max = 11,message = "手机号长度不正确")
     private String phone;
+
+//    @SchemaDocumentation("是否是销售人员")
+//    private boolean salesConsultant;
+//
+//    @SchemaDocumentation("是否是门店")
+//    private boolean store;
 
 //    @SchemaDocumentation("门店id")
 //    private String storeId;
     //TODO 销售员 一定是属于门店的吗
-
-    @SchemaDocumentation("销售员用户账号id")
-    private String customerId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RoleItem> roleItems = new HashSet<>();

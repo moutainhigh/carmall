@@ -60,4 +60,11 @@ public interface ConsultService {
      */
     Consult finish(String id);
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    Consult delete(String id);
+
 }

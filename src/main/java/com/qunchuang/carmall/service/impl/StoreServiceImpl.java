@@ -1,6 +1,5 @@
 package com.qunchuang.carmall.service.impl;
 
-import com.qunchuang.carmall.domain.CarInfo;
 import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
@@ -24,11 +23,6 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private StoreRepository storeRepository;
 
-    @Override
-    public Store changeOrder(Store store) {
-        //todo 门店能否店给销售员转单   因为如果门店删除后，所属销售员和订单
-        return null;
-    }
 
     @Override
     public Store delete(String id) {

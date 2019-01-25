@@ -8,20 +8,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @date 2019/1/16 9:38
  */
 public interface AdminService extends UserDetailsService{
-    /**
-     * 管理员添加用户
-     * @param admin
-     * @return
-     */
-    Admin save(Admin admin);
-
-    /**
-     * 普通用户注册
-     *
-     * @param admin
-     * @return
-     */
-    Admin register(Admin admin);
+//    /**
+//     * 管理员添加用户
+//     * @param admin
+//     * @return
+//     */
+//    Admin save(Admin admin);
 
     /**
      * 修改
@@ -50,4 +42,25 @@ public interface AdminService extends UserDetailsService{
      * @return
      */
     String init(String curtain);
+
+    /**
+     * 创建平台管理员
+     * @param admin
+     * @return
+     */
+    Admin platformAdministrator(Admin admin);
+
+    /**
+     * 创建门店管理员
+     * @param admin
+     * @return
+     */
+    Admin storeAdministrator(Admin admin);
+
+    /**
+     * 创建销售人员
+     * @param admin
+     * @return
+     */
+    Admin salesConsultant(Admin admin);
 }

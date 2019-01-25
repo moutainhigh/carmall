@@ -40,6 +40,8 @@ public class ConsultServiceImpl implements ConsultService {
     @Override
     public Consult add(Consult consult) {
 
+        //todo 验证码校验
+
         Consult rs = new Consult();
 
         //用户未选择门店  则分配最近的
@@ -109,6 +111,13 @@ public class ConsultServiceImpl implements ConsultService {
     }
 
     @Override
+    public Consult delete(String id) {
+        Consult consult = findOne(id);
+        consult.isAble();
+        return consultRepository.save(consult);
+    }
+
+    @Override
     public Consult finish(String id) {
         Consult consult = findOne(id);
         //todo 只有用户所属销售人员才能完结订单
@@ -134,4 +143,8 @@ public class ConsultServiceImpl implements ConsultService {
         BeanUtils.copyProperties(consult, result, BeanCopyUtil.getNullPropertyNames(consult));
         return consultRepository.save(result);
     }
+
+
+
+
 }

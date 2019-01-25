@@ -26,7 +26,7 @@ public class Consult extends BosEntity{
     private String name;
 
     @SchemaDocumentation("手机号")
-    @Length(min = 11,max = 11)
+    @Length(min = 11,max = 11,message = "手机号长度不正确")
     private String phone;
 
 //    @SchemaDocumentation("用户")
