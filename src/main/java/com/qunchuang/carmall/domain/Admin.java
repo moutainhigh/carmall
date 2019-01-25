@@ -8,7 +8,6 @@ import com.qunchuang.carmall.domain.privilege.RoleItem;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +18,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +46,7 @@ public class Admin extends BosEntity implements UserDetails{
     private String password;
 
     @SchemaDocumentation("手机号")
-    @Length(min = 11,max = 11,message = "手机号长度不正确")
+    @Size(min = 11,max = 11,message = "手机号长度不正确")
     private String phone;
 
 //    @SchemaDocumentation("是否是销售人员")
@@ -55,8 +55,8 @@ public class Admin extends BosEntity implements UserDetails{
 //    @SchemaDocumentation("是否是门店")
 //    private boolean store;
 
-//    @SchemaDocumentation("门店id")
-//    private String storeId;
+    @SchemaDocumentation("门店id")
+    private String storeId;
     //TODO 销售员 一定是属于门店的吗
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)

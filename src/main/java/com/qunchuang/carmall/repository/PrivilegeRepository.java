@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface PrivilegeRepository extends JpaRepository<Privilege,String> {
     /**
      * 通过名称查询
-     * @param name
+     * @param privilege
      * @return
      */
-    Optional<Privilege> findByName(String name);
+    Optional<Privilege> findByPrivilege(String privilege);
 }

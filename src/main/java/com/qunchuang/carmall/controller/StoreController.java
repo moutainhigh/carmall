@@ -5,6 +5,8 @@ import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import com.qunchuang.carmall.service.StoreService;
+import com.qunchuang.carmall.validator.anntations.DomainRule;
+import com.qunchuang.carmall.validator.anntations.MutationValidated;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2019/1/16 10:22
  */
 @GraphqlController("store")
+@MutationValidated
 public class StoreController {
 
     @Autowired
@@ -19,7 +22,7 @@ public class StoreController {
 
     @SchemaDocumentation("添加门店")
     @GraphqlMutation(path = "/add")
-    public Store add(Store store){
+    public Store add(@DomainRule("phone && name") Store store){
         return storeService.add(store);
     }
 

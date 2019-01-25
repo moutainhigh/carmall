@@ -6,9 +6,9 @@ import com.qunchuang.carmall.enums.OrderStatus;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Size;
 
 /**
  * @author Curtain
@@ -26,7 +26,7 @@ public class Consult extends BosEntity{
     private String name;
 
     @SchemaDocumentation("手机号")
-    @Length(min = 11,max = 11,message = "手机号长度不正确")
+    @Size(min = 11,max = 11,message = "手机号长度不正确")
     private String phone;
 
 //    @SchemaDocumentation("用户")

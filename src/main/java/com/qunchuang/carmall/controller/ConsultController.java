@@ -1,6 +1,7 @@
 package com.qunchuang.carmall.controller;
 
 import cn.wzvtcsoft.validator.anntations.DomainRule;
+import cn.wzvtcsoft.validator.anntations.MutationValidated;
 import com.qunchuang.carmall.domain.Consult;
 import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2019/1/21 9:33
  */
 @GraphqlController("consult")
+@MutationValidated
 public class ConsultController {
     
     @Autowired

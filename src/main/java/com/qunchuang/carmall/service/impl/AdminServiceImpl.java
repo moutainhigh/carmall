@@ -97,7 +97,7 @@ public class AdminServiceImpl implements AdminService {
                 roleOptional = roleRepository.findByName(RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName());
                 if (!roleOptional.isPresent()) {
                     role.setName(RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName());
-                    Optional<Privilege> privilege = privilegeRepository.findByName(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
+                    Optional<Privilege> privilege = privilegeRepository.findByPrivilege(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
                     PrivilegeItem privilegeItem = new PrivilegeItem();
                     privilegeItem.setPrivilege(privilege.get());
                     role.getPrivilegeItems().add(privilegeItem);
@@ -110,12 +110,14 @@ public class AdminServiceImpl implements AdminService {
                 roleOptional = roleRepository.findByName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
                 if (!roleOptional.isPresent()) {
                     role.setName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
-                    Optional<Privilege> privilege = privilegeRepository.findByName(PrivilegeAuthorityEnum.SALES_CONSULTANT_MANAGEMENT.getIdentifier());
-                    PrivilegeItem privilegeItem = new PrivilegeItem();
-                    privilegeItem.setPrivilege(privilege.get());
-                    privilege = privilegeRepository.findByName(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
-                    privilegeItem.setPrivilege(privilege.get());
-                    role.getPrivilegeItems().add(privilegeItem);
+                    Optional<Privilege> privilege = privilegeRepository.findByPrivilege(PrivilegeAuthorityEnum.SALES_CONSULTANT_MANAGEMENT.getIdentifier());
+                    PrivilegeItem privilegeItem1 = new PrivilegeItem();
+                    PrivilegeItem privilegeItem2 = new PrivilegeItem();
+                    privilegeItem1.setPrivilege(privilege.get());
+                    role.getPrivilegeItems().add(privilegeItem1);
+                    privilege = privilegeRepository.findByPrivilege(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
+                    privilegeItem2.setPrivilege(privilege.get());
+                    role.getPrivilegeItems().add(privilegeItem2);
                     role = roleRepository.save(role);
                 } else {
                     role = roleOptional.get();
@@ -129,6 +131,7 @@ public class AdminServiceImpl implements AdminService {
         rs.setPhone(admin.getPhone());
         rs.setUsername(admin.getUsername());
         rs.setPassword(admin.getPassword());
+        rs.setName(admin.getName());
         roleItem.setRole(role);
         rs.getRoleItems().add(roleItem);
 
