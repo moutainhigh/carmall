@@ -15,6 +15,8 @@ import com.qunchuang.carmall.repository.RoleRepository;
 import com.qunchuang.carmall.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,15 +41,24 @@ public class AdminServiceImpl implements AdminService {
     PrivilegeRepository privilegeRepository;
 
     @Override
-    //todo 需要门店管理员权限
+    @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Admin storeAdministrator(Admin admin) {
         return register(admin, RoleEnum.STORE_ADMINISTRATOR.getRoleName());
     }
 
     @Override
-    //todo 只有销售顾问管理员权限 才行
+    public void existsById(String id) {
+        boolean sales = adminRepository.existsById(id);
+        if (!sales) {
+            log.error("分配失败，销售人员不存在 salesId = %s", id);
+            throw new CarMallException(CarMallExceptionEnum.SALES_CONSULTANT_NOT_EXISTS);
+        }
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('SALES_CONSULTANT_MANAGEMENT')")
     public Admin salesConsultant(Admin admin) {
-        //todo 同时关联到门店
+
         return register(admin, RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName());
 
     }
@@ -63,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    //todo 需要平台 管理权限
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public Admin platformAdministrator(Admin admin) {
         //平台管理员无任何操作权限  只能浏览
         return register(admin, RoleEnum.PLATFORM_ADMINISTRATOR.getRoleName());
@@ -105,6 +116,10 @@ public class AdminServiceImpl implements AdminService {
                 } else {
                     role = roleOptional.get();
                 }
+                //绑定所属门店
+                Admin principal = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                admin.setStoreId(principal.getStoreId());
+                rs.setStoreId(admin.getStoreId());
                 break;
             case "门店管理员":
                 roleOptional = roleRepository.findByName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
@@ -122,6 +137,8 @@ public class AdminServiceImpl implements AdminService {
                 } else {
                     role = roleOptional.get();
                 }
+                //绑定门店
+                rs.setStoreId(admin.getStoreId());
                 break;
             default:
                 break;
@@ -153,6 +170,7 @@ public class AdminServiceImpl implements AdminService {
             PrivilegeItem privilegeItem2 = new PrivilegeItem();
             PrivilegeItem privilegeItem3 = new PrivilegeItem();
             PrivilegeItem privilegeItem4 = new PrivilegeItem();
+            PrivilegeItem privilegeItem5 = new PrivilegeItem();
 
             Privilege privilege1 = new Privilege();
             privilege1.setPrivilege(PrivilegeAuthorityEnum.CUSTOMER_MANAGEMENT.getIdentifier());
@@ -170,16 +188,22 @@ public class AdminServiceImpl implements AdminService {
             privilege4.setPrivilege(PrivilegeAuthorityEnum.STORE_MANAGEMENT.getIdentifier());
             privilege4.setCategory(4);
             privilege4.setName("门店管理");
+            Privilege privilege5 = new Privilege();
+            privilege5.setPrivilege(PrivilegeAuthorityEnum.PLATFORM_MANAGEMENT.getIdentifier());
+            privilege5.setCategory(5);
+            privilege5.setName("平台管理");
 
             privilege1 = privilegeRepository.save(privilege1);
             privilege2 = privilegeRepository.save(privilege2);
             privilege3 = privilegeRepository.save(privilege3);
             privilege4 = privilegeRepository.save(privilege4);
+            privilege5 = privilegeRepository.save(privilege5);
 
             privilegeItem1.setPrivilege(privilege1);
             privilegeItem2.setPrivilege(privilege2);
             privilegeItem3.setPrivilege(privilege3);
             privilegeItem4.setPrivilege(privilege4);
+            privilegeItem5.setPrivilege(privilege5);
 
             Role role1 = new Role();
             role1.setName("超级管理员");
@@ -187,6 +211,7 @@ public class AdminServiceImpl implements AdminService {
             role1.getPrivilegeItems().add(privilegeItem2);
             role1.getPrivilegeItems().add(privilegeItem3);
             role1.getPrivilegeItems().add(privilegeItem4);
+            role1.getPrivilegeItems().add(privilegeItem5);
 
             role1 = roleRepository.save(role1);
 
@@ -239,21 +264,6 @@ public class AdminServiceImpl implements AdminService {
         admin.privilegeCheck();
         return adminRepository.save(admin);
     }
-
-
-/*    @Override
-//    @PreAuthorize("hasAuthority('B1')")
-    public Admin save(Admin admin) {
-        //todo 应该只保存  用户注册时应该 处理的数据
-        //todo  管理员添加用户另外一个接口
-        Optional<Admin> result = adminRepository.findByUsername(admin.getUsername());
-        if (result.isPresent()) {
-            log.error("账号创建失败，用户名已存在 username = ", admin.getUsername());
-            throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);
-        }
-        admin.privilegeCheck();
-        return adminRepository.save(admin);
-    }*/
 
 
 }

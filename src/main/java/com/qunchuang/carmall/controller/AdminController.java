@@ -34,7 +34,7 @@ public class AdminController {
 
     @SchemaDocumentation("添加门店管理员")
     @GraphqlMutation(path = "/storeAdministrator")
-    public Admin storeAdministrator(@DomainRule("phone && password && username") Admin admin) {
+    public Admin storeAdministrator(@DomainRule("phone && password && username && storeId") Admin admin) {
         return adminService.storeAdministrator(admin);
     }
 

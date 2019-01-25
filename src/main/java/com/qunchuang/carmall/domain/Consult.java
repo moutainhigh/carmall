@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
 /**
@@ -29,9 +30,9 @@ public class Consult extends BosEntity{
     @Size(min = 11,max = 11,message = "手机号长度不正确")
     private String phone;
 
-//    @SchemaDocumentation("用户")
-//    @ManyToOne
-//    private Customer customer;
+    @SchemaDocumentation("用户")
+    @ManyToOne
+    private Customer customer;
 
     @SchemaDocumentation("状态:0表示未完成，1表示完成")
     private int status = OrderStatus.NEW.getCode();

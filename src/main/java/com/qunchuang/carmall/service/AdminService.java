@@ -8,13 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @date 2019/1/16 9:38
  */
 public interface AdminService extends UserDetailsService{
-//    /**
-//     * 管理员添加用户
-//     * @param admin
-//     * @return
-//     */
-//    Admin save(Admin admin);
-
     /**
      * 修改
      * @param admin
@@ -63,4 +56,11 @@ public interface AdminService extends UserDetailsService{
      * @return
      */
     Admin salesConsultant(Admin admin);
+
+    /**
+     * 通过id判断是否存在
+     * @param id
+     * @return
+     */
+    void existsById(String id);
 }

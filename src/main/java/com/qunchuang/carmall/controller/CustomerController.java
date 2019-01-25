@@ -25,11 +25,11 @@ public class CustomerController {
         return customerService.register(customer);
     }
 
-    @SchemaDocumentation("用户修改")
-    @GraphqlMutation(path = "/modify")
-    public Customer modify(Customer customer){
-        return customerService.modify(customer);
-    }
+//    @SchemaDocumentation("用户修改")
+//    @GraphqlMutation(path = "/modify")
+//    public Customer modify(Customer customer){
+//        return customerService.modify(customer);
+//    }
 
     @SchemaDocumentation("用户拉黑")
     @GraphqlMutation(path = "/delete")

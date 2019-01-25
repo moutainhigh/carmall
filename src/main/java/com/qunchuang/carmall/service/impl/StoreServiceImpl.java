@@ -38,6 +38,16 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public void existsById(String id) {
+        //判断门店是否存在
+        boolean store = storeRepository.existsById(id);
+        if (!store) {
+            log.error("门店不存在 storeId = %s ", id);
+            throw new CarMallException(CarMallExceptionEnum.STORE_NOT_EXISTS);
+        }
+    }
+
+    @Override
     public String getValidId() {
         List<Store> all = storeRepository.findAll();
         if (all.size() <= 0) {

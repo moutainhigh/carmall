@@ -15,12 +15,6 @@ public interface CustomerService {
      */
     Customer findByOpenid(String openid);
 
-    /**
-     * 销售顾问创建
-     * @param customer
-     * @return
-     */
-    Customer createSalesConsultant(Customer customer);
 
     /**
      * 用户注册

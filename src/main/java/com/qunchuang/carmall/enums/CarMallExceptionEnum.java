@@ -26,10 +26,15 @@ public enum CarMallExceptionEnum {
 
     CAR_INFO_NOT_EXISTS(30001,"车辆信息不存在"),
     CONSULT_NOT_EXISTS(30002,"咨询单不存在"),
+    CONSULT_ALLOCATE_FAIL(30003,"派咨询单失败，该订单已不再所属此门店"),
+    CONSULT_MODIFY_FAIL(30003,"修改咨询单失败，该订单已不再所属此销售人员"),
 
 
 
     STORE_NOT_EXISTS(40001,"门店不存在"),
+
+
+    PRIVILEGE_FAIL(50001,"权限校验失败"),
 
 
     ;

@@ -7,6 +7,7 @@ import com.qunchuang.carmall.repository.CustomerRepository;
 import com.qunchuang.carmall.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,12 +31,6 @@ public class CustomerServiceImpl implements CustomerService {
         }
         log.error("用户未找到：openid = ", openid);
         throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
-    }
-
-    @Override
-    public Customer createSalesConsultant(Customer customer) {
-        //todo 创建销售顾问
-        return customerRepository.save(customer);
     }
 
     @Override
@@ -64,7 +59,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @PreAuthorize( "hasAuthority('CUSTOMER_MANAGEMENT')")
     public Customer delete(String id) {
+        //todo 只能操作所属的客户
         Customer customer = findOne(id);
         customer.isAble();
         return customerRepository.save(customer);
@@ -72,7 +69,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer modify(Customer customer) {
-        //todo 只有所属的门店或者所属的销售顾问才能修改   保证了转单后之前用户不能修改客户信息
         return customerRepository.save(customer);
     }
 

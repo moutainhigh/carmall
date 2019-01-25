@@ -38,4 +38,11 @@ public interface StoreService {
      * @return
      */
     String getValidId();
+
+    /**
+     * 通过id判断是否存在
+     * @param id
+     * @return
+     */
+    void existsById(String id);
 }
