@@ -92,10 +92,9 @@ public class ConsultServiceImpl implements ConsultService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('CUSTOMER_MANAGEMENT,SALES_CONSULTANT_MANAGEMENT')")
+    @PreAuthorize("hasAuthority('SALES_CONSULTANT_MANAGEMENT')")
     public Consult allocate(String id, String salesId) {
         Consult consult = findOne(id);
-
 
         //权限只有所属门店才能派单
         Customer customer = consult.getCustomer();
