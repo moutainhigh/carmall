@@ -10,21 +10,25 @@ public interface ConsultService {
 
     /**
      * 创建咨询单
+     *
      * @param consult
+     * @param code
      * @return
      */
-    Consult add(Consult consult);
+    Consult add(Consult consult, String code);
 
     /**
      * 派单
+     *
      * @param id
      * @param salesId 销售员id
      * @return
      */
-    Consult allocate(String id,String salesId);
+    Consult allocate(String id, String salesId);
 
     /**
      * 修改信息
+     *
      * @param consult
      * @return
      */
@@ -32,6 +36,7 @@ public interface ConsultService {
 
     /**
      * 通过id查找
+     *
      * @param id
      * @return
      */
@@ -39,6 +44,7 @@ public interface ConsultService {
 
     /**
      * 转单到门店
+     *
      * @param id
      * @param storeId
      * @return
@@ -47,6 +53,7 @@ public interface ConsultService {
 
     /**
      * 转单到销售人员
+     *
      * @param id
      * @param salesId
      * @return
@@ -55,6 +62,7 @@ public interface ConsultService {
 
     /**
      * 订单完结
+     *
      * @param id
      * @return
      */
@@ -62,6 +70,7 @@ public interface ConsultService {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */

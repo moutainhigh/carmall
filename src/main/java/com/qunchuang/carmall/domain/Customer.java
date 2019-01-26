@@ -7,6 +7,9 @@ import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +23,8 @@ import javax.persistence.Entity;
 @SchemaDocumentation("顾客")
 @Getter
 @Setter
-public class Customer extends BosEntity{
+@Slf4j
+public class Customer extends BosEntity {
 
     @SchemaDocumentation("昵称")
     private String nickname;
@@ -52,10 +56,21 @@ public class Customer extends BosEntity{
 //    private boolean salesConsultant;
 
     public void setOpenid(String openid) {
-        if (openid==null){
-          throw new CarMallException(CarMallExceptionEnum.USER_ARGS_NOT_TRUE);
-
+        if (StringUtils.isEmpty(openid)) {
+            log.error("用户openid为空 openid = %s", openid);
+            throw new CarMallException(CarMallExceptionEnum.USER_OPENID_IS_NULL);
         }
         this.openid = openid;
+    }
+
+    public static Customer getCustomer() {
+        Customer customer;
+        try {
+            customer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            log.error("获取当前微信用户登录信息失败 Authentication = %s", SecurityContextHolder.getContext().getAuthentication());
+            throw new CarMallException(CarMallExceptionEnum.GET_USER_LOGIN_INFO_FAIL);
+        }
+        return customer;
     }
 }

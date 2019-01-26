@@ -1,5 +1,6 @@
 package com.qunchuang.carmall.service.impl;
 
+import com.qunchuang.carmall.domain.Admin;
 import com.qunchuang.carmall.domain.Customer;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
@@ -41,8 +42,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByPhone(String phone) {
         Optional<Customer> customer = customerRepository.findByPhone(phone);
-        if (!customer.isPresent()){
-            log.error("用户未找到，phone = %s",phone);
+        if (!customer.isPresent()) {
+            log.error("用户未找到，phone = %s", phone);
             throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
         }
         return customer.get();
@@ -59,10 +60,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize( "hasAuthority('CUSTOMER_MANAGEMENT')")
+    @PreAuthorize("hasAuthority('CUSTOMER_MANAGEMENT')")
     public Customer delete(String id) {
-        //todo 只能操作所属的客户
+
+        Admin admin = Admin.getAdmin();
         Customer customer = findOne(id);
+        //只能操作所属的客户
+        if (!customer.getStoreId().equals(admin.getId()) && !customer.getSalesConsultantId().equals(admin.getId())) {
+            log.error("权限不足，订单已经不属于当前用户 customerStoreId = %s,customerSalesId = %s, adminId = %s",
+                    customer.getStoreId(), customer.getSalesConsultantId(), admin.getId());
+            throw new CarMallException(CarMallExceptionEnum.PRIVILEGE_INSUFFICIENT);
+        }
         customer.isAble();
         return customerRepository.save(customer);
     }

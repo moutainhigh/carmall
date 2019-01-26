@@ -5,9 +5,12 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
+import com.qunchuang.carmall.enums.CarMallExceptionEnum;
+import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,7 +37,8 @@ import java.util.stream.Collectors;
 @SchemaDocumentation("管理员")
 @Getter
 @Setter
-public class Admin extends BosEntity implements UserDetails{
+@Slf4j
+public class Admin extends BosEntity implements UserDetails {
 
     @SchemaDocumentation("姓名")
     private String name;
@@ -46,7 +50,7 @@ public class Admin extends BosEntity implements UserDetails{
     private String password;
 
     @SchemaDocumentation("手机号")
-    @Size(min = 11,max = 11,message = "手机号长度不正确")
+    @Size(min = 11, max = 11, message = "手机号长度不正确")
     private String phone;
 
 //    @SchemaDocumentation("是否是销售人员")
@@ -126,4 +130,14 @@ public class Admin extends BosEntity implements UserDetails{
         }
     }
 
+    public static Admin getAdmin() {
+        Admin admin;
+        try {
+            admin = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            log.error("获取管理员用户登录信息失败 Authentication = %s", SecurityContextHolder.getContext().getAuthentication());
+            throw new CarMallException(CarMallExceptionEnum.GET_ADMIN_LOGIN_INFO_FAIL);
+        }
+        return admin;
+    }
 }
