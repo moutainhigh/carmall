@@ -63,7 +63,7 @@ public class WeChatMiniAuthenticationFilter extends AbstractAuthenticationProces
             InputStream inputStream = request.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String line = br.readLine();
-            Map map = (Map) JSON.parse(line.toString());
+            Map map = (Map) JSON.parse(line);
             code = (String) map.get(SPRING_SECURITY_FORM_CODE_KEY);
         } catch (IOException e) {
             throw new BadCredentialsException("bad code");
