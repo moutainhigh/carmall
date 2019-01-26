@@ -5,13 +5,12 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
-import com.qunchuang.carmall.enums.CarMallExceptionEnum;
-import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -136,7 +135,8 @@ public class Admin extends BosEntity implements UserDetails {
             admin = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {
             log.error("获取管理员用户登录信息失败 Authentication = %s", SecurityContextHolder.getContext().getAuthentication());
-            throw new CarMallException(CarMallExceptionEnum.GET_ADMIN_LOGIN_INFO_FAIL);
+//            throw new CarMallException(CarMallExceptionEnum.GET_ADMIN_LOGIN_INFO_FAIL);
+            throw new BadCredentialsException("获取登录用户失败,失效的用户");
         }
         return admin;
     }

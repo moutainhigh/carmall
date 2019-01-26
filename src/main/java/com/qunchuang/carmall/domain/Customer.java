@@ -8,6 +8,7 @@ import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 
@@ -69,7 +70,8 @@ public class Customer extends BosEntity {
             customer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {
             log.error("获取当前微信用户登录信息失败 Authentication = %s", SecurityContextHolder.getContext().getAuthentication());
-            throw new CarMallException(CarMallExceptionEnum.GET_USER_LOGIN_INFO_FAIL);
+//            throw new CarMallException(CarMallExceptionEnum.GET_USER_LOGIN_INFO_FAIL);
+            throw new BadCredentialsException("失效用户");
         }
         return customer;
     }
