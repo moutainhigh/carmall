@@ -8,13 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Curtain
@@ -22,7 +15,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
+//@Transactional
 public class CustomerControllerTest {
 
     @Autowired
@@ -31,11 +24,11 @@ public class CustomerControllerTest {
     @Test
     public void register() throws Exception {
         Customer customer = new Customer();
-        customer.setOpenid("xxxxxxxxxxxxxxx");
-        customer.setGender("女");
-        customer.setIntegral(0);
-        customer.setName("小月");
-        customer.setPhone("13812345678");
+        customer.setOpenid("xxxxxxxxxxxxxxxxx");
+//        customer.setGender("女");
+//        customer.setIntegral(0);
+//        customer.setName("小月");
+//        customer.setPhone("13812345678");
         Assert.assertNotNull(customerService.register(customer));
     }
 

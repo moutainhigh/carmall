@@ -33,7 +33,8 @@ public class WeChatMiniAuthenticationProvider implements AuthenticationProvider 
         WeChatMiniAuthenticationToken authenticationToken = (WeChatMiniAuthenticationToken) authentication;
         String code = (String) authenticationToken.getPrincipal();
 
-        String authUrl = weChatMiniResources.getAuthUrl() + "appId=" + weChatMiniResources.getAppId() +
+//        "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code"
+        String authUrl = weChatMiniResources.getAuthUrl() + "?appid=" + weChatMiniResources.getAppId() +
                 "&secret=" + weChatMiniResources.getSecret() + "&js_code=" + code + "&grant_type=authorization_code";
 
         RestTemplate restTemplate = new RestTemplate();

@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/wechatmini", "/login").permitAll()
+                .antMatchers("/login/weChatMini", "/login").permitAll()
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()

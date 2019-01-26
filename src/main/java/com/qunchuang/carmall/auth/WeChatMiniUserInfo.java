@@ -20,8 +20,10 @@ public class WeChatMiniUserInfo {
     private CustomerService customerService;
 
     public Customer getCustomer(String openid) {
-        Customer customer = customerService.findByOpenid(openid);
-        if (customer == null) {
+        Customer customer;
+        try {
+            customer = customerService.findByOpenid(openid);
+        } catch (Exception e) {
             Customer rs = new Customer();
             rs.setOpenid(openid);
             Customer result = customerService.register(rs);
