@@ -1,4 +1,4 @@
-package com.qunchuang.carmall.auth;
+package com.qunchuang.carmall.auth.phone;
 
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -11,14 +11,14 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
  * @date 2018/11/8:42
  */
 
-public class WeChatMiniAuthenticationToken extends AbstractAuthenticationToken {
+public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
 
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
     private final Object principal;
 
 
-    public WeChatMiniAuthenticationToken(Object principal, boolean b) {
+    public PhoneAuthenticationToken(Object principal, boolean b) {
         super(null);
         this.principal = principal;
         setAuthenticated(b);

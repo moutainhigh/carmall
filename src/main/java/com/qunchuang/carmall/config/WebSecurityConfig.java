@@ -1,9 +1,12 @@
 package com.qunchuang.carmall.config;
 
 
-import com.qunchuang.carmall.auth.WeChatMiniAuthenticationFilter;
-import com.qunchuang.carmall.auth.WeChatMiniAuthenticationProvider;
-import com.qunchuang.carmall.auth.WeChatMiniUserInfo;
+import com.qunchuang.carmall.auth.phone.PhoneAuthenticationFilter;
+import com.qunchuang.carmall.auth.phone.PhoneAuthenticationProvider;
+import com.qunchuang.carmall.auth.phone.PhoneUserInfo;
+import com.qunchuang.carmall.auth.wechat.WeChatMiniAuthenticationFilter;
+import com.qunchuang.carmall.auth.wechat.WeChatMiniAuthenticationProvider;
+import com.qunchuang.carmall.auth.wechat.WeChatMiniUserInfo;
 import com.qunchuang.carmall.graphql.security.*;
 import com.qunchuang.carmall.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private WeChatMiniUserInfo weChatMiniUserInfo;
 
     @Autowired
+    private PhoneUserInfo phoneUserInfo;
+
+    @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
@@ -80,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/weChatMini", "/login","/graphql").permitAll()
+                .antMatchers("/login/weChatMini", "/login", "/graphql","/login/phone").permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
@@ -97,7 +103,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(this.adminService)
                 .passwordEncoder(myPasswordEncoder).
                 and()
-                .authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo));
+                .authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo))
+                .authenticationProvider(new PhoneAuthenticationProvider(phoneUserInfo));
     }
 
     @Bean
@@ -115,15 +122,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private Filter ssoFilter(AuthenticationManager am) {
-        CompositeFilter filter = new CompositeFilter();
+        CompositeFilter compositeFilter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
         WeChatMiniAuthenticationFilter wmaFilter = new WeChatMiniAuthenticationFilter();
         wmaFilter.setAuthenticationManager(am);
         wmaFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());
         wmaFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
         filters.add(wmaFilter);
-        filter.setFilters(filters);
-        return filter;
+
+        PhoneAuthenticationFilter paFilter = new PhoneAuthenticationFilter();
+        paFilter.setAuthenticationManager(am);
+        paFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());
+        paFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
+        filters.add(paFilter);
+
+        compositeFilter.setFilters(filters);
+        return compositeFilter;
     }
 
     @Override

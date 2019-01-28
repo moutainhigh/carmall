@@ -1,4 +1,4 @@
-package com.qunchuang.carmall.auth;
+package com.qunchuang.carmall.auth.wechat;
 
 
 import com.alibaba.fastjson.JSON;

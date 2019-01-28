@@ -1,4 +1,4 @@
-package com.qunchuang.carmall.auth;
+package com.qunchuang.carmall.auth.phone;
 
 
 import com.qunchuang.carmall.domain.Customer;
@@ -14,20 +14,21 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class WeChatMiniUserInfo {
+public class PhoneUserInfo {
 
     @Autowired
     private CustomerService customerService;
 
-    public Customer getCustomer(String openid) {
+    public Customer getCustomer(String phone) {
         Customer customer;
         try {
-            customer = customerService.findByOpenid(openid);
+            customer = customerService.findByPhone(phone);
         } catch (Exception e) {
+            // TODO: 2019/1/28 用户未注册   需要注册？
+//            throw new BadCredentialsException("user not register");
             Customer rs = new Customer();
-            rs.setOpenid(openid);
-            Customer result = customerService.register(rs);
-            return result;
+            rs.setPhone(phone);
+            customer = customerService.register(rs);
         }
         return customer;
     }
