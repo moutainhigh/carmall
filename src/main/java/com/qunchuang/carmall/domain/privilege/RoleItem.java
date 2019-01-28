@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @SchemaDocumentation("角色集合")
-@Bostype("A10")
+@Bostype("R02")
 @Getter
 @Setter
 public class RoleItem extends Entry {

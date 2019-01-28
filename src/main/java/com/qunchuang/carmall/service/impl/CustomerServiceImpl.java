@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -99,7 +100,23 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer register(Customer customer) {
         //todo  如果是被邀请 增加积分  或绑定销售顾问
 
-        //因为小程序登录用户只有openid
+        Customer result = new Customer();
+        result.setPhone(customer.getPhone());
+
+        //邀请人id
+        String invitedId = customer.getInvitedId();
+        if (!StringUtils.isEmpty(invitedId)){
+            //邀请人是用户
+            if (invitedId.endsWith("C01")){
+                Customer invited = findOne(invitedId);
+                invited.setIntegral(invited.getIntegral()+2);
+                //积分增加  日志记录
+            }
+            //邀请人是销售人员
+            if (invitedId.endsWith("A01")){
+                customer.setSalesConsultantId(invitedId);
+            }
+        }
 
         return customerRepository.save(customer);
     }

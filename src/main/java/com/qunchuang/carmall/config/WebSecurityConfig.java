@@ -124,6 +124,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Filter ssoFilter(AuthenticationManager am) {
         CompositeFilter compositeFilter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
+
+        //todo  如果不使用微信认证 那么之后取消
         WeChatMiniAuthenticationFilter wmaFilter = new WeChatMiniAuthenticationFilter();
         wmaFilter.setAuthenticationManager(am);
         wmaFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());

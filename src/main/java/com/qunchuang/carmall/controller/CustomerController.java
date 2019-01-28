@@ -19,11 +19,11 @@ public class CustomerController {
     private CustomerService customerService;
 
 
-    @SchemaDocumentation("用户注册")
-    @GraphqlMutation(path = "/register")
-    public Customer register(Customer customer){
-        return customerService.register(customer);
-    }
+//    @SchemaDocumentation("用户注册")
+//    @GraphqlMutation(path = "/register")
+//    public Customer register(Customer customer){
+//        return customerService.register(customer);
+//    }
 
 //    @SchemaDocumentation("用户修改")
 //    @GraphqlMutation(path = "/modify")

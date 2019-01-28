@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @SchemaDocumentation("角色")
-@Bostype("A09")
+@Bostype("R01")
 @Getter
 @Setter
 public class Role extends BosEntity {

@@ -92,6 +92,14 @@ public class ConsultServiceImpl implements ConsultService {
             storeId = customer.getStoreId();
         }
 
+        //用户已经有所属的销售人员  直接绑定销售人员  绑定门店
+        if (!StringUtils.isEmpty(customer.getSalesConsultantId())) {
+            rs.setSalesConsultantId(customer.getSalesConsultantId());
+            Admin admin = adminService.findOne(customer.getSalesConsultantId());
+            storeId = admin.getStoreId();
+        }
+
+
         customer.setStoreId(storeId);
         customer = customerService.modify(customer);
 
@@ -107,7 +115,10 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult allocate(String id, String salesId) {
         Consult consult = findOne(id);
 
-        //todo 如果订单已经派送 这提示不能重复派单
+        //如果订单已经所属 这提示不能重复派单
+        if (!StringUtils.isEmpty(consult.getSalesConsultantId())) {
+            throw new CarMallException(CarMallExceptionEnum.CONSULT_ALREADY_ALLOCATE);
+        }
 
         //权限只有所属门店才能派单
         Customer customer = consult.getCustomer();

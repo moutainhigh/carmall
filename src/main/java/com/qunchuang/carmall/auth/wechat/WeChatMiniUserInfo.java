@@ -24,6 +24,7 @@ public class WeChatMiniUserInfo {
         try {
             customer = customerService.findByOpenid(openid);
         } catch (Exception e) {
+            //todo 考虑如果这里生成了 那下次用户才绑定手机号。
             Customer rs = new Customer();
             rs.setOpenid(openid);
             Customer result = customerService.register(rs);
