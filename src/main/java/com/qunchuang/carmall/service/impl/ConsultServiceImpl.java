@@ -96,6 +96,8 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult allocate(String id, String salesId) {
         Consult consult = findOne(id);
 
+        //todo 如果订单已经派送 这提示不能重复派单
+
         //权限只有所属门店才能派单
         Customer customer = consult.getCustomer();
         Admin admin = Admin.getAdmin();
@@ -192,7 +194,7 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult modify(Consult consult) {
         Admin admin = Admin.getAdmin();
         Consult result = findOne(consult.getId());
-        Customer customer = consult.getCustomer();
+        Customer customer = result.getCustomer();
         //判断订单是否所属为当前操作的销售人员
         if (!customer.getSalesConsultantId().equals(admin.getId())) {
             log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = %s, salesId = %s", customer.getSalesConsultantId(), admin.getId());

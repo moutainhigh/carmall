@@ -119,7 +119,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<Filter> filters = new ArrayList<>();
         WeChatMiniAuthenticationFilter wmaFilter = new WeChatMiniAuthenticationFilter();
         wmaFilter.setAuthenticationManager(am);
-        wmaFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler(true));
+        wmaFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());
         wmaFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
         filters.add(wmaFilter);
         filter.setFilters(filters);
