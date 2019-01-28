@@ -7,6 +7,7 @@ import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Slf4j
+@ToString
 public class Customer extends BosEntity {
 
     @SchemaDocumentation("昵称")

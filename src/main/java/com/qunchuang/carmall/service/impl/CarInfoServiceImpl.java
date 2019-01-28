@@ -5,11 +5,15 @@ import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.CarInfoRepository;
 import com.qunchuang.carmall.service.CarInfoService;
+import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -29,7 +33,13 @@ public class CarInfoServiceImpl implements CarInfoService {
 
     @Override
     public CarInfo modify(CarInfo carInfo) {
-        return carInfoRepository.save(carInfo);
+
+        CarInfo result = findOne(carInfo.getId());
+        Set<String> filter = new HashSet<>();
+        filter.add("upperShelf");
+        BeanUtils.copyProperties(carInfo, result, BeanCopyUtil.filterProperty(carInfo, filter));
+
+        return carInfoRepository.save(result);
     }
 
     @Override

@@ -16,7 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -201,7 +203,12 @@ public class ConsultServiceImpl implements ConsultService {
             throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
         }
         //修改信息
-        BeanUtils.copyProperties(consult, result, BeanCopyUtil.getNullPropertyNames(consult));
+        Set<String> filter = new HashSet<>();
+        filter.add("customer");
+        filter.add("status");
+        filter.add("storeId");
+        filter.add("salesConsultantId");
+        BeanUtils.copyProperties(consult, result, BeanCopyUtil.filterProperty(consult, filter));
         return consultRepository.save(result);
     }
 

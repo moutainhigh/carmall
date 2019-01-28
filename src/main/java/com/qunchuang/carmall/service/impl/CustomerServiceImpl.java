@@ -6,12 +6,16 @@ import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.CustomerRepository;
 import com.qunchuang.carmall.service.CustomerService;
+import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -77,7 +81,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer modify(Customer customer) {
-        return customerRepository.save(customer);
+        Customer result = findOne(customer.getId());
+        Set<String> filter = new HashSet<>();
+        filter.add("openid");
+        filter.add("phone");
+        filter.add("salesConsultantId");
+        filter.add("storeId");
+        filter.add("integral");
+        BeanUtils.copyProperties(customer, result, BeanCopyUtil.filterProperty(customer, filter));
+
+        return customerRepository.save(result);
     }
 
     @Override

@@ -5,7 +5,9 @@ import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.StoreRepository;
 import com.qunchuang.carmall.service.StoreService;
+import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +35,9 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store modify(Store store) {
-        //todo 有时需要确保 重要字段 不被修改
-        return storeRepository.save(store);
+        Store result = findOne(store.getId());
+        BeanUtils.copyProperties(store, result, BeanCopyUtil.filterProperty(store));
+        return storeRepository.save(result);
     }
 
     @Override

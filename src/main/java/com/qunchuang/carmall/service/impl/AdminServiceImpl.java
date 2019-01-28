@@ -13,16 +13,19 @@ import com.qunchuang.carmall.repository.AdminRepository;
 import com.qunchuang.carmall.repository.PrivilegeRepository;
 import com.qunchuang.carmall.repository.RoleRepository;
 import com.qunchuang.carmall.service.AdminService;
+import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -258,11 +261,17 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
 //    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
-    public Admin update(@P("user") Admin admin) {
+    public Admin update(Admin admin) {
         //todo 只有用户管理员可以修改   或者 自己改自己本身的    password 不能被修改
         //todo  超级管理员admin的权限和角色不允许修改
+        Admin result = findOne(admin.getId());
+        Set<String> filter = new HashSet<>();
+        filter.add("password");
+        filter.add("storeId");
+        BeanUtils.copyProperties(admin, result, BeanCopyUtil.filterProperty(admin, filter));
+
         admin.privilegeCheck();
-        return adminRepository.save(admin);
+        return adminRepository.save(result);
     }
 
 

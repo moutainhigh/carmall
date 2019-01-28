@@ -1,6 +1,7 @@
 package com.qunchuang.carmall.service;
 
-import com.qunchuang.carmall.domain.Store; /**
+import com.qunchuang.carmall.domain.Store;
+/**
  * @author Curtain
  * @date 2019/1/16 11:11
  */
