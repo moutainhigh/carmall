@@ -41,7 +41,7 @@ public class VerificationServiceImpl implements VerificationService {
             sendSmsResponse = AliyunMessageUtil.sendSms(paramMap);
         } catch (ClientException e) {
             if (!(sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK"))) {
-                log.error("获取验证码失败，phone = %s ,cause = %s", phone, e.getMessage());
+                log.error("获取验证码失败，phone = {} ,cause = {}", phone, e.getMessage());
                 throw new CarMallException(CarMallExceptionEnum.GET_VERIFICATION_CODE_FAIL);
             }
         }
@@ -56,7 +56,7 @@ public class VerificationServiceImpl implements VerificationService {
         String key = VERIFICATION + phone;
         String rs = String.valueOf(redisTemplate.opsForValue().get(key));
         if (!rs.equals(code)) {
-            log.error("验证码不正确，phone = %s,code = %s,rsCode = %s", phone, code, rs);
+            log.error("验证码不正确，phone = {},code = {},rsCode = {}", phone, code, rs);
             throw new CarMallException(CarMallExceptionEnum.VERIFY_CODE_FAIL);
         }
     }

@@ -53,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
     public void existsById(String id) {
         boolean sales = adminRepository.existsById(id);
         if (!sales) {
-            log.error("分配失败，销售人员不存在 salesId = %s", id);
+            log.error("分配失败，销售人员不存在 salesId = {}", id);
             throw new CarMallException(CarMallExceptionEnum.SALES_CONSULTANT_NOT_EXISTS);
         }
     }
@@ -93,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
 
         Optional<Admin> result = adminRepository.findByUsername(admin.getUsername());
         if (result.isPresent()) {
-            log.error("用户名已被注册，username = %s", admin.getUsername());
+            log.error("用户名已被注册，username = {}", admin.getUsername());
             throw new CarMallException(CarMallExceptionEnum.USERNAME_IS_EXISTS);
         }
 

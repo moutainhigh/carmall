@@ -134,7 +134,7 @@ public class Admin extends BosEntity implements UserDetails {
         try {
             admin = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {
-            log.error("获取管理员用户登录信息失败 Authentication = %s", SecurityContextHolder.getContext().getAuthentication());
+            log.error("获取管理员用户登录信息失败 Authentication = {}", SecurityContextHolder.getContext().getAuthentication());
 //            throw new CarMallException(CarMallExceptionEnum.GET_ADMIN_LOGIN_INFO_FAIL);
             throw new BadCredentialsException("获取登录用户失败,失效的用户");
         }

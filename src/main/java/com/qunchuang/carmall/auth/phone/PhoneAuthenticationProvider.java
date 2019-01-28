@@ -2,7 +2,6 @@ package com.qunchuang.carmall.auth.phone;
 
 
 import com.qunchuang.carmall.domain.Customer;
-import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.service.VerificationService;
 import com.qunchuang.carmall.utils.SpringUtil;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,11 +31,11 @@ public class PhoneAuthenticationProvider implements AuthenticationProvider {
 
         try {
             verificationService.verify(verifyData.get("phone"),verifyData.get("code"));
-        }catch (CarMallException e){
+        }catch (Exception e){
 //            throw new BadCredentialsException("认证失败，验证码校验错误");
         }
 
-        Customer customer = weChatMiniUserInfo.getCustomer(verifyData.get("phone"));
+        Customer customer = weChatMiniUserInfo.getCustomer(verifyData);
 
         return new PhoneAuthenticationToken(customer, true);
     }

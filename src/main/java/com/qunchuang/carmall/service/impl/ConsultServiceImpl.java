@@ -53,11 +53,23 @@ public class ConsultServiceImpl implements ConsultService {
         verificationService.verify(consult.getPhone(), code);
 
         Consult rs = new Consult();
+        Customer customer;
         String storeId;
+        String phone = consult.getPhone();
 
+        boolean exists = customerService.existsByPhone(phone);
+        if (!exists) {
+            //此用户未注册
 
-        //通过principal直接拿到用户  (todo 此时用户可能是没有注册的  没有绑定手机号 具体注册逻辑再确定)
-        Customer customer = Customer.getCustomer();
+            //绑定用户手机号  完成自动注册
+            customer = new Customer();
+            customer.setPhone(phone);
+            customer = customerService.register(customer);
+
+        } else {
+            //用户已注册
+            customer = customerService.findByPhone(phone);
+        }
 
         //用户还没有有所属门店
         if (StringUtils.isEmpty(customer.getStoreId())) {
@@ -69,26 +81,23 @@ public class ConsultServiceImpl implements ConsultService {
 
             } else {
                 //2.用户选择的门店
-                //判断门店是否存在
-                storeService.existsById(consult.getStoreId());
                 storeId = consult.getStoreId();
-            }
+                //判断门店是否存在
+                storeService.existsById(storeId);
+                customer.setStoreId(consult.getStoreId());
 
-            //用户还未绑定手机号
-            if (StringUtils.isEmpty(customer.getPhone())) {
-                //绑定用户手机号  完成自动注册         //todo 当前默认自动绑定手机号 为 咨询时手机号
-                customer.setPhone(consult.getPhone());
-                customer.setStoreId(storeId);
-                customer = customerService.modify(customer);
             }
         } else {
             //直接绑定到之前的门店
             storeId = customer.getStoreId();
         }
 
+        customer.setStoreId(storeId);
+        customer = customerService.modify(customer);
+
         rs.setStoreId(storeId);
         rs.setCustomer(customer);
-        rs.setPhone(consult.getPhone());
+        rs.setPhone(phone);
 
         return consultRepository.save(rs);
     }
@@ -104,7 +113,7 @@ public class ConsultServiceImpl implements ConsultService {
         Customer customer = consult.getCustomer();
         Admin admin = Admin.getAdmin();
         if (!customer.getStoreId().equals(admin.getStoreId())) {
-            log.error("派咨询单失败，该订单已不再所属此门店 customer.storeId() = %s, storeId() = %s", customer.getStoreId(), admin.getStoreId());
+            log.error("派咨询单失败，该订单已不再所属此门店 customer.storeId() = {}, storeId() = {}", customer.getStoreId(), admin.getStoreId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_ALLOCATE_FAIL);
         }
 
@@ -175,7 +184,7 @@ public class ConsultServiceImpl implements ConsultService {
         Admin admin = Admin.getAdmin();
         Customer customer = consult.getCustomer();
         if (!customer.getSalesConsultantId().equals(admin.getId())) {
-            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = %s, salesId = %s", customer.getSalesConsultantId(), admin.getId());
+            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
         }
         consult.setStatus(OrderStatus.FINISH.getCode());
@@ -199,7 +208,7 @@ public class ConsultServiceImpl implements ConsultService {
         Customer customer = result.getCustomer();
         //判断订单是否所属为当前操作的销售人员
         if (!customer.getSalesConsultantId().equals(admin.getId())) {
-            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = %s, salesId = %s", customer.getSalesConsultantId(), admin.getId());
+            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
         }
         //修改信息

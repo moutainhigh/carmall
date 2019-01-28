@@ -45,7 +45,7 @@ public class StoreServiceImpl implements StoreService {
         //判断门店是否存在
         boolean store = storeRepository.existsById(id);
         if (!store) {
-            log.error("门店不存在 storeId = %s ", id);
+            log.error("门店不存在 storeId = {}", id);
             throw new CarMallException(CarMallExceptionEnum.STORE_NOT_EXISTS);
         }
     }

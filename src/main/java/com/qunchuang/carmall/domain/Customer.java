@@ -52,13 +52,16 @@ public class Customer extends BosEntity {
     @SchemaDocumentation("积分")
     private int integral;
 
+    @SchemaDocumentation("邀请人")
+    private String invitedId;
+
 
 //    @SchemaDocumentation("是否是销售顾问")
 //    private boolean salesConsultant;
 
     public void setOpenid(String openid) {
         if (StringUtils.isEmpty(openid)) {
-            log.error("用户openid为空 openid = %s", openid);
+            log.error("用户openid为空 openid = {}", openid);
             throw new CarMallException(CarMallExceptionEnum.USER_OPENID_IS_NULL);
         }
         this.openid = openid;
@@ -69,7 +72,7 @@ public class Customer extends BosEntity {
         try {
             customer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {
-            log.error("获取当前微信用户登录信息失败 Authentication = %s", SecurityContextHolder.getContext().getAuthentication());
+            log.error("获取当前微信用户登录信息失败 Authentication = {}", SecurityContextHolder.getContext().getAuthentication());
 //            throw new CarMallException(CarMallExceptionEnum.GET_USER_LOGIN_INFO_FAIL);
             throw new BadCredentialsException("失效用户");
         }

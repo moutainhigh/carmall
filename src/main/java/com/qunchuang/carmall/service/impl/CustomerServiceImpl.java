@@ -44,10 +44,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public boolean existsByPhone(String phone) {
+        return customerRepository.existsByPhone(phone);
+
+    }
+
+    @Override
     public Customer findByPhone(String phone) {
         Optional<Customer> customer = customerRepository.findByPhone(phone);
         if (!customer.isPresent()) {
-            log.error("用户未找到，phone = %s", phone);
+            log.error("用户未找到，phone = {}", phone);
             throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
         }
         return customer.get();
@@ -71,7 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = findOne(id);
         //只能操作所属的客户
         if (!customer.getStoreId().equals(admin.getId()) && !customer.getSalesConsultantId().equals(admin.getId())) {
-            log.error("权限不足，订单已经不属于当前用户 customerStoreId = %s,customerSalesId = %s, adminId = %s",
+            log.error("权限不足，订单已经不属于当前用户 customerStoreId = {},customerSalesId = {}, adminId = {}",
                     customer.getStoreId(), customer.getSalesConsultantId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.PRIVILEGE_INSUFFICIENT);
         }
@@ -83,10 +89,6 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer modify(Customer customer) {
         Customer result = findOne(customer.getId());
         Set<String> filter = new HashSet<>();
-        filter.add("openid");
-        filter.add("phone");
-        filter.add("salesConsultantId");
-        filter.add("storeId");
         filter.add("integral");
         BeanUtils.copyProperties(customer, result, BeanCopyUtil.filterProperty(customer, filter));
 

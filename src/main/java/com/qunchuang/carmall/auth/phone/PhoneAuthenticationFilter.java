@@ -15,20 +15,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 手机号登录
+ * 参数   phone   手机号
+ *       code     验证码
+ *       type     类型  注册 or 登录
+ *       invitedId 邀请人Id
  * @author Curtain
  * @date 2018/1/14 8:10
  */
 
 public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
-
-    public static final String SPRING_SECURITY_FORM_CODE_KEY = "code";
-    public static final String SPRING_SECURITY_FORM_PHONE_KEY = "phone";
-
 
     private boolean postOnly = true;
 
@@ -44,7 +43,11 @@ public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingF
                     "Authentication method not supported: " + request.getMethod());
         }
 
-        Map<String,String> data = obtainData(request);
+        Map<String, String> data = obtainData(request);
+
+        if (data==null){
+            throw new BadCredentialsException("bad Credentials");
+        }
 
         PhoneAuthenticationToken authRequest = new PhoneAuthenticationToken(data, false);
 
@@ -54,19 +57,21 @@ public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
 
-    protected Map<String,String> obtainData(HttpServletRequest request) {
-        Map<String,String>  data = new HashMap<>();
+    protected Map<String, String> obtainData(HttpServletRequest request) {
+        Map<String, String> data;
         try {
             InputStream inputStream = request.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = br.readLine();
-            Map<String,String> map = (Map) JSON.parse(line);
+            StringBuilder sb = new StringBuilder();
+            String line;
 
-            data.put("phone",map.get("phone"));
-            data.put("code",map.get("code"));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            data = (Map<String, String>) JSON.parse(sb.toString());
 
         } catch (IOException e) {
-            throw new BadCredentialsException("bad authentication");
+            throw new BadCredentialsException("bad Credentials");
         }
         return data;
     }

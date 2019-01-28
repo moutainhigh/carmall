@@ -58,4 +58,11 @@ public interface CustomerService {
      * @return
      */
     Customer findByPhone(String phone);
+
+    /**
+     * 用手机号判断 用户是否存在
+     * @param phone
+     * @return
+     */
+    boolean existsByPhone(String phone);
 }

@@ -1,6 +1,8 @@
 package com.qunchuang.carmall.utils;
 
 import com.qunchuang.carmall.domain.Customer;
+
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
@@ -10,6 +12,7 @@ import java.util.HashSet;
  * @author Curtain
  * @date 2019/1/25 15:41
  */
+@Slf4j
 public class SimpleTest {
 
     @Test
@@ -38,6 +41,12 @@ public class SimpleTest {
 
         System.out.println(rs);
 
+    }
 
+    @Test
+    public void log(){
+        log.error("String = {}","xx");
+
+        log.error("1={},2={},3={}","1","2","3");
     }
 }
