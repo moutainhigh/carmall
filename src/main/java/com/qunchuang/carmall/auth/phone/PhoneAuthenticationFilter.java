@@ -21,7 +21,6 @@ import java.util.Map;
  * 手机号登录
  * 参数   phone   手机号
  *       code     验证码
- *       type     类型  注册 or 登录
  *       invitedId 邀请人Id
  * @author Curtain
  * @date 2018/1/14 8:10

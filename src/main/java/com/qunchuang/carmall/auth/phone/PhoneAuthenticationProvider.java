@@ -5,6 +5,7 @@ import com.qunchuang.carmall.domain.Customer;
 import com.qunchuang.carmall.service.VerificationService;
 import com.qunchuang.carmall.utils.SpringUtil;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
@@ -32,7 +33,7 @@ public class PhoneAuthenticationProvider implements AuthenticationProvider {
         try {
             verificationService.verify(verifyData.get("phone"),verifyData.get("code"));
         }catch (Exception e){
-//            throw new BadCredentialsException("认证失败，验证码校验错误");
+            throw new BadCredentialsException("认证失败，验证码校验错误");
         }
 
         Customer customer = weChatMiniUserInfo.getCustomer(verifyData);
