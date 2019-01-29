@@ -34,6 +34,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     @Override
     public CarInfo modify(CarInfo carInfo) {
 
+        //todo 金融方案的添加
         CarInfo result = findOne(carInfo.getId());
         Set<String> filter = new HashSet<>();
         filter.add("upperShelf");
@@ -50,9 +51,16 @@ public class CarInfoServiceImpl implements CarInfoService {
     }
 
     @Override
+    public CarInfo upperDownShelf(String id) {
+        CarInfo carInfo = findOne(id);
+        carInfo.upperDownShelf();
+        return carInfoRepository.save(carInfo);
+    }
+
+    @Override
     public CarInfo findOne(String id) {
         Optional<CarInfo> carInfo = carInfoRepository.findById(id);
-        if (!carInfo.isPresent()){
+        if (!carInfo.isPresent()) {
             log.error("");
             throw new CarMallException(CarMallExceptionEnum.CAR_INFO_NOT_EXISTS);
         }

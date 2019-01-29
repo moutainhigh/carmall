@@ -65,4 +65,17 @@ public class CarInfo extends BosEntity{
        return null;
     }
 
+    /**
+     * 上下架车辆
+     */
+    public void upperDownShelf(){
+        if (this.upperShelf){
+            //下架
+            this.upperShelf = false;
+        }else {
+            //上架
+            this.upperShelf = true;
+        }
+    }
+
 }

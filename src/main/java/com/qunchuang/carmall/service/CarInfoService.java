@@ -32,5 +32,12 @@ public interface CarInfoService {
      * @return
      */
     CarInfo findOne(String id);
+
+    /**
+     * 上下架车辆
+     * @param id
+     * @return
+     */
+    CarInfo upperDownShelf(String id);
 }
 

@@ -43,5 +43,11 @@ public class Store extends BosEntity {
     @OneToMany
     private Set<Admin> admins = new HashSet<>();
 
+    @SchemaDocumentation("经度")
+    private String longitude;
+
+    @SchemaDocumentation("纬度")
+    private String latitude;
+
 
 }

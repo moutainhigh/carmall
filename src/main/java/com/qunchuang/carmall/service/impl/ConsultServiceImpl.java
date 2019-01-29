@@ -84,7 +84,6 @@ public class ConsultServiceImpl implements ConsultService {
                 storeId = consult.getStoreId();
                 //判断门店是否存在
                 storeService.existsById(storeId);
-                customer.setStoreId(consult.getStoreId());
 
             }
         } else {

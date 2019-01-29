@@ -19,19 +19,25 @@ public class CarInfoController {
 
     @SchemaDocumentation("添加车辆")
     @GraphqlMutation(path = "/add")
-    public CarInfo add(CarInfo carInfo){
+    public CarInfo add(CarInfo carInfo) {
         return carInfoService.add(carInfo);
     }
 
     @SchemaDocumentation("修改车辆")
     @GraphqlMutation(path = "/modify")
-    public CarInfo modify(CarInfo carInfo){
+    public CarInfo modify(CarInfo carInfo) {
         return carInfoService.modify(carInfo);
     }
 
     @SchemaDocumentation("删除车辆")
     @GraphqlMutation(path = "/delete")
-    public CarInfo delete(String id){
+    public CarInfo delete(String id) {
         return carInfoService.delete(id);
+    }
+
+    @SchemaDocumentation("上下架车辆")
+    @GraphqlMutation(path = "/upperDownShelf")
+    public CarInfo upperDownShelf(String id) {
+        return carInfoService.upperDownShelf(id);
     }
 }

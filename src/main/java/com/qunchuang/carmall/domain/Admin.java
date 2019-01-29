@@ -60,7 +60,6 @@ public class Admin extends BosEntity implements UserDetails {
 
     @SchemaDocumentation("门店id")
     private String storeId;
-    //TODO 销售员 一定是属于门店的吗
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RoleItem> roleItems = new HashSet<>();

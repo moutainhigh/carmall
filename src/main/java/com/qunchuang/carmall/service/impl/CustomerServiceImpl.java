@@ -98,8 +98,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer register(Customer customer) {
-        //todo  如果是被邀请 增加积分  或绑定销售顾问
-
         Customer result = new Customer();
         result.setPhone(customer.getPhone());
 
