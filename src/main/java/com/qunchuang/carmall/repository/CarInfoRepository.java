@@ -1,7 +1,6 @@
 package com.qunchuang.carmall.repository;
 
 import com.qunchuang.carmall.domain.CarInfo;
-import org.hibernate.boot.model.source.spi.JpaCallbackSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

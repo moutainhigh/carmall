@@ -121,8 +121,7 @@ public class AdminServiceImpl implements AdminService {
                 }
                 //绑定所属门店
                 Admin principal = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                admin.setStoreId(principal.getStoreId());
-                rs.setStoreId(admin.getStoreId());
+                rs.setStore(principal.getStore());
                 break;
             case "门店管理员":
                 roleOptional = roleRepository.findByName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
@@ -141,7 +140,7 @@ public class AdminServiceImpl implements AdminService {
                     role = roleOptional.get();
                 }
                 //绑定门店
-                rs.setStoreId(admin.getStoreId());
+               rs.setStore(admin.getStore());
                 break;
             default:
                 break;
@@ -273,6 +272,7 @@ public class AdminServiceImpl implements AdminService {
         admin.privilegeCheck();
         return adminRepository.save(result);
     }
+
 
 
 }

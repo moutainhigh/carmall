@@ -59,5 +59,7 @@ public class VerificationServiceImpl implements VerificationService {
             log.error("验证码不正确，phone = {},code = {},rsCode = {}", phone, code, rs);
             throw new CarMallException(CarMallExceptionEnum.VERIFY_CODE_FAIL);
         }
+        //todo 验证通过，code失效
+//        redisTemplate.opsForValue().set(key,"invalid");
     }
 }

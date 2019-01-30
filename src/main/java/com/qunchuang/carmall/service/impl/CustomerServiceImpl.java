@@ -5,6 +5,7 @@ import com.qunchuang.carmall.domain.Customer;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.CustomerRepository;
+import com.qunchuang.carmall.service.AdminService;
 import com.qunchuang.carmall.service.CustomerService;
 import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private AdminService adminService;
 
     @Override
     public Customer findByOpenid(String openid) {
@@ -77,9 +81,9 @@ public class CustomerServiceImpl implements CustomerService {
         Admin admin = Admin.getAdmin();
         Customer customer = findOne(id);
         //只能操作所属的客户
-        if (!customer.getStoreId().equals(admin.getId()) && !customer.getSalesConsultantId().equals(admin.getId())) {
-            log.error("权限不足，订单已经不属于当前用户 customerStoreId = {},customerSalesId = {}, adminId = {}",
-                    customer.getStoreId(), customer.getSalesConsultantId(), admin.getId());
+        if (!customer.getSalesConsultantAdmin().getId().equals(admin.getId())) {
+            log.error("权限不足，订单已经不属于当前用户customerSalesId = {}, adminId = {}",
+                    customer.getSalesConsultantAdmin().getId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.PRIVILEGE_INSUFFICIENT);
         }
         customer.isAble();
@@ -112,7 +116,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
             //邀请人是销售人员
             if (invitedId.endsWith("A01")){
-                customer.setSalesConsultantId(invitedId);
+                customer.setSalesConsultantAdmin(adminService.findOne(invitedId));
             }
         }
 

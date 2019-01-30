@@ -16,10 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
@@ -52,14 +49,9 @@ public class Admin extends BosEntity implements UserDetails {
     @Size(min = 11, max = 11, message = "手机号长度不正确")
     private String phone;
 
-//    @SchemaDocumentation("是否是销售人员")
-//    private boolean salesConsultant;
-//
-//    @SchemaDocumentation("是否是门店")
-//    private boolean store;
-
-    @SchemaDocumentation("门店id")
-    private String storeId;
+    @SchemaDocumentation("门店")
+    @ManyToOne
+    private Store store;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RoleItem> roleItems = new HashSet<>();

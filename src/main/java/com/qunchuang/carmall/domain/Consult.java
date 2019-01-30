@@ -21,13 +21,13 @@ import javax.validation.constraints.Size;
 @SchemaDocumentation("咨询")
 @Getter
 @Setter
-public class Consult extends BosEntity{
+public class Consult extends BosEntity {
 
     @SchemaDocumentation("名称")
     private String name;
 
     @SchemaDocumentation("手机号")
-    @Size(min = 11,max = 11,message = "手机号长度不正确")
+    @Size(min = 11, max = 11, message = "手机号长度不正确")
     private String phone;
 
     @SchemaDocumentation("用户")
@@ -37,11 +37,13 @@ public class Consult extends BosEntity{
     @SchemaDocumentation("状态:0表示未完成，1表示完成")
     private int status = OrderStatus.NEW.getCode();
 
-    @SchemaDocumentation("门店Id")
-    private String storeId;
+    @SchemaDocumentation("门店")
+    @ManyToOne
+    private Store store;
 
-    @SchemaDocumentation("销售顾问Id")
-    private String salesConsultantId;
+    @SchemaDocumentation("销售顾问")
+    @ManyToOne
+    private Admin salesConsultantAdmin;
 
     @SchemaDocumentation("意向")
     private String intention;

@@ -27,7 +27,6 @@ public class SimpleTest {
 
         Customer customer = new Customer();
         customer.setId("111111111");
-        customer.setStoreId("store");
         customer.setName("haha");
         customer.setOpenid("xx");
         customer.setGender("xx");

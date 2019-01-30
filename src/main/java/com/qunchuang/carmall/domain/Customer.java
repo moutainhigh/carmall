@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Curtain
@@ -43,11 +44,13 @@ public class Customer extends BosEntity {
     @SchemaDocumentation("手机号")
     private String phone;
 
-    @SchemaDocumentation("所属销售顾问")
-    private String salesConsultantId;
+    @SchemaDocumentation("门店")
+    @ManyToOne
+    private Store store;
 
-    @SchemaDocumentation("所属门店")
-    private String storeId;
+    @SchemaDocumentation("销售顾问")
+    @ManyToOne
+    private Admin salesConsultantAdmin;
 
     @SchemaDocumentation("积分")
     private int integral;

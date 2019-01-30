@@ -3,6 +3,7 @@ package com.qunchuang.carmall.service.impl;
 import com.qunchuang.carmall.domain.Admin;
 import com.qunchuang.carmall.domain.Consult;
 import com.qunchuang.carmall.domain.Customer;
+import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.enums.OrderStatus;
 import com.qunchuang.carmall.exception.CarMallException;
@@ -54,7 +55,7 @@ public class ConsultServiceImpl implements ConsultService {
 
         Consult rs = new Consult();
         Customer customer;
-        String storeId;
+        Store store;
         String phone = consult.getPhone();
 
         boolean exists = customerService.existsByPhone(phone);
@@ -72,37 +73,34 @@ public class ConsultServiceImpl implements ConsultService {
         }
 
         //用户还没有有所属门店
-        if (StringUtils.isEmpty(customer.getStoreId())) {
+        if (customer.getStore()==null) {
             //用户还没绑定门店
             //1.用户未选择门店  则分配最近的
-            if (consult.getStoreId() == null || "".equals(consult.getStoreId())) {
+            if (consult.getStore() == null || "".equals(consult.getStore().getId())) {
                 //todo 现在先随机指定以后  后续改成经纬度
-                storeId = storeService.getValidId();
+                store = storeService.getValidId();
 
             } else {
                 //2.用户选择的门店
-                storeId = consult.getStoreId();
-                //判断门店是否存在
-                storeService.existsById(storeId);
+                store = consult.getStore();
 
             }
         } else {
             //直接绑定到之前的门店
-            storeId = customer.getStoreId();
+            store = customer.getStore();
         }
 
         //用户已经有所属的销售人员  直接绑定销售人员  绑定门店
-        if (!StringUtils.isEmpty(customer.getSalesConsultantId())) {
-            rs.setSalesConsultantId(customer.getSalesConsultantId());
-            Admin admin = adminService.findOne(customer.getSalesConsultantId());
-            storeId = admin.getStoreId();
+        if (!StringUtils.isEmpty(customer.getSalesConsultantAdmin()!=null)) {
+            rs.setSalesConsultantAdmin(customer.getSalesConsultantAdmin());
+            store = customer.getSalesConsultantAdmin().getStore();
         }
 
 
-        customer.setStoreId(storeId);
+        customer.setStore(store);
         customer = customerService.modify(customer);
 
-        rs.setStoreId(storeId);
+        rs.setStore(store);
         rs.setCustomer(customer);
         rs.setPhone(phone);
 
@@ -112,32 +110,31 @@ public class ConsultServiceImpl implements ConsultService {
     @Override
     @PreAuthorize("hasAuthority('SALES_CONSULTANT_MANAGEMENT')")
     public Consult allocate(String id, String salesId) {
+        //todo  订单有没有派给销售人员  可以用状态标识
         Consult consult = findOne(id);
 
         //如果订单已经所属 这提示不能重复派单
-        if (!StringUtils.isEmpty(consult.getSalesConsultantId())) {
+        if (consult.getSalesConsultantAdmin()!=null && !"".equals(consult.getSalesConsultantAdmin().getId())) {
             throw new CarMallException(CarMallExceptionEnum.CONSULT_ALREADY_ALLOCATE);
         }
 
         //权限只有所属门店才能派单
         Customer customer = consult.getCustomer();
         Admin admin = Admin.getAdmin();
-        if (!customer.getStoreId().equals(admin.getStoreId())) {
-            log.error("派咨询单失败，该订单已不再所属此门店 customer.storeId() = {}, storeId() = {}", customer.getStoreId(), admin.getStoreId());
+        if (!customer.getStore().getId().equals(admin.getStore().getId())) {
+            log.error("派咨询单失败，该订单已不再所属此门店 customer.storeId() = {}, storeId() = {}", customer.getStore().getId(), admin.getStore().getId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_ALLOCATE_FAIL);
         }
 
-        //判断销售员是否真的存在
-        adminService.existsById(salesId);
+        Admin salesConsultantAdmin = adminService.findOne(salesId);
+        consult.setSalesConsultantAdmin(salesConsultantAdmin);
 
         //如果客户还没有所属关系
-        if (customer.getSalesConsultantId() == null || "".equals(customer.getSalesConsultantId())) {
-            customer.setSalesConsultantId(salesId);
+        if (customer.getSalesConsultantAdmin() == null || "".equals(customer.getSalesConsultantAdmin().getId())) {
+            customer.setSalesConsultantAdmin(salesConsultantAdmin);
             customerService.modify(customer);
         }
 
-
-        consult.setSalesConsultantId(salesId);
         return consultRepository.save(consult);
     }
 
@@ -146,17 +143,17 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult changeToStore(String id, String storeId) {
 
         Consult consult = findOne(id);
-        //判断门店是否存在
-        storeService.existsById(storeId);
+
         //修改订单的所属门店
-        consult.setStoreId(storeId);
+        Store store = storeService.findOne(storeId);
+        consult.setStore(store);
         //如果销售人员存在 则清空
-        consult.setSalesConsultantId("");
+        consult.setSalesConsultantAdmin(null);
 
         //修改用户的所属门店 及清空所属销售人员
         Customer customer = consult.getCustomer();
-        customer.setStoreId(storeId);
-        customer.setSalesConsultantId("");
+        customer.setStore(store);
+        customer.setSalesConsultantAdmin(null);
         customerService.modify(customer);
 
 
@@ -167,14 +164,13 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult changeToSalesConsultant(String id, String salesId) {
         Consult consult = findOne(id);
 
-        //判断销售员是否存在
-        adminService.existsById(salesId);
         //修改订单的所属销售人员
-        consult.setSalesConsultantId(salesId);
+        Admin salesConsultantAdmin = adminService.findOne(salesId);
+        consult.setSalesConsultantAdmin(salesConsultantAdmin);
 
         //修改用户所属销售人员。
         Customer customer = consult.getCustomer();
-        customer.setSalesConsultantId(salesId);
+        customer.setSalesConsultantAdmin(salesConsultantAdmin);
         customerService.modify(customer);
 
         return consultRepository.save(consult);
@@ -193,8 +189,8 @@ public class ConsultServiceImpl implements ConsultService {
         //只有用户所属销售人员才能完结订单
         Admin admin = Admin.getAdmin();
         Customer customer = consult.getCustomer();
-        if (!customer.getSalesConsultantId().equals(admin.getId())) {
-            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantId(), admin.getId());
+        if (!customer.getSalesConsultantAdmin().getId().equals(admin.getId())) {
+            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantAdmin().getId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
         }
         consult.setStatus(OrderStatus.FINISH.getCode());
@@ -217,8 +213,8 @@ public class ConsultServiceImpl implements ConsultService {
         Consult result = findOne(consult.getId());
         Customer customer = result.getCustomer();
         //判断订单是否所属为当前操作的销售人员
-        if (!customer.getSalesConsultantId().equals(admin.getId())) {
-            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantId(), admin.getId());
+        if (!customer.getSalesConsultantAdmin().getId().equals(admin.getId())) {
+            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantAdmin().getId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
         }
         //修改信息

@@ -38,7 +38,7 @@ public interface StoreService {
      * 获取一个有效的Id  第一期接口使用  后续删除
      * @return
      */
-    String getValidId();
+    Store getValidId();
 
     /**
      * 通过id判断是否存在

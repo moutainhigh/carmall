@@ -51,12 +51,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public String getValidId() {
+    public Store getValidId() {
         List<Store> all = storeRepository.findAll();
         if (all.size() <= 0) {
             throw new RuntimeException("一个门店也没有");
         }
-        return all.get(0).getId();
+        return all.get(0);
     }
 
     @Override
