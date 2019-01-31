@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -91,7 +90,7 @@ public class ConsultServiceImpl implements ConsultService {
         }
 
         //用户已经有所属的销售人员  直接绑定销售人员  绑定门店
-        if (!StringUtils.isEmpty(customer.getSalesConsultantAdmin()!=null)) {
+        if (customer.getSalesConsultantAdmin()!=null) {
             rs.setSalesConsultantAdmin(customer.getSalesConsultantAdmin());
             store = customer.getSalesConsultantAdmin().getStore();
         }

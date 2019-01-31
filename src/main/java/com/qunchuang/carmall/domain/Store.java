@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Curtain
@@ -38,10 +35,6 @@ public class Store extends BosEntity {
 
     @SchemaDocumentation("门店图片")
     private String img;
-
-    @SchemaDocumentation("销售顾问")
-    @OneToMany
-    private Set<Admin> admins = new HashSet<>();
 
     @SchemaDocumentation("经度")
     private String longitude;
