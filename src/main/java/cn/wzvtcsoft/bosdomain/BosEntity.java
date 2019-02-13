@@ -50,6 +50,15 @@ public abstract class BosEntity extends CoreObject implements IEntity {
 
     //TODO 怎么设置普遍的查询时过滤掉禁用的？
     //TODO 乐观锁控制
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     /**
      * 表示假删除
      */

@@ -61,5 +61,6 @@ public class VerificationServiceImpl implements VerificationService {
         }
         //todo 验证通过，code失效
 //        redisTemplate.opsForValue().set(key,"invalid");
+
     }
 }
