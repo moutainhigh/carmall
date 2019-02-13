@@ -5,6 +5,7 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 @SchemaDocumentation("门店")
 @Getter
 @Setter
+@ToString
 public class Store extends BosEntity {
 
     @SchemaDocumentation("门店名称")

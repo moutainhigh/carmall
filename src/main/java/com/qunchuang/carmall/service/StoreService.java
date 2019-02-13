@@ -46,4 +46,12 @@ public interface StoreService {
      * @return
      */
     void existsById(String id);
+
+    /**
+     * 获取离用户最近的门店
+     * @param latitude
+     * @param longitude
+     * @return
+     */
+    Store nearestStore(Double latitude,Double longitude);
 }

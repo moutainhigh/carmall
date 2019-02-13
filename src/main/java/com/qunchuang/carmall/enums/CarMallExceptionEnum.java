@@ -32,6 +32,7 @@ public enum CarMallExceptionEnum {
 
 
     STORE_NOT_EXISTS(40001, "门店不存在"),
+    STORE_DISTANCE_CALC_FAIL(40002,"门店距离计算失败"),
 
 
     GET_USER_LOGIN_INFO_FAIL(50001, "获取当前登录的微信用户失败"),

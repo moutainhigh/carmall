@@ -6,6 +6,7 @@ import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.StoreRepository;
 import com.qunchuang.carmall.service.StoreService;
 import com.qunchuang.carmall.utils.BeanCopyUtil;
+import com.qunchuang.carmall.utils.LocationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,31 @@ public class StoreServiceImpl implements StoreService {
         Store result = findOne(store.getId());
         BeanUtils.copyProperties(store, result, BeanCopyUtil.filterProperty(store));
         return storeRepository.save(result);
+    }
+
+    @Override
+    public Store nearestStore(Double latitude, Double longitude) {
+        List<Store> allStore = storeRepository.findAll();
+        double min = 0.0;
+        Store result = null;
+        double distance = 0.0;
+
+        for (int i = 0; i < allStore.size(); i++) {
+            Store store = allStore.get(i);
+            try {
+                distance = LocationUtils.getDistance(latitude, longitude,
+                        Double.valueOf(store.getLatitude()), Double.valueOf(store.getLongitude()));
+            } catch (Exception e) {
+                log.error("用户经纬度 latitude = {}，longitude = {}，门店信息 store = {}", latitude, longitude, store);
+                throw new CarMallException(CarMallExceptionEnum.STORE_DISTANCE_CALC_FAIL);
+            }
+            if (min > distance || result == null) {
+                min = distance;
+                result = store;
+            }
+        }
+
+        return result;
     }
 
     @Override

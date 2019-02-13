@@ -22,20 +22,27 @@ public class StoreController {
 
     @SchemaDocumentation("添加门店")
     @GraphqlMutation(path = "/add")
-    public Store add(@DomainRule("phone && name") Store store){
+    public Store add(@DomainRule("phone && name") Store store) {
         return storeService.add(store);
     }
 
     @SchemaDocumentation("修改门店")
     @GraphqlMutation(path = "/modify")
-    public Store modify(Store store){
+    public Store modify(Store store) {
         return storeService.modify(store);
     }
 
     @SchemaDocumentation("删除门店")
     @GraphqlMutation(path = "/delete")
-    public Store delete(String id){
+    public Store delete(String id) {
         return storeService.delete(id);
     }
+
+    @SchemaDocumentation("获取最近门店")
+    @GraphqlMutation(path = "/nearestStore")
+    public Store nearestStore(Double latitude, Double longitude) {
+        return storeService.nearestStore(latitude, longitude);
+    }
+
 
 }
