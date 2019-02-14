@@ -6,6 +6,7 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
 
@@ -30,5 +31,7 @@ public class FinancialScheme extends Entry {
     @SchemaDocumentation("期数/月")
     private String periods;
 
-
+    @SchemaDocumentation("创建时间")
+    @CreatedDate
+    private Long createtime;
 }

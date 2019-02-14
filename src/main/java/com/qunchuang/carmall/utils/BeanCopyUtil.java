@@ -53,7 +53,7 @@ public class BeanCopyUtil {
 
     /**
      * 过滤
-     * @param source 过滤只为Null属性
+     * @param source 过滤Null属性
      * @param customer 过滤自定义属性
      * @return
      */
@@ -64,7 +64,7 @@ public class BeanCopyUtil {
 
     /**
      * 过滤
-     * @param source
+     * @param source  过滤Null属性
      * @return
      */
     public static String[] filterProperty(Object source) {

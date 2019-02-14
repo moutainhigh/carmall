@@ -76,7 +76,7 @@ public class ConsultServiceImpl implements ConsultService {
             //用户还没绑定门店
             //1.用户未选择门店  则分配最近的
             if (consult.getStore() == null || "".equals(consult.getStore().getId())) {
-                //todo 现在先随机指定以后  后续改成经纬度
+                //todo 现在先随机指定以后  后续改成经纬度  也许是前端拿到后 自己选择
                 store = storeService.getValidId();
 
             } else {

@@ -57,7 +57,7 @@ public class AdminControllerTest {
 
     @Test
     public void delete() throws Exception {
-        Assert.assertNotNull(adminService.delete("rKFZ19zLHNKbEiuqcBJ2n0A01"));
+        Assert.assertNotNull(adminService.delete("UmRZ3qR4FMyDOjGBY0cdj1A01"));
     }
 
 }

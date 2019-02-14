@@ -8,7 +8,9 @@ import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +52,7 @@ public class CarInfo extends BosEntity{
     private String img;
 
     @SchemaDocumentation("金融方案")
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<FinancialScheme> financialSchemes = new HashSet<>();
 
     @PrivilegeConstraint

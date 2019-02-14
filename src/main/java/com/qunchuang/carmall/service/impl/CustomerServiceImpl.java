@@ -119,7 +119,6 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setSalesConsultantAdmin(adminService.findOne(invitedId));
             }
         }
-
         return customerRepository.save(customer);
     }
 }

@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CarInfoRepository extends JpaRepository<CarInfo,String>{
+
+    boolean existsByModel(String model);
+
+    CarInfo findByModel(String model);
 }

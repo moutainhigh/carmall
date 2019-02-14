@@ -10,7 +10,9 @@ import lombok.Getter;
 public enum PrivilegeAuthorityEnum {
     /*权限枚举 identifier*/
 
+    /**用户管理**/
     CUSTOMER_MANAGEMENT("CUSTOMER_MANAGEMENT"),
+    /**c车辆管理**/
     VEHICLE_MANAGEMENT("VEHICLE_MANAGEMENT"),
     STORE_MANAGEMENT("STORE_MANAGEMENT"),
     SALES_CONSULTANT_MANAGEMENT("SALES_CONSULTANT_MANAGEMENT"),

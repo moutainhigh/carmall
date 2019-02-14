@@ -28,17 +28,38 @@ public class CarInfoServiceImpl implements CarInfoService {
 
     @Override
     public CarInfo add(CarInfo carInfo) {
+        //取型号做唯一性区分
+        String model = carInfo.getModel();
+        if (carInfoRepository.existsByModel(model)){
+            //相同则覆盖
+            CarInfo old = carInfoRepository.findByModel(model);
+            Set<String> filter = new HashSet<>();
+            filter.add("upperShelf");
+            filter.add("financialSchemes");
+            BeanUtils.copyProperties(carInfo, old, BeanCopyUtil.filterProperty(carInfo,filter));
+
+            return carInfoRepository.save(old);
+        }
+
+
+
+
         return carInfoRepository.save(carInfo);
     }
 
     @Override
+//    @PreAuthorize("hasAuthority('SALES_CONSULTANT_MANAGEMENT')")
     public CarInfo modify(CarInfo carInfo) {
 
-        //todo 金融方案的添加
         CarInfo result = findOne(carInfo.getId());
         Set<String> filter = new HashSet<>();
         filter.add("upperShelf");
+        filter.add("financialSchemes");
         BeanUtils.copyProperties(carInfo, result, BeanCopyUtil.filterProperty(carInfo, filter));
+
+        //拷贝金融方案
+        result.getFinancialSchemes().clear();
+        result.getFinancialSchemes().addAll(carInfo.getFinancialSchemes());
 
         return carInfoRepository.save(result);
     }
