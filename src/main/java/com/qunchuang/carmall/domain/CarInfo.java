@@ -27,8 +27,8 @@ import java.util.Set;
 @Setter
 public class CarInfo extends BosEntity{
 
-    @SchemaDocumentation("汽车名称")
-    private String name;
+//    @SchemaDocumentation("汽车名称")
+//    private String name;
 
     @SchemaDocumentation("品牌")
     private String brand;
@@ -43,7 +43,7 @@ public class CarInfo extends BosEntity{
     private String price;
 
     @SchemaDocumentation("权重(越高越前面)")
-    private String sort;
+    private Integer sort = 0;
 
     @SchemaDocumentation("上架")
     private boolean upperShelf = false;

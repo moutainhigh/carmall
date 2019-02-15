@@ -28,20 +28,19 @@ public class CarInfoServiceImpl implements CarInfoService {
 
     @Override
     public CarInfo add(CarInfo carInfo) {
+
         //取型号做唯一性区分
         String model = carInfo.getModel();
-        if (carInfoRepository.existsByModel(model)){
+        if (carInfoRepository.existsByModel(model)) {
             //相同则覆盖
             CarInfo old = carInfoRepository.findByModel(model);
             Set<String> filter = new HashSet<>();
             filter.add("upperShelf");
             filter.add("financialSchemes");
-            BeanUtils.copyProperties(carInfo, old, BeanCopyUtil.filterProperty(carInfo,filter));
+            BeanUtils.copyProperties(carInfo, old, BeanCopyUtil.filterProperty(carInfo, filter));
 
             return carInfoRepository.save(old);
         }
-
-
 
 
         return carInfoRepository.save(carInfo);
@@ -82,7 +81,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     public CarInfo findOne(String id) {
         Optional<CarInfo> carInfo = carInfoRepository.findById(id);
         if (!carInfo.isPresent()) {
-            log.error("");
+            log.error("车辆信息不存在 id = {}", id);
             throw new CarMallException(CarMallExceptionEnum.CAR_INFO_NOT_EXISTS);
         }
         return carInfo.get();

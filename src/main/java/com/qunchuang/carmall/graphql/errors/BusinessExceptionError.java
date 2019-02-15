@@ -21,6 +21,7 @@ public final class BusinessExceptionError extends BaseGraphqlError {
 
     public BusinessExceptionError(GraphQLError error, BusinessException e) {
         this(error, e.getStatus(), e.getMessage());
+
     }
 
 
