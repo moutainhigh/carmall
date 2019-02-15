@@ -43,7 +43,7 @@ public class Admin extends BosEntity implements UserDetails {
     private String username;
 
     @SchemaDocumentation("密码")
-    private transient String password;
+    private String password;
 
     @SchemaDocumentation("手机号")
     @Size(min = 11, max = 11, message = "手机号长度不正确")
