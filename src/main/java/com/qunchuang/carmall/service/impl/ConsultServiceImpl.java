@@ -103,6 +103,9 @@ public class ConsultServiceImpl implements ConsultService {
         rs.setCustomer(customer);
         rs.setPhone(phone);
 
+//        JiGuangMessagePushUtil.sendMessage(store.getNumber(), JiGuangMessagePushUtil.CONTENT);
+
+
         return consultRepository.save(rs);
     }
 

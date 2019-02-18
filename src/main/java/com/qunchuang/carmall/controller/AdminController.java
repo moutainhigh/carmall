@@ -1,12 +1,13 @@
 package com.qunchuang.carmall.controller;
 
 
-import cn.wzvtcsoft.validator.anntations.*;
+import cn.wzvtcsoft.validator.anntations.DomainRule;
 import com.qunchuang.carmall.domain.Admin;
 import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import com.qunchuang.carmall.service.AdminService;
+import cn.wzvtcsoft.validator.anntations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
