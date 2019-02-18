@@ -5,8 +5,7 @@ import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import com.qunchuang.carmall.service.StoreService;
-import com.qunchuang.carmall.validator.anntations.DomainRule;
-import com.qunchuang.carmall.validator.anntations.MutationValidated;
+import cn.wzvtcsoft.validator.anntations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

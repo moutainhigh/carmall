@@ -67,6 +67,8 @@ public class CarInfoServiceImpl implements CarInfoService {
     public CarInfo delete(String id) {
         CarInfo carInfo = findOne(id);
         carInfo.isAble();
+        //删除时 下架
+        carInfo.upperDownShelf();
         return carInfoRepository.save(carInfo);
     }
 

@@ -5,6 +5,7 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
+import com.qunchuang.carmall.enums.RoleEnum;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
@@ -130,5 +131,45 @@ public class Admin extends BosEntity implements UserDetails {
             throw new BadCredentialsException("获取登录用户失败,失效的用户");
         }
         return admin;
+    }
+
+
+    /**
+     * 是否为超级管理员
+     * @return
+     */
+    public boolean superAdmin() {
+        if (this.store != null) {
+            for (RoleItem roleItem : roleItems) {
+                if (RoleEnum.SUPER_ADMINISTRATOR.getRoleName().equals(roleItem.getRole().getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean storeAdmin() {
+
+        if (this.store != null) {
+            for (RoleItem roleItem : roleItems) {
+                if (RoleEnum.STORE_ADMINISTRATOR.getRoleName().equals(roleItem.getRole().getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    public boolean salesAdmin() {
+        if (this.store != null) {
+            for (RoleItem roleItem : roleItems) {
+                if (RoleEnum.SALES_CONSULTANT_ADMINISTRATOR.getRoleName().equals(roleItem.getRole().getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

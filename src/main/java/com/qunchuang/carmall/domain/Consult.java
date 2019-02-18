@@ -4,6 +4,9 @@ import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.enums.OrderStatus;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.query.QueryFilter;
+import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraint;
+import com.qunchuang.carmall.utils.PrivilegeUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,4 +65,10 @@ public class Consult extends BosEntity {
 
     @SchemaDocumentation("图片信息")
     private String img;
+
+    @PrivilegeConstraint
+    public QueryFilter getPrivilegeConstraint() {
+        //定制查看咨询单  各角色所属权限
+        return PrivilegeUtil.customerInfoPrivilege();
+    }
 }

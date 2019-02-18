@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
-    private RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
+    private MyAuthenticationSuccessHandler restAuthenticationSuccessHandler;
 
     @Autowired
     private RestAuthenticationFailureHandler restAuthenticationFailureHandler;

@@ -14,6 +14,7 @@ public enum  RoleEnum {
     PLATFORM_ADMINISTRATOR("平台管理员"),
     STORE_ADMINISTRATOR("门店管理员"),
     SALES_CONSULTANT_ADMINISTRATOR("销售顾问"),
+    SUPER_ADMINISTRATOR("超级管理员")
             ;
 
     private String roleName;

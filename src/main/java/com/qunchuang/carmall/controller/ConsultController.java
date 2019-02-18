@@ -1,7 +1,6 @@
 package com.qunchuang.carmall.controller;
 
-import cn.wzvtcsoft.validator.anntations.DomainRule;
-import cn.wzvtcsoft.validator.anntations.MutationValidated;
+import cn.wzvtcsoft.validator.anntations.*;
 import com.qunchuang.carmall.domain.Consult;
 import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;

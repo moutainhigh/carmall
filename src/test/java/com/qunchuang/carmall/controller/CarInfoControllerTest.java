@@ -1,7 +1,6 @@
 package com.qunchuang.carmall.controller;
 
 import com.qunchuang.carmall.domain.CarInfo;
-import com.qunchuang.carmall.service.AdminService;
 import com.qunchuang.carmall.service.CarInfoService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Curtain
@@ -30,7 +27,6 @@ public class CarInfoControllerTest {
     @Test
     public void add() throws Exception {
         CarInfo carInfo = new CarInfo();
-        carInfo.setName("Ghibli");
         carInfo.setBrand("玛莎拉蒂");
         carInfo.setModel("轿车系列");
         carInfo.setPrice("110万");

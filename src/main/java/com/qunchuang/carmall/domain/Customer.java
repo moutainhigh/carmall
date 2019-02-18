@@ -5,6 +5,9 @@ import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.query.QueryFilter;
+import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraint;
+import com.qunchuang.carmall.utils.PrivilegeUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -80,5 +83,12 @@ public class Customer extends BosEntity {
             throw new BadCredentialsException("失效用户");
         }
         return customer;
+    }
+
+
+    @PrivilegeConstraint
+    public QueryFilter getPrivilegeConstraint() {
+        //定制查看客户  各角色所属权限
+        return PrivilegeUtil.customerInfoPrivilege();
     }
 }

@@ -1,7 +1,6 @@
 package com.qunchuang.carmall.graphql.util;
 
-import cn.wzvtcsoft.validator.anntations.DomainRule;
-import cn.wzvtcsoft.validator.anntations.MutationValidated;
+import cn.wzvtcsoft.validator.anntations.*;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 
 import javax.validation.Constraint;
