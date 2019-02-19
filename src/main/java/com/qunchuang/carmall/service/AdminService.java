@@ -63,4 +63,12 @@ public interface AdminService extends UserDetailsService{
      * @return
      */
     void existsById(String id);
+
+    /**
+     * 账号管理员修改其他管理员密码
+     * @param username
+     * @param password
+     * @return
+     */
+    Admin changePassword(String username,String password);
 }

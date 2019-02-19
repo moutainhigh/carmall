@@ -2,18 +2,21 @@ package com.qunchuang.carmall.graphql.query;
 
 import cn.wzvtcsoft.bosdomain.enums.BosEnum;
 import cn.wzvtcsoft.bosdomain.util.EntityEnumUtil;
+import com.qunchuang.carmall.graphql.IGraphQlTypeMapper;
 import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraint;
 import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraintUtil;
-import com.qunchuang.carmall.graphql.IGraphQlTypeMapper;
-import graphql.language.*;
 import com.qunchuang.carmall.graphql.query.enums.OrderByDirection;
 import com.qunchuang.carmall.graphql.query.enums.QueryFilterCombinator;
 import com.qunchuang.carmall.graphql.query.enums.QueryFilterOperator;
 import com.qunchuang.carmall.graphql.query.enums.QueryForWhatEnum;
+import graphql.language.*;
 import graphql.schema.*;
 import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -68,12 +71,26 @@ public class JpaDataFetcher implements DataFetcher {
 
         for (Method method : clz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(PrivilegeConstraint.class)) {
+
+
+                QueryFilter result = null;
                 try {
-                    QueryFilter result = (QueryFilter) method.invoke(clz.newInstance());
+                    result = (QueryFilter) method.invoke(clz.newInstance());
                     PrivilegeConstraintUtil.merge(queryFilter, result);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException("@PrivilegeConstraint 构建 权限约束失败:" + clz);
+                    //构建约束失败 抛出异常  
+                    // TODO: 2019/2/19 后续需要寻找 抛出合适异常 直接修改http response stauts
+                    if (SecurityContextHolder.getContext().getAuthentication() == null || (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String)){
+                        //未登录 （匿名用户）
+                        throw new BadCredentialsException("");
+                    }else {
+                        throw new AccessDeniedException("");
+                    }
+
+
+
                 }
+
             }
         }
 

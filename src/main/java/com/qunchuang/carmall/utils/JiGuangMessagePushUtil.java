@@ -25,8 +25,8 @@ import java.util.HashMap;
 @Slf4j
 public class JiGuangMessagePushUtil {
 
-    private final static String MASTER_SECRET = "85a40434bfe8367390e359ef";
-    private final static String APP_KEY = "60e98495e72135323235e2ab";
+    private final static String MASTER_SECRET = "0a5a0e4e6b9511616bc7e2ba";
+    private final static String APP_KEY = "581516d00a783ea0d5a3bb9d";
     public final static String CONTENT = "你有新的咨询单";
     public final static String TITLE = "毕亚";
 

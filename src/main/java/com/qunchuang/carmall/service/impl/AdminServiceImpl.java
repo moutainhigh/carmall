@@ -17,6 +17,7 @@ import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,6 +57,34 @@ public class AdminServiceImpl implements AdminService {
             log.error("分配失败，销售人员不存在 salesId = {}", id);
             throw new CarMallException(CarMallExceptionEnum.SALES_CONSULTANT_NOT_EXISTS);
         }
+    }
+
+    @Override
+    public Admin changePassword(String username, String password) {
+        //超级管理员改所有 门店管理员改旗下的销售员
+        Admin operator = Admin.getAdmin();
+        Optional<Admin> adminOptional = adminRepository.findByUsername(username);
+        if (!adminOptional.isPresent()) {
+            log.error("用户不存在，用户名 = {}", username);
+            throw new CarMallException(CarMallExceptionEnum.ADMIN_NOT_EXISTS);
+        }
+        Admin admin = adminOptional.get();
+
+        //是否是超级管理员
+        boolean isSuperAdmin = operator.superAdmin();
+
+        //是否是门店管理员 并修改的是所属账号
+        boolean isStoreAdmin = operator.storeAdmin() && operator.getStore().getId().equals(admin.getStore().getId());
+
+        //符合修改条件
+        if (isSuperAdmin || isStoreAdmin) {
+            admin.setPassword(password);
+            return adminRepository.save(admin);
+        } else {
+            log.error("修改其他账号密码，无权限。 被修改用户名 = {}， 操作人用户名 = {}",admin.getName(),operator.getName());
+            throw new AccessDeniedException("权限不足");
+        }
+
     }
 
     @Override
@@ -140,7 +169,7 @@ public class AdminServiceImpl implements AdminService {
                     role = roleOptional.get();
                 }
                 //绑定门店
-               rs.setStore(admin.getStore());
+                rs.setStore(admin.getStore());
                 break;
             default:
                 break;
@@ -272,7 +301,6 @@ public class AdminServiceImpl implements AdminService {
         admin.privilegeCheck();
         return adminRepository.save(result);
     }
-
 
 
 }

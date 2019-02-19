@@ -100,6 +100,8 @@ public class Admin extends BosEntity implements UserDetails {
         return true;
     }
 
+    //todo 密码加密
+
     /**
      * 验证修改的权限 是否被允许（包含在当前用户中)
      */
@@ -136,16 +138,17 @@ public class Admin extends BosEntity implements UserDetails {
 
     /**
      * 是否为超级管理员
+     *
      * @return
      */
     public boolean superAdmin() {
-        if (this.store != null) {
-            for (RoleItem roleItem : roleItems) {
-                if (RoleEnum.SUPER_ADMINISTRATOR.getRoleName().equals(roleItem.getRole().getName())) {
-                    return true;
-                }
+
+        for (RoleItem roleItem : roleItems) {
+            if (RoleEnum.SUPER_ADMINISTRATOR.getRoleName().equals(roleItem.getRole().getName())) {
+                return true;
             }
         }
+
         return false;
     }
 

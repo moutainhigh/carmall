@@ -33,6 +33,7 @@ public class BostypeUtils {
      * 通过 Class 获得对应的 id 后缀
      */
     public static String getIdByClass(Class<?> entityClz) {
+        //缓存中是否包含类所随对应的后缀
         if (BostypeUtils.CLASS_ID_CACHE.containsKey(entityClz.getCanonicalName())) {
             return BostypeUtils.CLASS_ID_CACHE.get(entityClz.getCanonicalName());
         }
@@ -52,6 +53,7 @@ public class BostypeUtils {
         return value;
     }
 
+    //todo 在这里采取判断  就没有什么效果了  之后改为编译时判断
     /**
      * 判断生成的 id 的后缀是否重复，若重复则抛出异常
      */
