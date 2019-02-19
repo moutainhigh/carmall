@@ -78,7 +78,9 @@ public class AdminServiceImpl implements AdminService {
 
         //符合修改条件
         if (isSuperAdmin || isStoreAdmin) {
+            //todo 加密
             admin.setPassword(password);
+//            admin.setPassword(MD5Util.generate(password));
             return adminRepository.save(admin);
         } else {
             log.error("修改其他账号密码，无权限。 被修改用户名 = {}， 操作人用户名 = {}",admin.getName(),operator.getName());
@@ -179,6 +181,8 @@ public class AdminServiceImpl implements AdminService {
         rs.setPhone(admin.getPhone());
         rs.setUsername(admin.getUsername());
         rs.setPassword(admin.getPassword());
+        //todo 加密 暂时注释
+//        rs.setPassword(MD5Util.generate(admin.getPassword()));
         rs.setName(admin.getName());
         roleItem.setRole(role);
         rs.getRoleItems().add(roleItem);
@@ -265,7 +269,7 @@ public class AdminServiceImpl implements AdminService {
         //将权限清空
         admin.setRoleItems(null);
         //将用户名无效化
-        admin.setUsername("invalid username " + admin.getCreatetime());
+        admin.setUsername("invalidUsername" + admin.getCreatetime());
         //拉黑
         admin.isAble();
         return adminRepository.save(admin);
@@ -295,7 +299,9 @@ public class AdminServiceImpl implements AdminService {
         Admin result = findOne(admin.getId());
         Set<String> filter = new HashSet<>();
         filter.add("password");
-        filter.add("storeId");
+        filter.add("store");
+        filter.add("roleItems");
+        filter.add("username");
         BeanUtils.copyProperties(admin, result, BeanCopyUtil.filterProperty(admin, filter));
 
         admin.privilegeCheck();
