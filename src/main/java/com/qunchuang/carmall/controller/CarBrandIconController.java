@@ -21,14 +21,14 @@ public class CarBrandIconController {
     private CarBrandIconService carBrandIconService;
 
     @SchemaDocumentation("增加一条车辆品牌信息")
-    @GraphqlMutation(path = "/addCarBrandIcon")
-    public CarBrandIcon addCarBrandIcon(CarBrandIcon carBrandIcon) {
+    @GraphqlMutation(path = "/add")
+    public CarBrandIcon add(CarBrandIcon carBrandIcon) {
         return carBrandIconService.save(carBrandIcon);
     }
 
     @SchemaDocumentation("保存所有已选车辆品牌信息")
-    @GraphqlMutation(path = "/saveAllCarBrandIcon")
-    public List<CarBrandIcon> saveAllCarBrandIcon(List<CarBrandIcon> carBrandIcons) {
+    @GraphqlMutation(path = "/saveAll")
+    public List<CarBrandIcon> saveAll(List<CarBrandIcon> carBrandIcons) {
         return carBrandIconService.saveAll(carBrandIcons);
     }
 }
