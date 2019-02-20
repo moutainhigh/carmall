@@ -9,6 +9,7 @@ import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,11 +26,13 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private AdvertisementRepository advertisementRepository;
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public Advertisement add(Advertisement advertisement) {
         return advertisementRepository.save(advertisement);
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public Advertisement modify(Advertisement advertisement) {
         Advertisement result = findOne(advertisement.getId());
         BeanUtils.copyProperties(advertisement, result, BeanCopyUtil.filterProperty(advertisement));
@@ -38,6 +41,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public Advertisement delete(String id) {
         Advertisement advertisement = findOne(id);
         advertisement.isAble();

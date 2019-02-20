@@ -44,6 +44,7 @@ public class ConsultServiceImpl implements ConsultService {
     private VerificationService verificationService;
 
     @Override
+
     public Consult add(Consult consult, String code) {
 
         //todo 如果之后咨询单生成过多 可以redis加锁限制咨询单生成
@@ -142,6 +143,7 @@ public class ConsultServiceImpl implements ConsultService {
 
 
     @Override
+    @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Consult changeToStore(String id, String storeId) {
 
         Consult consult = findOne(id);
@@ -163,6 +165,7 @@ public class ConsultServiceImpl implements ConsultService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('SALES_CONSULTANT_MANAGEMENT')")
     public Consult changeToSalesConsultant(String id, String salesId) {
         Consult consult = findOne(id);
 
@@ -181,6 +184,8 @@ public class ConsultServiceImpl implements ConsultService {
     @Override
     public Consult delete(String id) {
         Consult consult = findOne(id);
+        //只有用户所属销售人员才能完结订单
+        belong2Sales(consult);
         consult.isAble();
         return consultRepository.save(consult);
     }
@@ -189,14 +194,18 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult finish(String id) {
         Consult consult = findOne(id);
         //只有用户所属销售人员才能完结订单
+        belong2Sales(consult);
+        consult.setStatus(OrderStatus.FINISH.getCode());
+        return consultRepository.save(consult);
+    }
+
+    private void belong2Sales(Consult consult) {
         Admin admin = Admin.getAdmin();
         Customer customer = consult.getCustomer();
         if (!customer.getSalesConsultantAdmin().getId().equals(admin.getId())) {
             log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantAdmin().getId(), admin.getId());
             throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
         }
-        consult.setStatus(OrderStatus.FINISH.getCode());
-        return consultRepository.save(consult);
     }
 
     @Override
@@ -211,14 +220,11 @@ public class ConsultServiceImpl implements ConsultService {
 
     @Override
     public Consult modify(Consult consult) {
-        Admin admin = Admin.getAdmin();
         Consult result = findOne(consult.getId());
-        Customer customer = result.getCustomer();
-        //判断订单是否所属为当前操作的销售人员
-        if (!customer.getSalesConsultantAdmin().getId().equals(admin.getId())) {
-            log.error("修改咨询单失败，该订单已不再所属此销售人员 customer.salesId = {}, salesId = {}", customer.getSalesConsultantAdmin().getId(), admin.getId());
-            throw new CarMallException(CarMallExceptionEnum.CONSULT_MODIFY_FAIL);
-        }
+
+        //只有用户所属销售人员才能完结订单
+        belong2Sales(consult);
+
         //修改信息
         Set<String> filter = new HashSet<>();
         filter.add("customer");

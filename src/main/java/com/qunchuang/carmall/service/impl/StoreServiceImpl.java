@@ -10,6 +10,7 @@ import com.qunchuang.carmall.utils.LocationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class StoreServiceImpl implements StoreService {
 
 
     @Override
+    @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Store delete(String id) {
         Store store = findOne(id);
         store.isAble();
@@ -35,6 +37,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Store modify(Store store) {
         Store result = findOne(store.getId());
         BeanUtils.copyProperties(store, result, BeanCopyUtil.filterProperty(store));
@@ -96,6 +99,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Store add(Store store) {
         return storeRepository.save(store);
     }

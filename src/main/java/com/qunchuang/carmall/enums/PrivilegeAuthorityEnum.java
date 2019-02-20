@@ -12,10 +12,13 @@ public enum PrivilegeAuthorityEnum {
 
     /**用户管理**/
     CUSTOMER_MANAGEMENT("CUSTOMER_MANAGEMENT"),
-    /**c车辆管理**/
+    /**车辆管理**/
     VEHICLE_MANAGEMENT("VEHICLE_MANAGEMENT"),
+    /**门店管理**/
     STORE_MANAGEMENT("STORE_MANAGEMENT"),
+    /**销售员管理**/
     SALES_CONSULTANT_MANAGEMENT("SALES_CONSULTANT_MANAGEMENT"),
+    /**平台管理**/
     PLATFORM_MANAGEMENT("PLATFORM_MANAGEMENT"),
     ;
 

@@ -5,6 +5,7 @@ import com.qunchuang.carmall.domain.CarBrandIcon;
 import com.qunchuang.carmall.repository.CarBrandIconRepository;
 import com.qunchuang.carmall.service.CarBrandIconService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CarBrandIconServiceImpl implements CarBrandIconService {
     private CarBrandIconRepository carBrandIconRepository;
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public CarBrandIcon save(CarBrandIcon carBrandIcon) {
         Optional<CarBrandIcon> optional = carBrandIconRepository.findByBrand(carBrandIcon.getBrand());
         if (optional.isPresent()) {
@@ -32,6 +34,7 @@ public class CarBrandIconServiceImpl implements CarBrandIconService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public List<CarBrandIcon> saveAll(List<CarBrandIcon> carBrandIcons) {
         //todo 做限制
         return carBrandIconRepository.saveAll(carBrandIcons);

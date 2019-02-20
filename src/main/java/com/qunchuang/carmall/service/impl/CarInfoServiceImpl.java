@@ -9,6 +9,7 @@ import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     private CarInfoRepository carInfoRepository;
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public CarInfo add(CarInfo carInfo) {
 
         //取型号做唯一性区分
@@ -47,7 +49,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     }
 
     @Override
-//    @PreAuthorize("hasAuthority('SALES_CONSULTANT_MANAGEMENT')")
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public CarInfo modify(CarInfo carInfo) {
 
         CarInfo result = findOne(carInfo.getId());
@@ -64,6 +66,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public CarInfo delete(String id) {
         CarInfo carInfo = findOne(id);
         carInfo.isAble();
@@ -73,6 +76,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public CarInfo upperDownShelf(String id) {
         CarInfo carInfo = findOne(id);
         carInfo.upperDownShelf();
