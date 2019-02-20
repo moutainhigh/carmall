@@ -14,4 +14,6 @@ import java.util.Optional;
 public interface CarBrandIconRepository extends JpaRepository<CarBrandIcon,String> {
 
     Optional<CarBrandIcon> findByBrand(String brand);
+
+    boolean existsByBrand(String brand);
 }

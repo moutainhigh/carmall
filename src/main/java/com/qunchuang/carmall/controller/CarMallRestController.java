@@ -6,6 +6,8 @@ import com.qunchuang.carmall.service.VerificationService;
 import com.qunchuang.carmall.utils.AliyunOSSUtil;
 import com.qunchuang.carmall.utils.BosUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.session.SessionRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,9 @@ public class CarMallRestController {
 
     @Autowired
     private VerificationService verificationService;
+
+    @Autowired
+    private SessionRepository sessionRepository;
 
     @RequestMapping("/initAccount")
     public String account(String curtain){
@@ -44,5 +49,10 @@ public class CarMallRestController {
     @RequestMapping("/getCode")
     public String getCode(String phone){
         return verificationService.getCode(phone);
+    }
+
+    @RequestMapping("/xxx")
+    public void getSession(){
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

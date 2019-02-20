@@ -22,6 +22,11 @@ public class CarBrandIconServiceImpl implements CarBrandIconService {
     private CarBrandIconRepository carBrandIconRepository;
 
     @Override
+    public boolean existsByBrand(String brand) {
+        return carBrandIconRepository.existsByBrand(brand);
+    }
+
+    @Override
     @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public CarBrandIcon save(CarBrandIcon carBrandIcon) {
         Optional<CarBrandIcon> optional = carBrandIconRepository.findByBrand(carBrandIcon.getBrand());

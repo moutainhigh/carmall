@@ -1,6 +1,6 @@
 package com.qunchuang.carmall.graphql.mutation;
 
-import cn.wzvtcsoft.validator.anntations.MutationValidated;
+import cn.wzvtcsoft.validator.anntations.*;
 import cn.wzvtcsoft.validator.core.MutationValidator;
 import cn.wzvtcsoft.validator.core.impl.MutationValidationMetaInfoImpl;
 import cn.wzvtcsoft.validator.core.impl.MutationValidatorImpl;

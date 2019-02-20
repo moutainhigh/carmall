@@ -1,6 +1,10 @@
 package com.qunchuang.carmall.service;
 
-import com.qunchuang.carmall.domain.CarInfo; /**
+import com.qunchuang.carmall.domain.CarInfo;
+
+import java.util.List;
+
+/**
  * @author Curtain
  * @date 2019/1/16 10:29
  */
@@ -11,6 +15,13 @@ public interface CarInfoService {
      * @return
      */
     CarInfo add(CarInfo carInfo);
+
+    /**
+     * 批量添加车辆
+     * @param carInfos
+     * @return
+     */
+    List<CarInfo> addAll(List<CarInfo> carInfos);
 
     /**
      * 修改车辆

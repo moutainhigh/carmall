@@ -28,4 +28,10 @@ public class CarBrandIcon extends BosEntity {
 
     @SchemaDocumentation("是否已选")
     private boolean choose = false;
+
+    public CarBrandIcon(){}
+
+    public CarBrandIcon(String brand){
+        this.brand = brand;
+    }
 }

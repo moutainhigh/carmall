@@ -23,4 +23,11 @@ public interface CarBrandIconService {
      * @param carBrandIcons
      */
     List<CarBrandIcon> saveAll(List<CarBrandIcon> carBrandIcons);
+
+    /**
+     * 品牌是否存在
+     * @param brand
+     * @return
+     */
+    boolean existsByBrand(String brand);
 }

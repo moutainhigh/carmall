@@ -7,6 +7,8 @@ import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import com.qunchuang.carmall.service.CarInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * @author Curtain
  * @date 2019/1/16 10:21
@@ -21,6 +23,12 @@ public class CarInfoController {
     @GraphqlMutation(path = "/add")
     public CarInfo add(CarInfo carInfo) {
         return carInfoService.add(carInfo);
+    }
+
+    @SchemaDocumentation("批量添加车辆")
+    @GraphqlMutation(path = "/addAdll")
+    public List<CarInfo> addAdll(List<CarInfo> carInfos) {
+        return carInfoService.addAll(carInfos);
     }
 
     @SchemaDocumentation("修改车辆")
