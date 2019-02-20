@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://127.0.0.1:3306/carmall??serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf-8
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  redis:
+    database: 0
+    host: 127.0.0.1
+    password:
+    port: 6379
+
+
+
+#小程序认证配置
+wechatmini:
+  #appid
+  appId: wx18143d6812b9778c
+  #secret
+  secret: 032714a68384f8d94460342badcea2a9
+  #code获取openid连接
+  authUrl: https://api.weixin.qq.com/sns/jscode2session
+
+
+server:
+  port: 8005
+  #session过期时间配置
+  servlet:
+    session:
+      timeout: 28800
+
+
