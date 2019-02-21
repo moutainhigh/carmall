@@ -292,9 +292,11 @@ public class AdminServiceImpl implements AdminService {
     public Admin delete(String id) {
         Admin admin = findOne(id);
         //将权限清空
-        admin.setRoleItems(null);
+        admin.getRoleItems().clear();
+        //门店清空
+        admin.setStore(null);
         //将用户名无效化
-        admin.setUsername("invalidUsername" + admin.getCreatetime());
+        admin.setUsername("invalid"+admin.getUsername() + admin.getCreatetime());
         //拉黑
         admin.isAble();
         return adminRepository.save(admin);
