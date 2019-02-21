@@ -52,7 +52,8 @@ public class CarMallRestController {
 
     @GetMapping(value = "/jsapisignature")
     @ResponseBody
-    private Object createJsapiSignature(@RequestParam("url") String url) throws WxErrorException {
+    public Object createJsapiSignature(@RequestParam("url") String url) throws WxErrorException {
+        //是否加上url域名判断
         return this.wxMpService.createJsapiSignature(url);
     }
 }
