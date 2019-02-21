@@ -82,8 +82,6 @@ public class GraphQLStartController {
             list.add(new BusinessExceptionError(error, (BusinessException) e));
         } else if (MutationValidateException.class.isAssignableFrom(e.getClass())) {
             response.setStatus(400);
-
-
             ValidSelectError validSelectError = ((MutationValidateException) e).getError();
             list.add(new MutationValidError(error, validSelectError));
         } else if (AccessDeniedException.class.isAssignableFrom(e.getClass())) {

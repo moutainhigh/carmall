@@ -54,7 +54,7 @@ public class AdminController {
     @SchemaDocumentation("修改其他管理员密码")
     @GraphqlMutation(path = "/changeOtherPassword")
     public Admin changeOtherPassword(String username, String password) {
-        return adminService.changePassword(username, password);
+        return adminService.changeOtherPassword(username, password);
     }
 
 }

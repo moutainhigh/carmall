@@ -22,11 +22,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Curtain
@@ -44,6 +44,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     PrivilegeRepository privilegeRepository;
 
+    @Autowired
+    JdbcOperationsSessionRepository jdbcOperationsSessionRepository;
+
     @Override
     @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Admin storeAdministrator(Admin admin) {
@@ -60,7 +63,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin changePassword(String username, String password) {
+    public Admin changePassword(String oldPassword, String newPassword) {
+        Admin admin = Admin.getAdmin();
+//        oldPassword = MD5Util.generate(oldPassword);
+        if (oldPassword.equals(admin.getPassword())){
+//            admin.setPassword(MD5Util.generate(newPassword));
+            admin.setPassword(newPassword);
+
+            //使源账号失效
+            jdbcOperationsSessionRepository.deleteById(RequestContextHolder.currentRequestAttributes().getSessionId());
+
+            return adminRepository.save(admin);
+        }
+
+        throw new CarMallException(CarMallExceptionEnum.PASSWORD_WRONG);
+    }
+
+    @Override
+    public Admin changeOtherPassword(String username, String password) {
         //超级管理员改所有 门店管理员改旗下的销售员
         Admin operator = Admin.getAdmin();
         Optional<Admin> adminOptional = adminRepository.findByUsername(username);
@@ -81,6 +101,11 @@ public class AdminServiceImpl implements AdminService {
             //todo 加密
             admin.setPassword(password);
 //            admin.setPassword(MD5Util.generate(password));
+
+            Map map = jdbcOperationsSessionRepository.findByIndexNameAndIndexValue("org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME", admin.getUsername());
+            map.keySet().forEach(key->jdbcOperationsSessionRepository.deleteById((String) key));
+
+
             return adminRepository.save(admin);
         } else {
             log.error("修改其他账号密码，无权限。 被修改用户名 = {}， 操作人用户名 = {}",admin.getName(),operator.getName());

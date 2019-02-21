@@ -70,5 +70,13 @@ public interface AdminService extends UserDetailsService{
      * @param password
      * @return
      */
-    Admin changePassword(String username,String password);
+    Admin changeOtherPassword(String username, String password);
+
+    /**
+     * 修改密码
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    Admin changePassword(String oldPassword,String newPassword);
 }

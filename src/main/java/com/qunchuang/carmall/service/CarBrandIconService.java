@@ -12,13 +12,6 @@ import java.util.List;
 public interface CarBrandIconService {
 
     /**
-     * 保存一条信息 如果存在则覆盖
-     * @param carBrandIcon
-     * @return
-     */
-    CarBrandIcon save(CarBrandIcon carBrandIcon);
-
-    /**
      * 保存所有
      * @param carBrandIcons
      */
@@ -30,4 +23,12 @@ public interface CarBrandIconService {
      * @return
      */
     boolean existsByBrand(String brand);
+
+    /**
+     * 通过id查找
+     * @param id
+     * @return
+     */
+    CarBrandIcon findOne(String id);
+
 }

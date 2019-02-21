@@ -19,6 +19,7 @@ public enum CarMallExceptionEnum {
     USER_PHONE_IS_REGISTER(20005, "手机号已经被注册"),
     ADMIN_NOT_EXISTS(20006, "管理员账号不存在"),
     SALES_CONSULTANT_NOT_EXISTS(20007, "销售人员不存在"),
+    PASSWORD_WRONG(20008,"密码错误，修改失败"),
 
 
     GET_VERIFICATION_CODE_FAIL(22001, "获取验证码失败"),
@@ -29,6 +30,7 @@ public enum CarMallExceptionEnum {
     CONSULT_ALLOCATE_FAIL(30003, "派咨询单失败，该订单已不再所属此门店"),
     CONSULT_ALREADY_ALLOCATE(30004, "派咨询单失败，该订单已经派送"),
     CONSULT_MODIFY_FAIL(30005, "修改咨询单失败，该订单已不再所属此销售人员"),
+    CAR_BRAND_ICON_NOT_EXISTS(30006,"车辆品牌信息不存在"),
     ADVERTISEMENT_NOT_EXISTS(30201,"广告信息不存在"),
 
 
