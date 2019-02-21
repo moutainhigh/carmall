@@ -5,12 +5,10 @@ import com.qunchuang.carmall.service.AdminService;
 import com.qunchuang.carmall.service.VerificationService;
 import com.qunchuang.carmall.utils.AliyunOSSUtil;
 import com.qunchuang.carmall.utils.BosUtils;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.session.SessionRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +27,7 @@ public class CarMallRestController {
     private VerificationService verificationService;
 
     @Autowired
-    private SessionRepository sessionRepository;
+    private WxMpService wxMpService;
 
     @RequestMapping("/initAccount")
     public String account(String curtain){
@@ -52,9 +50,9 @@ public class CarMallRestController {
         return verificationService.getCode(phone);
     }
 
-    @RequestMapping("/xxx")
-    public void getSession(){
-        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        RequestContextHolder.currentRequestAttributes().getSessionId();
+    @GetMapping(value = "/jsapisignature")
+    @ResponseBody
+    private Object createJsapiSignature(@RequestParam("url") String url) throws WxErrorException {
+        return this.wxMpService.createJsapiSignature(url);
     }
 }

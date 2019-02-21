@@ -92,7 +92,7 @@ public class StoreServiceImpl implements StoreService {
     public Store findOne(String id) {
         Optional<Store> store = storeRepository.findById(id);
         if (!store.isPresent()) {
-            log.error("");
+            log.error("门店不存在 id = {}",id);
             throw new CarMallException(CarMallExceptionEnum.STORE_NOT_EXISTS);
         }
         return store.get();

@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (optional.isPresent()) {
             return optional.get();
         }
-        log.debug("用户未找到：openid = ", openid);
+        log.error("用户未找到：openid = ", openid);
         throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
     }
 
@@ -68,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findOne(String id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent()) {
-            log.error("");
+            log.error("用户不存在 id = {}",id);
             throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
         }
         return customer.get();
