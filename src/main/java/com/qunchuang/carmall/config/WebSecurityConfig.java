@@ -96,7 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessHandler(restLogoutHandler);
 
-
+        /*避免用户多地登录*/
+        http.sessionManagement().maximumSessions(1);
 
     }
 
