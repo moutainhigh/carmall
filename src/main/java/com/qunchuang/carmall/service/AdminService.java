@@ -1,13 +1,12 @@
 package com.qunchuang.carmall.service;
 
 import com.qunchuang.carmall.domain.Admin;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * @author Curtain
  * @date 2019/1/16 9:38
  */
-public interface AdminService extends UserDetailsService{
+public interface AdminService {
     /**
      * 修改
      * @param admin
@@ -79,4 +78,11 @@ public interface AdminService extends UserDetailsService{
      * @return
      */
     Admin changePassword(String oldPassword,String newPassword);
+
+    /**
+     * 用户名查找管理员
+     * @param username
+     * @return
+     */
+    Admin findByUsername(String username);
 }

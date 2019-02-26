@@ -4,10 +4,16 @@ package com.qunchuang.carmall.config;
 import com.qunchuang.carmall.auth.phone.PhoneAuthenticationFilter;
 import com.qunchuang.carmall.auth.phone.PhoneAuthenticationProvider;
 import com.qunchuang.carmall.auth.phone.PhoneUserInfo;
+import com.qunchuang.carmall.auth.web.WebAdminInfo;
+import com.qunchuang.carmall.auth.web.WebAuthenticationFilter;
+import com.qunchuang.carmall.auth.web.WebAuthenticationProvider;
 import com.qunchuang.carmall.auth.wechat.WeChatMiniAuthenticationFilter;
 import com.qunchuang.carmall.auth.wechat.WeChatMiniAuthenticationProvider;
 import com.qunchuang.carmall.auth.wechat.WeChatMiniUserInfo;
-import com.qunchuang.carmall.graphql.security.*;
+import com.qunchuang.carmall.graphql.security.RestAccessDeniedHandler;
+import com.qunchuang.carmall.graphql.security.RestAuthenticationEntryPoint;
+import com.qunchuang.carmall.graphql.security.RestAuthenticationFailureHandler;
+import com.qunchuang.carmall.graphql.security.RestLogoutHandler;
 import com.qunchuang.carmall.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +25,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -74,6 +81,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyPasswordEncoder myPasswordEncoder;
 
+    @Autowired
+    private WebAdminInfo webAdminInfo;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -86,7 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/weChatMini", "/login", "/graphql","/login/phone").permitAll()
+                .antMatchers("/login/weChatMini", "/login", "/graphql", "/login/phone", "login/web").permitAll()
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
@@ -103,11 +113,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.adminService)
-                .passwordEncoder(myPasswordEncoder).
-                and()
-                .authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo))
-                .authenticationProvider(new PhoneAuthenticationProvider(phoneUserInfo));
+//        auth.userDetailsService(this.adminService)
+//                .passwordEncoder(myPasswordEncoder).
+//                and()
+        auth.authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo))
+                .authenticationProvider(new PhoneAuthenticationProvider(phoneUserInfo))
+                .authenticationProvider(new WebAuthenticationProvider(webAdminInfo));
     }
 
     @Bean
@@ -129,20 +140,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<Filter> filters = new ArrayList<>();
 
         //todo  如果不使用微信认证 那么之后取消
-        WeChatMiniAuthenticationFilter wmaFilter = new WeChatMiniAuthenticationFilter();
-        wmaFilter.setAuthenticationManager(am);
-        wmaFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());
-        wmaFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
-        filters.add(wmaFilter);
+        //微信验证过滤
+        addFilter(am, filters, new WeChatMiniAuthenticationFilter());
 
-        PhoneAuthenticationFilter paFilter = new PhoneAuthenticationFilter();
-        paFilter.setAuthenticationManager(am);
-        paFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());
-        paFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
-        filters.add(paFilter);
+        //手机号验证过滤
+        addFilter(am, filters, new PhoneAuthenticationFilter());
+
+        //Web验证过滤
+        addFilter(am, filters, new WebAuthenticationFilter());
 
         compositeFilter.setFilters(filters);
         return compositeFilter;
+    }
+
+    private void addFilter(AuthenticationManager am, List<Filter> filters, AbstractAuthenticationProcessingFilter filter) {
+        filter.setAuthenticationManager(am);
+        filter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler());
+        filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
+        filters.add(filter);
     }
 
     @Override

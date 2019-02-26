@@ -20,13 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -60,6 +62,16 @@ public class AdminServiceImpl implements AdminService {
             log.error("分配失败，销售人员不存在 salesId = {}", id);
             throw new CarMallException(CarMallExceptionEnum.SALES_CONSULTANT_NOT_EXISTS);
         }
+    }
+
+    @Override
+    public Admin findByUsername(String username) {
+        Optional<Admin> admin = adminRepository.findByUsername(username);
+        if (!admin.isPresent()) {
+            log.error("账号不存在 username = ", username);
+            throw new UsernameNotFoundException("user not exist");
+        }
+        return admin.get();
     }
 
     @Override
@@ -122,15 +134,15 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Admin> admin = adminRepository.findByUsername(username);
-        if (!admin.isPresent()) {
-            log.error("登录失败，用户名不存在 username = ", username);
-            throw new UsernameNotFoundException("user not exist");
-        }
-        return admin.get();
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Optional<Admin> admin = adminRepository.findByUsername(username);
+//        if (!admin.isPresent()) {
+//            log.error("登录失败，用户名不存在 username = ", username);
+//            throw new UsernameNotFoundException("user not exist");
+//        }
+//        return admin.get();
+//    }
 
     @Override
     @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")

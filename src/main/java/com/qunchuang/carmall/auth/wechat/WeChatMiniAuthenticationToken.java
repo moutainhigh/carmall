@@ -8,7 +8,7 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
  * 小程序认证信息Principal
  *
  * @author Curtain
- * @date 2018/11/8:42
+ * @date 2018/1/14 8:42
  */
 
 public class WeChatMiniAuthenticationToken extends AbstractAuthenticationToken {
