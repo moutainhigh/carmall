@@ -1,6 +1,9 @@
 package com.qunchuang.carmall.config;
 
 
+import com.qunchuang.carmall.auth.app.AppAdminInfo;
+import com.qunchuang.carmall.auth.app.AppAuthenticationFilter;
+import com.qunchuang.carmall.auth.app.AppAuthenticationProvider;
 import com.qunchuang.carmall.auth.phone.PhoneAuthenticationFilter;
 import com.qunchuang.carmall.auth.phone.PhoneAuthenticationProvider;
 import com.qunchuang.carmall.auth.phone.PhoneUserInfo;
@@ -14,7 +17,6 @@ import com.qunchuang.carmall.graphql.security.RestAccessDeniedHandler;
 import com.qunchuang.carmall.graphql.security.RestAuthenticationEntryPoint;
 import com.qunchuang.carmall.graphql.security.RestAuthenticationFailureHandler;
 import com.qunchuang.carmall.graphql.security.RestLogoutHandler;
-import com.qunchuang.carmall.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,13 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private RestLogoutHandler restLogoutHandler;
 
     @Autowired
-    private AdminService adminService;
-
-    @Autowired
-    private MyPasswordEncoder myPasswordEncoder;
-
-    @Autowired
     private WebAdminInfo webAdminInfo;
+
+    @Autowired
+    private AppAdminInfo appAdminInfo;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -96,13 +95,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/weChatMini", "/login", "/graphql", "/login/phone", "login/web").permitAll()
+                .antMatchers("/login/weChatMini", "/graphql", "/login/phone", "login/web","/login/app").permitAll()
                 .antMatchers("/**").permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .successHandler(restAuthenticationSuccessHandler)
-                .failureHandler(restAuthenticationFailureHandler)
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .successHandler(restAuthenticationSuccessHandler)
+//                .failureHandler(restAuthenticationFailureHandler)
                 .and()
                 .logout().logoutSuccessHandler(restLogoutHandler);
 
@@ -118,7 +117,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                and()
         auth.authenticationProvider(new WeChatMiniAuthenticationProvider(weChatMiniResources, weChatMiniUserInfo))
                 .authenticationProvider(new PhoneAuthenticationProvider(phoneUserInfo))
-                .authenticationProvider(new WebAuthenticationProvider(webAdminInfo));
+                .authenticationProvider(new WebAuthenticationProvider(webAdminInfo))
+                .authenticationProvider(new AppAuthenticationProvider(appAdminInfo));
     }
 
     @Bean
@@ -148,6 +148,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //Web验证过滤
         addFilter(am, filters, new WebAuthenticationFilter());
+
+        //app登录过滤
+        addFilter(am,filters,new AppAuthenticationFilter());
 
         compositeFilter.setFilters(filters);
         return compositeFilter;

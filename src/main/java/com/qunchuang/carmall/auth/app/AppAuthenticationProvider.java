@@ -1,4 +1,4 @@
-package com.qunchuang.carmall.auth.web;
+package com.qunchuang.carmall.auth.app;
 
 
 import com.qunchuang.carmall.domain.Admin;
@@ -12,25 +12,25 @@ import org.springframework.security.core.AuthenticationException;
  * @date 2018/11/29 8:50
  */
 
-public class WebAuthenticationProvider implements AuthenticationProvider {
+public class AppAuthenticationProvider implements AuthenticationProvider {
 
-    private WebAdminInfo webAdminInfo;
+    private AppAdminInfo webAdminInfo;
 
-    public WebAuthenticationProvider(WebAdminInfo webAdminInfo){
+    public AppAuthenticationProvider(AppAdminInfo webAdminInfo){
         this.webAdminInfo = webAdminInfo;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        WebAuthenticationToken webAuthenticationToken = (WebAuthenticationToken) authentication;
+        AppAuthenticationToken authenticationToken = (AppAuthenticationToken) authentication;
 
         String username = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
         Admin admin = webAdminInfo.getAdmin(username);
 
-        if (admin.salesAdmin()||admin.storeAdmin()){
-            //门店账号  销售人员账号不允许登录。
+        if (!(admin.salesAdmin()||admin.storeAdmin())){
+            //平台管理员  超级管理员账号不允许登录。
             throw new BadCredentialsException("错误账号");
         }
 
@@ -38,12 +38,12 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("密码错误");
         }
 
-        return new WebAuthenticationToken(admin,password,admin.getAuthorities());
+        return new AppAuthenticationToken(admin,password,admin.getAuthorities());
 
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return WebAuthenticationToken.class.isAssignableFrom(authentication);
+        return AppAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

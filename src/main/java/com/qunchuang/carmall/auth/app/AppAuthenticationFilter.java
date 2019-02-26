@@ -1,4 +1,4 @@
-package com.qunchuang.carmall.auth.web;
+package com.qunchuang.carmall.auth.app;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Curtain
  * @date 2019/2/26 14:01
  */
-public class WebAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class AppAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
     public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
 
@@ -24,8 +24,8 @@ public class WebAuthenticationFilter extends AbstractAuthenticationProcessingFil
     // ~ Constructors
     // ===================================================================================================
 
-    public WebAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/login/web", "POST"));
+    public AppAuthenticationFilter() {
+        super(new AntPathRequestMatcher("/login/app", "POST"));
     }
 
     // ~ Methods
@@ -52,7 +52,7 @@ public class WebAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         username = username.trim();
 
-        WebAuthenticationToken authRequest = new WebAuthenticationToken(
+        AppAuthenticationToken authRequest = new AppAuthenticationToken(
                 username, password);
         setDetails(request, authRequest);
 
@@ -70,7 +70,7 @@ public class WebAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 
     protected void setDetails(HttpServletRequest request,
-                              WebAuthenticationToken authRequest) {
+                              AppAuthenticationToken authRequest) {
         authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
     }
 
