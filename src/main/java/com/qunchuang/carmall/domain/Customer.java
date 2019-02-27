@@ -87,7 +87,7 @@ public class Customer extends BosEntity {
 
 
     @PrivilegeConstraint
-    public QueryFilter getPrivilegeConstraint() {
+    public QueryFilter privilegeConstraint() {
         //定制查看客户  各角色所属权限
         return PrivilegeUtil.customerInfoPrivilege();
     }
