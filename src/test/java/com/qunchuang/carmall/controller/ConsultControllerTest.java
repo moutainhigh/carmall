@@ -27,7 +27,7 @@ public class ConsultControllerTest {
     public void consult() throws Exception {
         Consult consult = new Consult();
         consult.setPhone("123456789123");
-        Assert.assertNotNull(consultService.add(consult,"123456"));
+        Assert.assertNotNull(consultService.add(consult,"123456","xx"));
     }
 
     @Test

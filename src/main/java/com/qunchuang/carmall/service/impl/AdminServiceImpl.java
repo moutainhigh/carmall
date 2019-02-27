@@ -333,8 +333,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
 //    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
     public Admin update(Admin admin) {
-        //todo 只有用户管理员可以修改   或者 自己改自己本身的    password 不能被修改
-        //todo  超级管理员admin的权限和角色不允许修改
         Admin result = findOne(admin.getId());
         Set<String> filter = new HashSet<>();
         filter.add("password");

@@ -6,8 +6,6 @@ import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -22,7 +20,7 @@ public class RoleServiceImpl {
 
     @PreAuthorize("hasAuthority('C1')")
     public Role create(Role role) {
-        //todo 需要校验constraint 是否符合规则 能否转化成qfilter  失败则抛出异常
+        // 不需要校验constraint 因为项目简单  是否符合规则 能否转化成qfilter  失败则抛出异常
         //校验角色名是否已经存在
         Optional<Role> result = roleRepository.findByName(role.getName());
         if (result.isPresent()) {
@@ -36,7 +34,7 @@ public class RoleServiceImpl {
 
     @PreAuthorize("hasAuthority('C1')")
     public Role modify(Role role) {
-        //todo 需要校验constraint 是否符合规则 能否转化成qfilter  失败则抛出异常
+        //不需要校验constraint 因为项目简单 是否符合规则 能否转化成qfilter  失败则抛出异常
         role.privilegeCheck();
         role = roleRepository.save(role);
 

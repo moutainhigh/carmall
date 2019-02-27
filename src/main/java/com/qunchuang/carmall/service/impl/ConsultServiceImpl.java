@@ -45,7 +45,7 @@ public class ConsultServiceImpl implements ConsultService {
 
     @Override
 
-    public Consult add(Consult consult, String code) {
+    public Consult add(Consult consult, String code, String invitedId) {
 
         //todo 如果之后咨询单生成过多 可以redis加锁限制咨询单生成
 
@@ -65,6 +65,7 @@ public class ConsultServiceImpl implements ConsultService {
             //绑定用户手机号  完成自动注册
             customer = new Customer();
             customer.setPhone(phone);
+            customer.setInvitedId(invitedId);
             customer = customerService.register(customer);
 
         } else {
@@ -73,7 +74,7 @@ public class ConsultServiceImpl implements ConsultService {
         }
 
         //用户还没有有所属门店
-        if (customer.getStore()==null) {
+        if (customer.getStore() == null) {
             //用户还没绑定门店
             //1.用户未选择门店  则分配最近的
             if (consult.getStore() == null || "".equals(consult.getStore().getId())) {
@@ -91,7 +92,7 @@ public class ConsultServiceImpl implements ConsultService {
         }
 
         //用户已经有所属的销售人员  直接绑定销售人员  绑定门店
-        if (customer.getSalesConsultantAdmin()!=null) {
+        if (customer.getSalesConsultantAdmin() != null) {
             rs.setSalesConsultantAdmin(customer.getSalesConsultantAdmin());
             store = customer.getSalesConsultantAdmin().getStore();
         }
@@ -117,7 +118,7 @@ public class ConsultServiceImpl implements ConsultService {
         Consult consult = findOne(id);
 
         //如果订单已经所属 这提示不能重复派单
-        if (consult.getSalesConsultantAdmin()!=null && !"".equals(consult.getSalesConsultantAdmin().getId())) {
+        if (consult.getSalesConsultantAdmin() != null && !"".equals(consult.getSalesConsultantAdmin().getId())) {
             throw new CarMallException(CarMallExceptionEnum.CONSULT_ALREADY_ALLOCATE);
         }
 

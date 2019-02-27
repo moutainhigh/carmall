@@ -15,7 +15,7 @@ public interface ConsultService {
      * @param code
      * @return
      */
-    Consult add(Consult consult, String code);
+    Consult add(Consult consult, String code,String invitedId);
 
     /**
      * 派单
