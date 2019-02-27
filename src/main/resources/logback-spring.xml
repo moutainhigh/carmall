@@ -26,7 +26,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>/home/qc/carmall/info.%d.log</fileNamePattern>
+            <fileNamePattern>/home/qc/carmall/log/info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -44,7 +44,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>/home/qc/carmall/error.%d.log</fileNamePattern>
+            <fileNamePattern>/home/qc/carmall/log/error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 

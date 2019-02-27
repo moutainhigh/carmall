@@ -87,13 +87,18 @@ public class PrivilegeConstraintUtil {
      * @param existQueryFilter 已存在
      * @param newQuertFilter   新生成的 QuertFilter
      */
-    public static void merge(QueryFilter existQueryFilter, QueryFilter newQuertFilter) {
+    public static QueryFilter merge(QueryFilter existQueryFilter, QueryFilter newQuertFilter) {
+        if (existQueryFilter == null) {
+            return newQuertFilter;
+        }
         if (newQuertFilter != null) {
             while (existQueryFilter.getNext() != null) {
                 existQueryFilter = existQueryFilter.getNext();
             }
             existQueryFilter.setNext(newQuertFilter);
+
         }
+        return existQueryFilter;
     }
 
 
