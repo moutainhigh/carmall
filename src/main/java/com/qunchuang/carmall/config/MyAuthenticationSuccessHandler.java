@@ -47,6 +47,7 @@ public class MyAuthenticationSuccessHandler
             ServletOutputStream outputStream = response.getOutputStream();
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             outputStream.write(JSON.toJSONString(principal).getBytes());
+
             outputStream.flush();
             outputStream.close();
 
