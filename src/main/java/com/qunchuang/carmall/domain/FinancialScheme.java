@@ -23,13 +23,13 @@ import javax.persistence.Entity;
 public class FinancialScheme extends Entry {
 
     @SchemaDocumentation("首付")
-    private String downPayment;
+    private Long downPayment;
 
     @SchemaDocumentation("月供")
-    private String monthly;
+    private Long monthly;
 
     @SchemaDocumentation("期数/月")
-    private String periods;
+    private Long periods;
 
     @SchemaDocumentation("创建时间")
     @CreatedDate
