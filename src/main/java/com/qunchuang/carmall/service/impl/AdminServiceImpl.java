@@ -23,10 +23,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -83,7 +81,8 @@ public class AdminServiceImpl implements AdminService {
             admin.setPassword(newPassword);
 
             //使源账号失效
-            jdbcOperationsSessionRepository.deleteById(RequestContextHolder.currentRequestAttributes().getSessionId());
+
+//            jdbcOperationsSessionRepository.deleteById(RequestContextHolder.currentRequestAttributes().getSessionId());
 
             return adminRepository.save(admin);
         }
@@ -114,8 +113,8 @@ public class AdminServiceImpl implements AdminService {
             admin.setPassword(password);
 //            admin.setPassword(MD5Util.generate(password));
 
-            Map map = jdbcOperationsSessionRepository.findByIndexNameAndIndexValue("org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME", admin.getUsername());
-            map.keySet().forEach(key->jdbcOperationsSessionRepository.deleteById((String) key));
+//            Map map = jdbcOperationsSessionRepository.findByIndexNameAndIndexValue("org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME", admin.getUsername());
+//            map.keySet().forEach(key->jdbcOperationsSessionRepository.deleteById((String) key));
 
 
             return adminRepository.save(admin);
