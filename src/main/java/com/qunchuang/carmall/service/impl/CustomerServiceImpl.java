@@ -112,6 +112,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (invitedId.endsWith("C01")){
                 Customer invited = findOne(invitedId);
                 invited.setIntegral(invited.getIntegral()+2);
+                customerRepository.save(invited);
                 //积分增加  日志记录
             }
             //邀请人是销售人员
@@ -119,6 +120,8 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setSalesConsultantAdmin(adminService.findOne(invitedId));
             }
         }
+
+        customer.setIntegral(2);
         return customerRepository.save(customer);
     }
 }
