@@ -25,8 +25,8 @@ import java.util.HashMap;
 @Slf4j
 public class JiGuangMessagePushUtil {
 
-    private final static String MASTER_SECRET = "0a5a0e4e6b9511616bc7e2ba";
-    private final static String APP_KEY = "581516d00a783ea0d5a3bb9d";
+    private final static String MASTER_SECRET = "76c2e9f29a8199ddc77e946e";
+    private final static String APP_KEY = "3196152f8e7226ad72259ee3";
     public final static String CONTENT = "你有新的咨询单";
     public final static String TITLE = "毕亚";
 
@@ -34,33 +34,13 @@ public class JiGuangMessagePushUtil {
 
         JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY, null, ClientConfig.getInstance());
 
-
         PushPayload payload = buildPushObject_ios_audienceMore_messageWithExtras(tag, content);
 
         try {
             PushResult result = jpushClient.sendPush(payload);
-            //todo 极光推送失败情况      回导致订单回滚
-            //处理方案一：保证订单 直接捕捉异常
-
             log.info("Got result - " + result);
 
-//        } catch (APIConnectionException e) {
-//            // Connection error, should retry later
-//            log.error("Connection error, should retry later"+e);
-//
-//        } catch (APIRequestException e) {
-//            // Should review the error, and fix the request
-//            log.error("Should review the error, and fix the request"+e);
-//            log.info("HTTP Status: " + e.getStatus());
-//            log.info("Error Code: " + e.getErrorCode());
-//            log.info("Error Message: " + e.getErrorMessage());
-
         } catch (Exception e) {
-            //todo 为了不让特殊异常  影响订单进度  在此先捕获处理了
-
-            //如果还是有问题 那么尝试更新jar包
-            //https://community.jiguang.cn/search?q=Created%20instance%20with%20connectionTimeout%205%2C000%2C%20readTimeout%2030%2C000%2C%20maxRetryTimes%203%2C%20SSL%20Version%20TLS
-            //https://github.com/jpush/jiguang-java-client-common/releases
             log.error("极光推送失败 原因：{}", e.getMessage());
         }
     }
@@ -70,8 +50,8 @@ public class JiGuangMessagePushUtil {
                 .setPlatform(Platform.android_ios())
                 .setAudience(Audience.newBuilder()
 //                            .addAudienceTarget(AudienceTarget.registrationId("160a3797c85fd5a9f8f"))
-                        .addAudienceTarget(AudienceTarget.alias(tag))
-//                        .addAudienceTarget(AudienceTarget.tag(tag))
+//                        .addAudienceTarget(AudienceTarget.alias(tag))
+                        .addAudienceTarget(AudienceTarget.tag(tag))
                         .build())
                 .setNotification(Notification.android(content, TITLE, new HashMap<>()))
                 .setMessage(Message.newBuilder()
@@ -88,8 +68,10 @@ public class JiGuangMessagePushUtil {
         /*通过registrationId查询 与其绑定别名 标签 电话*/
         JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY, null, ClientConfig.getInstance());
 
-        TagAliasResult tagAlias = jpushClient.getDeviceTagAlias("1a0018970af85f7c5fa");
+        TagAliasResult tagAlias = jpushClient.getDeviceTagAlias("160a3797c84e903a021");
         System.out.println(tagAlias);
+
+        sendMessage(tagAlias.tags.get(0),CONTENT);
 
     }
 

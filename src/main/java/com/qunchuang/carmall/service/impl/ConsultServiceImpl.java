@@ -10,11 +10,13 @@ import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.ConsultRepository;
 import com.qunchuang.carmall.service.*;
 import com.qunchuang.carmall.utils.BeanCopyUtil;
+import com.qunchuang.carmall.utils.JiGuangMessagePushUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -44,7 +46,7 @@ public class ConsultServiceImpl implements ConsultService {
     private VerificationService verificationService;
 
     @Override
-
+    @Transactional
     public Consult add(Consult consult, String code, String invitedId) {
 
         //todo 如果之后咨询单生成过多 可以redis加锁限制咨询单生成
@@ -105,8 +107,7 @@ public class ConsultServiceImpl implements ConsultService {
         rs.setCustomer(customer);
         rs.setPhone(phone);
 
-//        JiGuangMessagePushUtil.sendMessage(store.getNumber(), JiGuangMessagePushUtil.CONTENT);
-
+        JiGuangMessagePushUtil.sendMessage(store.getId(), JiGuangMessagePushUtil.CONTENT);
 
         return consultRepository.save(rs);
     }
@@ -138,6 +139,9 @@ public class ConsultServiceImpl implements ConsultService {
             customer.setSalesConsultantAdmin(salesConsultantAdmin);
             customerService.modify(customer);
         }
+
+        JiGuangMessagePushUtil.sendMessage(salesConsultantAdmin.getId(), JiGuangMessagePushUtil.CONTENT);
+
 
         return consultRepository.save(consult);
     }
