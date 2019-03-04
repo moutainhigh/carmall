@@ -78,8 +78,7 @@ public class JpaDataFetcher implements DataFetcher {
                     result = (QueryFilter) method.invoke(clz.newInstance());
                     queryFilter = PrivilegeConstraintUtil.merge(queryFilter, result);
                 } catch (Exception e) {
-                    //构建约束失败 抛出异常  
-                    // TODO: 2019/2/19 后续需要寻找 抛出合适异常 直接修改http response stauts
+                    //构建约束失败 抛出异常
                     if (SecurityContextHolder.getContext().getAuthentication() == null || (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String)){
                         //未登录 （匿名用户）
                         throw new BadCredentialsException("");

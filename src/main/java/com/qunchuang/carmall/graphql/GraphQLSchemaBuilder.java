@@ -5,7 +5,7 @@ import cn.wzvtcsoft.bosdomain.ICoreObject;
 import cn.wzvtcsoft.bosdomain.enums.BosEnum;
 import cn.wzvtcsoft.bosdomain.util.BostypeUtils;
 import cn.wzvtcsoft.bosdomain.util.EntityEnumUtil;
-import cn.wzvtcsoft.validator.anntations.MutationValidated;
+import cn.wzvtcsoft.validator.anntations.*;
 import cn.wzvtcsoft.validator.anntations.ValidSelect;
 import com.qunchuang.carmall.graphql.annotation.GraphQLIgnore;
 import com.qunchuang.carmall.graphql.enums.FieldNullEnum;

@@ -51,6 +51,7 @@ public class CarInfo extends BosEntity{
 
     @SchemaDocumentation("金融方案")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
+//    @OrderBy(clause = "periods desc")
     private Set<FinancialScheme> financialSchemes = new HashSet<>();
 
     /**

@@ -39,7 +39,7 @@ public class CarMallRestController {
         AssumeRoleResponse resp= AliyunOSSUtil.getToken();
         Map<String,Object> result=new HashMap<>();
         result.put("bucketName","biya-image");
-        result.put("endpoint","http://oss-cn-hangzhou.aliyuncs.com/");
+        result.put("endpoint","https://oss-cn-hangzhou.aliyuncs.com/");
         result.put("assumeRoleResponse",resp);
         result.put("resourceId", BosUtils.getZipUuid());
         return result;

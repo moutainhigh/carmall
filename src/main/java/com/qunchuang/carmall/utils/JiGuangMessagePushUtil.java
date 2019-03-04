@@ -88,7 +88,7 @@ public class JiGuangMessagePushUtil {
         /*通过registrationId查询 与其绑定别名 标签 电话*/
         JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY, null, ClientConfig.getInstance());
 
-        TagAliasResult tagAlias = jpushClient.getDeviceTagAlias("160a3797c85fd5a9f8f");
+        TagAliasResult tagAlias = jpushClient.getDeviceTagAlias("1a0018970af85f7c5fa");
         System.out.println(tagAlias);
 
     }
