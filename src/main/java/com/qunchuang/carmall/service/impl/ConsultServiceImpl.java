@@ -226,7 +226,6 @@ public class ConsultServiceImpl implements ConsultService {
     @Override
     public Consult modify(Consult consult) {
         Consult result = findOne(consult.getId());
-
         //只有用户所属销售人员才能完结订单
         belong2Sales(consult);
 
