@@ -56,4 +56,6 @@ public class CarMallRestController {
         //是否加上url域名判断
         return this.wxMpService.createJsapiSignature(url);
     }
+
+    //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx18143d6812b9778c&secret=032714a68384f8d94460342badcea2a9
 }
