@@ -96,6 +96,8 @@ public class ConsultServiceImpl implements ConsultService {
         //用户已经有所属的销售人员  直接绑定销售人员  绑定门店
         if (customer.getSalesConsultantAdmin() != null) {
             rs.setSalesConsultantAdmin(customer.getSalesConsultantAdmin());
+            //订单修改为已派
+            rs.setStatus(OrderStatus.ALLOCATE.getCode());
             store = customer.getSalesConsultantAdmin().getStore();
         }
 
@@ -139,6 +141,9 @@ public class ConsultServiceImpl implements ConsultService {
             customer.setSalesConsultantAdmin(salesConsultantAdmin);
             customerService.modify(customer);
         }
+
+        //订单状态改为派单
+        consult.setStatus(OrderStatus.ALLOCATE.getCode());
 
         JiGuangMessagePushUtil.sendMessage(salesConsultantAdmin.getId(), JiGuangMessagePushUtil.CONTENT);
 
@@ -200,8 +205,13 @@ public class ConsultServiceImpl implements ConsultService {
         Consult consult = findOne(id);
         //只有用户所属销售人员才能完结订单
         belong2Sales(consult);
-        consult.setStatus(OrderStatus.FINISH.getCode());
-        return consultRepository.save(consult);
+        if(consult.getStatus()==OrderStatus.ALLOCATE.getCode()){
+            consult.setStatus(OrderStatus.FINISH.getCode());
+            return consultRepository.save(consult);
+        }
+        log.error("新订单不允许完结 id = {}",id);
+        throw new CarMallException(CarMallExceptionEnum.CONSULT_NOT_FINISH);
+
     }
 
     private void belong2Sales(Consult consult) {
