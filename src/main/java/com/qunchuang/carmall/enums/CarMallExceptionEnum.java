@@ -31,6 +31,7 @@ public enum CarMallExceptionEnum {
     CONSULT_ALREADY_ALLOCATE(30004, "派咨询单失败，该订单已经派送"),
     CONSULT_MODIFY_FAIL(30005, "修改咨询单失败，该订单已不再所属此销售人员"),
     CAR_BRAND_ICON_NOT_EXISTS(30006,"车辆品牌信息不存在"),
+    CONSULT_NOT_FINISH(30007,"新订单不允许完结"),
     ADVERTISEMENT_NOT_EXISTS(30201,"广告信息不存在"),
 
 
