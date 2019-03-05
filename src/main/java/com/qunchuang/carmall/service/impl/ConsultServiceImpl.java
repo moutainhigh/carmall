@@ -237,7 +237,7 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult modify(Consult consult) {
         Consult result = findOne(consult.getId());
         //只有用户所属销售人员才能完结订单
-        belong2Sales(consult);
+        belong2Sales(result);
 
         //修改信息
         Set<String> filter = new HashSet<>();
