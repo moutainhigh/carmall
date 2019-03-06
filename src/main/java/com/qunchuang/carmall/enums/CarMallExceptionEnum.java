@@ -20,6 +20,7 @@ public enum CarMallExceptionEnum {
     ADMIN_NOT_EXISTS(20006, "管理员账号不存在"),
     SALES_CONSULTANT_NOT_EXISTS(20007, "销售人员不存在"),
     PASSWORD_WRONG(20008,"密码错误，修改失败"),
+    CUSTOMER_INTAGRAL_INSUFFICIENT(20010,"积分不足"),
 
 
     GET_VERIFICATION_CODE_FAIL(22001, "获取验证码失败"),

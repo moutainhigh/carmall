@@ -299,8 +299,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-//    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
+    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
     public Admin delete(String id) {
+
+        //todo 权限限制  admin所有  门店管理销售人员
+
         Admin admin = findOne(id);
         //将权限清空
         admin.getRoleItems().clear();
@@ -330,8 +333,10 @@ public class AdminServiceImpl implements AdminService {
      * @return
      */
     @Override
-//    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
     public Admin update(Admin admin) {
+
+        //todo 权限限制  admin所有  门店管理销售人员   自己 自己
+
         Admin result = findOne(admin.getId());
         Set<String> filter = new HashSet<>();
         filter.add("password");

@@ -14,4 +14,5 @@ public interface IntegralRecordService {
      * @return
      */
     IntegralRecord save(IntegralRecord integralRecord);
+
 }

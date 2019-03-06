@@ -225,7 +225,7 @@ public class ConsultServiceImpl implements ConsultService {
 
                 //记录保存
                 IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
-                        IntegralEnum.FINISH_CONSULT.getCode(),customer.getIntegral(),consult,customer);
+                        IntegralEnum.FINISH_CONSULT.getCode(), IntegralRecord.FINISH_CONSULT, customer.getIntegral(), consult, customer);
 
                 integralRecordService.save(integralRecord);
             } catch (CarMallException e) {

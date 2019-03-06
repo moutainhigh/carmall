@@ -20,6 +20,11 @@ import javax.persistence.ManyToOne;
 @Setter
 public class IntegralRecord extends BosEntity {
 
+
+    public final static String REGISTER = "注册";
+    public final static String INVITE_REGISTER = "邀请用户完成注册";
+    public final static String FINISH_CONSULT = "邀请用户完成咨询单";
+
     @SchemaDocumentation("类型：1增加 2扣除")
     private Integer category;
 
@@ -33,15 +38,19 @@ public class IntegralRecord extends BosEntity {
     @ManyToOne
     private Consult consult;
 
+    @SchemaDocumentation("内容")
+    private String content;
+
     @SchemaDocumentation("用户")
     @ManyToOne
     private Customer customer;
 
     public IntegralRecord(){}
 
-    public IntegralRecord(Integer category, Integer integralCurrent, Integer integralBalance, Consult consult, Customer customer) {
+    public IntegralRecord(Integer category, Integer integralCurrent, String content,Integer integralBalance, Consult consult, Customer customer) {
         this.category = category;
         this.integralCurrent = integralCurrent;
+        this.content = content;
         this.integralBalance = integralBalance;
         this.consult = consult;
         this.customer = customer;

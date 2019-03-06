@@ -72,4 +72,13 @@ public interface CustomerService {
      * @return
      */
     Customer save(Customer customer);
+
+    /**
+     * 积分消费
+     * @param customer
+     * @param integral
+     * @param content
+     * @return
+     */
+    Customer consumerIntegral(Customer customer,Integer integral,String content);
 }

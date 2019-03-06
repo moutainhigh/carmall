@@ -56,6 +56,28 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('CUSTOMER_MANAGEMENT')")
+    public Customer consumerIntegral(Customer customer, Integer integral, String content) {
+        Customer rs = findOne(customer.getId());
+        Integer customerIntegral = rs.getIntegral();
+
+        if (rs.getIntegral()<integral){
+            log.error("积分不足，扣除失败 customerIntegral = {},integral = {}",customerIntegral,integral);
+            throw new CarMallException(CarMallExceptionEnum.CUSTOMER_INTAGRAL_INSUFFICIENT);
+        }
+
+        customer.setIntegral(customerIntegral-integral);
+        rs = customerRepository.save(rs);
+
+        IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.REDUCE.getCode(),
+                integral,content, rs.getIntegral(), null, rs);
+
+        integralRecordService.save(integralRecord);
+
+        return rs;
+    }
+
+    @Override
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }
@@ -80,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findOne(String id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent()) {
-            log.error("用户不存在 id = {}",id);
+            log.error("用户不存在 id = {}", id);
             throw new CarMallException(CarMallExceptionEnum.USER_NOT_EXISTS);
         }
         return customer.get();
@@ -119,21 +141,21 @@ public class CustomerServiceImpl implements CustomerService {
 
         //邀请人id
         String invitedId = customer.getInvitedId();
-        if (!StringUtils.isEmpty(invitedId)){
+        if (!StringUtils.isEmpty(invitedId)) {
             //邀请人是用户
-            if (invitedId.endsWith("C01")){
+            if (invitedId.endsWith("C01")) {
                 Customer invited = findOne(invitedId);
                 invited.modifyIntegral(IntegralEnum.REGISTER.getCode());
                 invited = customerRepository.save(invited);
 
                 //记录保存
                 IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
-                        IntegralEnum.REGISTER.getCode(),invited.getIntegral(),null,invited);
+                        IntegralEnum.REGISTER.getCode(), IntegralRecord.INVITE_REGISTER, invited.getIntegral(), null, invited);
 
                 integralRecordService.save(integralRecord);
             }
             //邀请人是销售人员
-            if (invitedId.endsWith("A01")){
+            if (invitedId.endsWith("A01")) {
                 result.setSalesConsultantAdmin(adminService.findOne(invitedId));
             }
         }
@@ -142,7 +164,7 @@ public class CustomerServiceImpl implements CustomerService {
         result = customerRepository.save(result);
 
         IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
-                IntegralEnum.REGISTER.getCode(),result.getIntegral(),null,result);
+                IntegralEnum.REGISTER.getCode(), IntegralRecord.REGISTER, result.getIntegral(), null, result);
 
         integralRecordService.save(integralRecord);
 

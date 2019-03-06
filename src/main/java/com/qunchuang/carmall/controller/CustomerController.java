@@ -37,4 +37,10 @@ public class CustomerController {
         return customerService.delete(id);
     }
 
+    @SchemaDocumentation("积分消费")
+    @GraphqlMutation(path = "/consumerIntegral")
+    public Customer consumerIntegral(Customer customer,Integer integral,String content){
+        return customerService.consumerIntegral(customer,integral,content);
+    }
+
 }

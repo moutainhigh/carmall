@@ -16,6 +16,7 @@ public class IntegralRecordServiceImpl implements IntegralRecordService {
     @Autowired
     private IntegralRecordRepository integralRecordRepository;
 
+
     @Override
     public IntegralRecord save(IntegralRecord integralRecord) {
         return integralRecordRepository.save(integralRecord);
