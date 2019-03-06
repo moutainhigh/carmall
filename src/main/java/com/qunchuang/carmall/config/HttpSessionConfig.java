@@ -12,7 +12,7 @@ import org.springframework.session.web.http.HttpSessionIdResolver;
  */
 
 @Configuration
-@EnableJdbcHttpSession
+@EnableJdbcHttpSession(maxInactiveIntervalInSeconds=86400)
 public class HttpSessionConfig {
 
     @Bean
