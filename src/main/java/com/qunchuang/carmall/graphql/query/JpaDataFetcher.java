@@ -72,11 +72,10 @@ public class JpaDataFetcher implements DataFetcher {
         for (Method method : clz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(PrivilegeConstraint.class)) {
 
-
-                QueryFilter result = null;
+                QueryFilter result;
                 try {
                     result = (QueryFilter) method.invoke(clz.newInstance());
-                    queryFilter = PrivilegeConstraintUtil.merge(queryFilter, result);
+                    PrivilegeConstraintUtil.merge(queryFilter, result);
                 } catch (Exception e) {
                     //构建约束失败 抛出异常
                     if (SecurityContextHolder.getContext().getAuthentication() == null || (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String)){
@@ -279,7 +278,6 @@ public class JpaDataFetcher implements DataFetcher {
             case EQUEAL:
                 value = convertFilterValue(path.getJavaType(), v);
                 result = cb.equal(path, value);
-                ;
                 break;
             case LESSTHAN:
                 value = convertFilterValue(path.getJavaType(), v);
