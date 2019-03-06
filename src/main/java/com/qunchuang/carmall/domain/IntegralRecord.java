@@ -3,6 +3,9 @@ package com.qunchuang.carmall.domain;
 import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.graphql.query.QueryFilter;
+import com.qunchuang.carmall.graphql.query.dataprivilege.PrivilegeConstraint;
+import com.qunchuang.carmall.utils.PrivilegeUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,5 +57,11 @@ public class IntegralRecord extends BosEntity {
         this.integralBalance = integralBalance;
         this.consult = consult;
         this.customer = customer;
+    }
+
+    @PrivilegeConstraint
+    public QueryFilter privilegeConstraint() {
+        //定制查看客户  各角色所属权限
+        return PrivilegeUtil.integralRecordPrivilege();
     }
 }
