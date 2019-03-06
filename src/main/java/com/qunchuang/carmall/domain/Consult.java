@@ -66,6 +66,9 @@ public class Consult extends BosEntity {
     @SchemaDocumentation("图片信息")
     private String img;
 
+    @SchemaDocumentation("邀请人")
+    private String invitedId;
+
     @PrivilegeConstraint
     public QueryFilter getPrivilegeConstraint() {
         //定制查看咨询单  各角色所属权限

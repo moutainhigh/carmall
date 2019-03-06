@@ -65,4 +65,11 @@ public interface CustomerService {
      * @return
      */
     boolean existsByPhone(String phone);
+
+    /**
+     * 保存
+     * @param customer
+     * @return
+     */
+    Customer save(Customer customer);
 }

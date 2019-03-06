@@ -1,10 +1,9 @@
 package com.qunchuang.carmall.service.impl;
 
-import com.qunchuang.carmall.domain.Admin;
-import com.qunchuang.carmall.domain.Consult;
-import com.qunchuang.carmall.domain.Customer;
-import com.qunchuang.carmall.domain.Store;
+import com.qunchuang.carmall.domain.*;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
+import com.qunchuang.carmall.enums.IntegralCategoryEnum;
+import com.qunchuang.carmall.enums.IntegralEnum;
 import com.qunchuang.carmall.enums.OrderStatus;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.ConsultRepository;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -28,6 +28,7 @@ import java.util.Set;
  */
 @Slf4j
 @Service
+@Transactional
 public class ConsultServiceImpl implements ConsultService {
 
     @Autowired
@@ -44,6 +45,9 @@ public class ConsultServiceImpl implements ConsultService {
 
     @Autowired
     private VerificationService verificationService;
+
+    @Autowired
+    private IntegralRecordService integralRecordService;
 
     @Override
     @Transactional
@@ -108,6 +112,10 @@ public class ConsultServiceImpl implements ConsultService {
         rs.setStore(store);
         rs.setCustomer(customer);
         rs.setPhone(phone);
+        //订单绑定邀请人
+        if (!StringUtils.isEmpty(invitedId)) {
+            rs.setInvitedId(invitedId);
+        }
 
         JiGuangMessagePushUtil.sendMessage(store.getId(), JiGuangMessagePushUtil.CONTENT);
 
@@ -205,11 +213,33 @@ public class ConsultServiceImpl implements ConsultService {
         Consult consult = findOne(id);
         //只有用户所属销售人员才能完结订单
         belong2Sales(consult);
-        if(consult.getStatus()==OrderStatus.ALLOCATE.getCode()){
+
+        //如果订单是受邀请的 那么增加积分2000
+        if (!StringUtils.isEmpty(consult.getInvitedId())) {
+            Customer customer;
+            try {
+                customer = customerService.findOne(consult.getInvitedId());
+
+                customer.modifyIntegral(IntegralEnum.FINISH_CONSULT.getCode());
+                customer = customerService.save(customer);
+
+                //记录保存
+                IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
+                        IntegralEnum.FINISH_CONSULT.getCode(),customer.getIntegral(),consult,customer);
+
+                integralRecordService.save(integralRecord);
+            } catch (CarMallException e) {
+                log.error("订单完结，积分增加失败，找不到受邀请的用户 customerId={}", consult.getInvitedId());
+            }
+
+
+        }
+
+        if (consult.getStatus() == OrderStatus.ALLOCATE.getCode()) {
             consult.setStatus(OrderStatus.FINISH.getCode());
             return consultRepository.save(consult);
         }
-        log.error("新订单不允许完结 id = {}",id);
+        log.error("新订单不允许完结 id = {}", id);
         throw new CarMallException(CarMallExceptionEnum.CONSULT_NOT_FINISH);
 
     }

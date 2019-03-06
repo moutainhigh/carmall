@@ -2,11 +2,15 @@ package com.qunchuang.carmall.service.impl;
 
 import com.qunchuang.carmall.domain.Admin;
 import com.qunchuang.carmall.domain.Customer;
+import com.qunchuang.carmall.domain.IntegralRecord;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
+import com.qunchuang.carmall.enums.IntegralCategoryEnum;
+import com.qunchuang.carmall.enums.IntegralEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.CustomerRepository;
 import com.qunchuang.carmall.service.AdminService;
 import com.qunchuang.carmall.service.CustomerService;
+import com.qunchuang.carmall.service.IntegralRecordService;
 import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +37,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private IntegralRecordService integralRecordService;
+
     @Override
     public Customer findByOpenid(String openid) {
         Optional<Customer> optional = customerRepository.findByOpenid(openid);
@@ -46,6 +53,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer share(Customer customer, String shareId) {
         return null;
+    }
+
+    @Override
+    public Customer save(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -111,17 +123,29 @@ public class CustomerServiceImpl implements CustomerService {
             //邀请人是用户
             if (invitedId.endsWith("C01")){
                 Customer invited = findOne(invitedId);
-                invited.setIntegral(invited.getIntegral()+2);
-                customerRepository.save(invited);
-                //积分增加  日志记录
+                invited.modifyIntegral(IntegralEnum.REGISTER.getCode());
+                invited = customerRepository.save(invited);
+
+                //记录保存
+                IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
+                        IntegralEnum.REGISTER.getCode(),invited.getIntegral(),null,invited);
+
+                integralRecordService.save(integralRecord);
             }
             //邀请人是销售人员
             if (invitedId.endsWith("A01")){
-                customer.setSalesConsultantAdmin(adminService.findOne(invitedId));
+                result.setSalesConsultantAdmin(adminService.findOne(invitedId));
             }
         }
 
-        customer.setIntegral(2);
-        return customerRepository.save(customer);
+        result.modifyIntegral(IntegralEnum.REGISTER.getCode());
+        result = customerRepository.save(result);
+
+        IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
+                IntegralEnum.REGISTER.getCode(),result.getIntegral(),null,result);
+
+        integralRecordService.save(integralRecord);
+
+        return result;
     }
 }

@@ -3,6 +3,7 @@ package com.qunchuang.carmall.domain;
 import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
+import com.qunchuang.carmall.enums.IntegralEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import com.qunchuang.carmall.graphql.query.QueryFilter;
@@ -83,6 +84,13 @@ public class Customer extends BosEntity {
             throw new BadCredentialsException("失效用户");
         }
         return customer;
+    }
+
+    public void modifyIntegral(int number){
+        this.integral = this.integral + number;
+        if (this.integral > IntegralEnum.UPPER_LIMIT.getCode()){
+            this.integral = IntegralEnum.UPPER_LIMIT.getCode();
+        }
     }
 
 
