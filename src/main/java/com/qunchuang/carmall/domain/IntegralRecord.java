@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 /**
  * @author Curtain
@@ -37,26 +36,24 @@ public class IntegralRecord extends BosEntity {
     @SchemaDocumentation("积分余额")
     private Integer  integralBalance;
 
-    @SchemaDocumentation("咨询单")
-    @ManyToOne
-    private Consult consult;
+    @SchemaDocumentation("咨询单Id")
+    private String consultId;
 
     @SchemaDocumentation("内容")
     private String content;
 
-    @SchemaDocumentation("用户")
-    @ManyToOne
-    private Customer customer;
+    @SchemaDocumentation("用户id")
+    private String customerId;
 
     public IntegralRecord(){}
 
-    public IntegralRecord(Integer category, Integer integralCurrent, String content,Integer integralBalance, Consult consult, Customer customer) {
+    public IntegralRecord(Integer category, Integer integralCurrent, String content,Integer integralBalance, String consultId, String customerId) {
         this.category = category;
         this.integralCurrent = integralCurrent;
         this.content = content;
         this.integralBalance = integralBalance;
-        this.consult = consult;
-        this.customer = customer;
+        this.consultId = consultId;
+        this.customerId = customerId;
     }
 
     @PrivilegeConstraint

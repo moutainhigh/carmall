@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         rs = customerRepository.save(rs);
 
         IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.REDUCE.getCode(),
-                integral,content, rs.getIntegral(), null, rs);
+                integral,content, rs.getIntegral(), "", rs.getId());
 
         integralRecordService.save(integralRecord);
 
@@ -150,7 +150,7 @@ public class CustomerServiceImpl implements CustomerService {
 
                 //记录保存
                 IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
-                        IntegralEnum.REGISTER.getCode(), IntegralRecord.INVITE_REGISTER, invited.getIntegral(), null, invited);
+                        IntegralEnum.REGISTER.getCode(), IntegralRecord.INVITE_REGISTER, invited.getIntegral(), "", invited.getId());
 
                 integralRecordService.save(integralRecord);
             }
@@ -164,7 +164,7 @@ public class CustomerServiceImpl implements CustomerService {
         result = customerRepository.save(result);
 
         IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.INCREASE.getCode(),
-                IntegralEnum.REGISTER.getCode(), IntegralRecord.REGISTER, result.getIntegral(), null, result);
+                IntegralEnum.REGISTER.getCode(), IntegralRecord.REGISTER, result.getIntegral(), "", result.getId());
 
         integralRecordService.save(integralRecord);
 

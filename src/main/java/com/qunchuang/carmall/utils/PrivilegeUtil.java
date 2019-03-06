@@ -87,7 +87,7 @@ public class PrivilegeUtil {
         } else if (principal instanceof Customer) {
             //客户查看客户所属的
             Customer customer = (Customer) principal;
-            queryFilter = new QueryFilter("customer.id", QueryFilterOperator.EQUEAL, customer.getId());
+            queryFilter = new QueryFilter("customerId", QueryFilterOperator.EQUEAL, customer.getId());
         } else {
             //匿名用户 不允许查看
             throw new BadCredentialsException("未登录");
