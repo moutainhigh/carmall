@@ -52,7 +52,9 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store createAccount(Store store) {
-        return storeRepository.save(store);
+        Store rs = findOne(store.getId());
+        rs.setStoreAdminId(store.getStoreAdminId());
+        return storeRepository.save(rs);
     }
 
     @Override
