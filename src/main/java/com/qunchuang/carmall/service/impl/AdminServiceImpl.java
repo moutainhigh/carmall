@@ -58,9 +58,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Admin storeAdministrator(Admin admin) {
+        Store store = storeService.findOne(admin.getStore().getId());
+
+        if (!StringUtils.isEmpty(store.getStoreAdminId())) {
+            log.error("门店账号已存在，不允许再创建 store = {}", store.getName());
+            throw new CarMallException(CarMallExceptionEnum.STORE_ACCOUNT_EXISTS);
+        }
         Admin storeAdmin = register(admin, RoleEnum.STORE_ADMINISTRATOR.getRoleName());
         //门店绑定找号
-        Store store = storeAdmin.getStore();
+
         store.setStoreAdminId(storeAdmin.getId());
         storeService.createAccount(store);
 
@@ -162,6 +168,7 @@ public class AdminServiceImpl implements AdminService {
     @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public Admin platformAdministrator(Admin admin) {
         //平台管理员无任何操作权限  只能浏览
+
         return register(admin, RoleEnum.PLATFORM_ADMINISTRATOR.getRoleName());
 
     }
@@ -206,13 +213,6 @@ public class AdminServiceImpl implements AdminService {
                 rs.setStore(principal.getStore());
                 break;
             case "门店管理员":
-                Store store = admin.getStore();
-
-                if (!StringUtils.isEmpty(store.getStoreAdminId())) {
-                    log.error("门店账号已存在，不允许再创建 store = {}", store.getName());
-                    throw new CarMallException(CarMallExceptionEnum.STORE_ACCOUNT_EXISTS);
-                }
-
                 roleOptional = roleRepository.findByName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
                 if (!roleOptional.isPresent()) {
                     role.setName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());

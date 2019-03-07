@@ -39,8 +39,8 @@ public class CustomerController {
 
     @SchemaDocumentation("积分消费")
     @GraphqlMutation(path = "/consumerIntegral")
-    public Customer consumerIntegral(Customer customer,Integer integral,String content){
-        return customerService.consumerIntegral(customer,integral,content);
+    public Customer consumerIntegral(String customerId,Integer integral,String content){
+        return customerService.consumerIntegral(customerId,integral,content);
     }
 
 }

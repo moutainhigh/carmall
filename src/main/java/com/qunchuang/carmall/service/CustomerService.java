@@ -75,10 +75,10 @@ public interface CustomerService {
 
     /**
      * 积分消费
-     * @param customer
+     * @param customerId
      * @param integral
      * @param content
      * @return
      */
-    Customer consumerIntegral(Customer customer,Integer integral,String content);
+    Customer consumerIntegral(String customerId,Integer integral,String content);
 }

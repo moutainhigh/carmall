@@ -59,8 +59,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @PreAuthorize("hasAuthority('CUSTOMER_MANAGEMENT')")
-    public Customer consumerIntegral(Customer customer, Integer integral, String content) {
-        Customer rs = findOne(customer.getId());
+    public Customer consumerIntegral(String customerId, Integer integral, String content) {
+        Customer rs = findOne(customerId);
         Integer customerIntegral = rs.getIntegral();
 
         if (rs.getIntegral()<integral){
@@ -68,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CarMallException(CarMallExceptionEnum.CUSTOMER_INTAGRAL_INSUFFICIENT);
         }
 
-        customer.setIntegral(customerIntegral-integral);
+        rs.setIntegral(customerIntegral-integral);
         rs = customerRepository.save(rs);
 
         IntegralRecord integralRecord = new IntegralRecord(IntegralCategoryEnum.REDUCE.getCode(),
