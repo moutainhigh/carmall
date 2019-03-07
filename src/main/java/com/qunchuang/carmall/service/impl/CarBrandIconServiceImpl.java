@@ -43,6 +43,11 @@ public class CarBrandIconServiceImpl implements CarBrandIconService {
     }
 
     @Override
+    public List<CarBrandIcon> initAll(List<CarBrandIcon> carBrandIcons) {
+        return carBrandIconRepository.saveAll(carBrandIcons);
+    }
+
+    @Override
     @PreAuthorize("hasAuthority('PLATFORM_MANAGEMENT')")
     public List<CarBrandIcon> saveAll(List<CarBrandIcon> carBrandIcons) {
 

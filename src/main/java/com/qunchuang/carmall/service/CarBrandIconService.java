@@ -18,6 +18,13 @@ public interface CarBrandIconService {
     List<CarBrandIcon> saveAll(List<CarBrandIcon> carBrandIcons);
 
     /**
+     * 导出车辆时初始化
+     * @param carBrandIcons
+     * @return
+     */
+    List<CarBrandIcon> initAll(List<CarBrandIcon> carBrandIcons);
+
+    /**
      * 品牌是否存在
      * @param brand
      * @return

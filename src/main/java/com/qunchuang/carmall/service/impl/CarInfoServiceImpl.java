@@ -83,7 +83,7 @@ public class CarInfoServiceImpl implements CarInfoService {
         collect.forEach(b -> carBrandIcons.add(new CarBrandIcon(b)));
 
         //保存品牌信息
-        carBrandIconService.saveAll(carBrandIcons);
+        carBrandIconService.initAll(carBrandIcons);
 
         //保存车辆信息
         return carInfoRepository.saveAll(carInfos);
