@@ -10,8 +10,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Curtain
@@ -52,7 +52,7 @@ public class CarInfo extends BosEntity{
     @SchemaDocumentation("金融方案")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
 //    @OrderBy(clause = "periods desc")
-    private Set<FinancialScheme> financialSchemes = new HashSet<>();
+        private List<FinancialScheme> financialSchemes = new ArrayList<>();
 
     /**
      * 上下架车辆
