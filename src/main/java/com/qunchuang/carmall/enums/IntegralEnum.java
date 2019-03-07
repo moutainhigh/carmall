@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public enum IntegralEnum {
     /*新用户邀请注册*/
-    REGISTER(2),
+    REGISTER(200),
     /*咨询单完结*/
-    FINISH_CONSULT(2000),
+    FINISH_CONSULT(1000),
     /*积分上限10000*/
     UPPER_LIMIT(10000);
 

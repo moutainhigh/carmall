@@ -2,16 +2,19 @@ package com.qunchuang.carmall.domain;
 
 import cn.wzvtcsoft.bosdomain.BosEntity;
 import cn.wzvtcsoft.bosdomain.annotations.Bostype;
+import com.qunchuang.carmall.enums.CarMallExceptionEnum;
+import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -52,7 +55,7 @@ public class CarInfo extends BosEntity{
     @SchemaDocumentation("金融方案")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
 //    @OrderBy(clause = "periods desc")
-        private List<FinancialScheme> financialSchemes = new ArrayList<>();
+        private Set<FinancialScheme> financialSchemes = new HashSet<>();
 
     /**
      * 上下架车辆
@@ -63,6 +66,9 @@ public class CarInfo extends BosEntity{
             this.upperShelf = false;
         }else {
             //上架
+            if (this.financialSchemes==null || StringUtils.isEmpty(img)){
+                throw new CarMallException(CarMallExceptionEnum.CAR_INFO_NOT_IMPERFECT);
+            }
             this.upperShelf = true;
         }
     }
