@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin storeAdministrator(Admin admin) {
         Admin storeAdmin = register(admin, RoleEnum.STORE_ADMINISTRATOR.getRoleName());
         //门店绑定找号
-        Store store = admin.getStore();
+        Store store = storeAdmin.getStore();
         store.setStoreAdminId(storeAdmin.getId());
         storeService.createAccount(store);
 
