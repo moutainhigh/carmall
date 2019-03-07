@@ -103,6 +103,7 @@ public class ConsultServiceImpl implements ConsultService {
             //订单修改为已派
             rs.setStatus(OrderStatus.ALLOCATE.getCode());
             store = customer.getSalesConsultantAdmin().getStore();
+            JiGuangMessagePushUtil.sendMessage(customer.getSalesConsultantAdmin().getId(), JiGuangMessagePushUtil.CONTENT);
         }
 
 
