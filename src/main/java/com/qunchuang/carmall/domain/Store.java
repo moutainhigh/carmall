@@ -44,4 +44,6 @@ public class Store extends BosEntity {
     @SchemaDocumentation("纬度")
     private String latitude;
 
+    @SchemaDocumentation("门店账号Id")
+    private String storeAdminId;
 }

@@ -12,9 +12,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Curtain
@@ -22,6 +25,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@Transactional
 public class StoreServiceImpl implements StoreService {
 
     @Autowired
@@ -40,8 +44,15 @@ public class StoreServiceImpl implements StoreService {
     @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Store modify(Store store) {
         Store result = findOne(store.getId());
-        BeanUtils.copyProperties(store, result, BeanCopyUtil.filterProperty(store));
+        Set<String> filter = new HashSet<>();
+        filter.add("storeAdminId");
+        BeanUtils.copyProperties(store, result, BeanCopyUtil.filterProperty(store,filter));
         return storeRepository.save(result);
+    }
+
+    @Override
+    public Store createAccount(Store store) {
+        return storeRepository.save(store);
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import java.util.Set;
  */
 @Service
 @Slf4j
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired

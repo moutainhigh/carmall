@@ -1,6 +1,7 @@
 package com.qunchuang.carmall.service.impl;
 
 import com.qunchuang.carmall.domain.Admin;
+import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.Role;
@@ -13,6 +14,7 @@ import com.qunchuang.carmall.repository.AdminRepository;
 import com.qunchuang.carmall.repository.PrivilegeRepository;
 import com.qunchuang.carmall.repository.RoleRepository;
 import com.qunchuang.carmall.service.AdminService;
+import com.qunchuang.carmall.service.StoreService;
 import com.qunchuang.carmall.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -34,23 +38,34 @@ import java.util.Set;
  */
 @Service
 @Slf4j
+@Transactional
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    PrivilegeRepository privilegeRepository;
+    private PrivilegeRepository privilegeRepository;
 
     @Autowired
-    JdbcOperationsSessionRepository jdbcOperationsSessionRepository;
+    private JdbcOperationsSessionRepository jdbcOperationsSessionRepository;
+
+    @Autowired
+    private StoreService storeService;
 
     @Override
     @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Admin storeAdministrator(Admin admin) {
-        return register(admin, RoleEnum.STORE_ADMINISTRATOR.getRoleName());
+        Admin storeAdmin = register(admin, RoleEnum.STORE_ADMINISTRATOR.getRoleName());
+        //门店绑定找号
+        Store store = admin.getStore();
+        store.setStoreAdminId(storeAdmin.getId());
+        storeService.createAccount(store);
+
+        return storeAdmin;
+
     }
 
     @Override
@@ -76,7 +91,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin changePassword(String oldPassword, String newPassword) {
         Admin admin = Admin.getAdmin();
 //        oldPassword = MD5Util.generate(oldPassword);
-        if (oldPassword.equals(admin.getPassword())){
+        if (oldPassword.equals(admin.getPassword())) {
 //            admin.setPassword(MD5Util.generate(newPassword));
             admin.setPassword(newPassword);
 
@@ -119,7 +134,7 @@ public class AdminServiceImpl implements AdminService {
 
             return adminRepository.save(admin);
         } else {
-            log.error("修改其他账号密码，无权限。 被修改用户名 = {}， 操作人用户名 = {}",admin.getName(),operator.getName());
+            log.error("修改其他账号密码，无权限。 被修改用户名 = {}， 操作人用户名 = {}", admin.getName(), operator.getName());
             throw new AccessDeniedException("权限不足");
         }
 
@@ -191,6 +206,13 @@ public class AdminServiceImpl implements AdminService {
                 rs.setStore(principal.getStore());
                 break;
             case "门店管理员":
+                Store store = admin.getStore();
+
+                if (StringUtils.isEmpty(store.getStoreAdminId())) {
+                    log.error("门店账号已存在，不允许再创建 store = {}", store.getName());
+                    throw new CarMallException(CarMallExceptionEnum.STORE_ACCOUNT_EXISTS);
+                }
+
                 roleOptional = roleRepository.findByName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
                 if (!roleOptional.isPresent()) {
                     role.setName(RoleEnum.STORE_ADMINISTRATOR.getRoleName());
@@ -206,7 +228,6 @@ public class AdminServiceImpl implements AdminService {
                 } else {
                     role = roleOptional.get();
                 }
-                //绑定门店
                 rs.setStore(admin.getStore());
                 break;
             default:
@@ -310,7 +331,7 @@ public class AdminServiceImpl implements AdminService {
         //门店清空
         admin.setStore(null);
         //将用户名无效化
-        admin.setUsername("invalid"+admin.getUsername() + admin.getCreatetime());
+        admin.setUsername("invalid" + admin.getUsername() + admin.getCreatetime());
         //拉黑
         admin.isAble();
         return adminRepository.save(admin);

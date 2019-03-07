@@ -54,4 +54,11 @@ public interface StoreService {
      * @return
      */
     Store nearestStore(Double latitude,Double longitude);
+
+    /**
+     * 绑定门店管理员账号（不暴露的接口）
+     * @param store
+     * @return
+     */
+    Store createAccount(Store store);
 }

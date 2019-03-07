@@ -117,7 +117,7 @@ public class ConsultServiceImpl implements ConsultService {
             rs.setInvitedId(invitedId);
         }
 
-        JiGuangMessagePushUtil.sendMessage(store.getId(), JiGuangMessagePushUtil.CONTENT);
+        JiGuangMessagePushUtil.sendMessage(store.getStoreAdminId(), JiGuangMessagePushUtil.CONTENT);
 
         return consultRepository.save(rs);
     }
