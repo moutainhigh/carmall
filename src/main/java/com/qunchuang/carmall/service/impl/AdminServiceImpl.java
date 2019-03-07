@@ -208,7 +208,7 @@ public class AdminServiceImpl implements AdminService {
             case "门店管理员":
                 Store store = admin.getStore();
 
-                if (StringUtils.isEmpty(store.getStoreAdminId())) {
+                if (!StringUtils.isEmpty(store.getStoreAdminId())) {
                     log.error("门店账号已存在，不允许再创建 store = {}", store.getName());
                     throw new CarMallException(CarMallExceptionEnum.STORE_ACCOUNT_EXISTS);
                 }
