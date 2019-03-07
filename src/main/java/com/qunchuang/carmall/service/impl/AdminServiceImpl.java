@@ -320,7 +320,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @PreAuthorize("authenticated && (#user.id==authentication.principal.id || hasAuthority('B1'))")
     public Admin delete(String id) {
 
         //todo 权限限制  admin所有  门店管理销售人员
