@@ -167,6 +167,8 @@ public class ConsultServiceImpl implements ConsultService {
 
         Consult consult = findOne(id);
 
+        isConsultFinish(consult);
+
         //修改订单的所属门店
         Store store = storeService.findOne(storeId);
         consult.setStore(store);
@@ -188,6 +190,9 @@ public class ConsultServiceImpl implements ConsultService {
     public Consult changeToSalesConsultant(String id, String salesId) {
         Consult consult = findOne(id);
 
+        isConsultFinish(consult);
+
+
         //修改订单的所属销售人员
         Admin salesConsultantAdmin = adminService.findOne(salesId);
         consult.setSalesConsultantAdmin(salesConsultantAdmin);
@@ -200,10 +205,21 @@ public class ConsultServiceImpl implements ConsultService {
         return consultRepository.save(consult);
     }
 
+    /**
+     * 已完结订单不能转单
+     * @param consult
+     */
+    private void isConsultFinish(Consult consult) {
+        if (OrderStatus.FINISH.getCode() == consult.getStatus()) {
+            log.error("订单已经完结，不能转单 consultId = {}", consult.getId());
+            throw new CarMallException(CarMallExceptionEnum.CONSULT_ALREADY_FINISH);
+        }
+    }
+
     @Override
     public Consult delete(String id) {
         Consult consult = findOne(id);
-        //只有用户所属销售人员才能完结订单
+        //只有用户所属销售人员才能操作订单
         belong2Sales(consult);
         consult.isAble();
         return consultRepository.save(consult);

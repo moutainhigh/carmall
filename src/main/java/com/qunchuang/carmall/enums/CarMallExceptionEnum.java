@@ -24,6 +24,7 @@ public enum CarMallExceptionEnum {
     CAR_INFO_NOT_IMPERFECT(20011,"车辆上架需要完善方案和图片信息"),
 
 
+
     GET_VERIFICATION_CODE_FAIL(22001, "获取验证码失败"),
     VERIFY_CODE_FAIL(22002, "验证失败，验证码不正确"),
 
@@ -34,7 +35,9 @@ public enum CarMallExceptionEnum {
     CONSULT_MODIFY_FAIL(30005, "修改咨询单失败，该订单已不再所属此销售人员"),
     CAR_BRAND_ICON_NOT_EXISTS(30006,"车辆品牌信息不存在"),
     CONSULT_NOT_FINISH(30007,"新订单不允许完结"),
+    CONSULT_ALREADY_FINISH(30008,"转单失败，订单已经完结"),
     ADVERTISEMENT_NOT_EXISTS(30201,"广告信息不存在"),
+
 
 
     STORE_NOT_EXISTS(40001, "门店不存在"),
