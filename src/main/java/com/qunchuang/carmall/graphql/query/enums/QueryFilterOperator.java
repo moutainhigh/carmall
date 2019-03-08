@@ -36,6 +36,9 @@ public enum QueryFilterOperator implements BosEnum {
     @EntityEnum(value = "EQUEAL", alias = "相等")
     EQUEAL,
 
+    @EntityEnum(value = "NOTEQUEAL", alias = "不相等")
+    NOTEQUEAL,
+
     @EntityEnum(value = "IN", alias = "包含")
     IN,
 

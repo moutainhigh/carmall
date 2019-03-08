@@ -279,6 +279,10 @@ public class JpaDataFetcher implements DataFetcher {
                 value = convertFilterValue(path.getJavaType(), v);
                 result = cb.equal(path, value);
                 break;
+            case NOTEQUEAL:
+                value = convertFilterValue(path.getJavaType(),v);
+                result = cb.notEqual(path,value);
+                break;
             case LESSTHAN:
                 value = convertFilterValue(path.getJavaType(), v);
                 result = cb.lessThan(path, String.valueOf(value));
