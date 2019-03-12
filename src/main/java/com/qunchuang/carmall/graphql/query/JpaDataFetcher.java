@@ -181,6 +181,7 @@ public class JpaDataFetcher implements DataFetcher {
         CriteriaQuery query = (QueryForWhatEnum.JUSTFORCOUNTBYDISTINCTID == queryforWhat) ? cb.createQuery(Long.class) : (QueryForWhatEnum.JUSTFORIDSINTHEPAGE == queryforWhat) ? cb.createQuery() : cb.createQuery((Class) entityType.getJavaType());
         Root root = query.from(entityType);
 
+        //todo 在这里去除忽略的字段吗
         SelectionSet selectionSet = field.getSelectionSet();
         List<Argument> arguments = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
@@ -503,6 +504,7 @@ public class JpaDataFetcher implements DataFetcher {
             }
             //mutation 的顶级参数是 List,返回List 否则全部返回 set,因为 entry 是以set 形式存在
             if (dept != 0) {
+                //TODO  SET引起的无序？
                 Set set = new HashSet(list.size());
                 set.addAll(list);
                 return set;

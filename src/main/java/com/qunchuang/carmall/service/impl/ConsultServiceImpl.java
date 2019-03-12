@@ -113,6 +113,8 @@ public class ConsultServiceImpl implements ConsultService {
         rs.setStore(store);
         rs.setCustomer(customer);
         rs.setPhone(phone);
+        rs.setName(consult.getName());
+        rs.setCarModel(consult.getCarModel());
         //订单绑定邀请人
         if (!StringUtils.isEmpty(invitedId)) {
             rs.setInvitedId(invitedId);
@@ -169,6 +171,7 @@ public class ConsultServiceImpl implements ConsultService {
 
         isConsultFinish(consult);
 
+        //不能转给当前门店
         //修改订单的所属门店
         Store store = storeService.findOne(storeId);
         consult.setStore(store);

@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Bean;
 //因为框架已经在模块中  所以不需要再自动配置
 //@Configuration
 public class GraphqlAutoConfig {
-
-
-
     @Bean
     public GraphQLStartController graphQlController() {
         return new GraphQLStartController();
