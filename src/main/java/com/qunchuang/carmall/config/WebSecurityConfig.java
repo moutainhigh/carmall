@@ -95,7 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/weChatMini", "/graphql", "/login/phone", "login/web","/login/app","/sts","/getCode","/jsapisignature","/initAccount").permitAll()
+                .antMatchers("/getWxacode", "/login/weChatMini", "/graphql", "/login/phone", "login/web", "/login/app", "/sts", "/getCode", "/jsapisignature", "/initAccount").permitAll()
                 .anyRequest().authenticated()
 //                .and()
 //                .formLogin()

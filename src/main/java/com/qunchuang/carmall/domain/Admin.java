@@ -6,6 +6,7 @@ import com.qunchuang.carmall.domain.privilege.Privilege;
 import com.qunchuang.carmall.domain.privilege.PrivilegeItem;
 import com.qunchuang.carmall.domain.privilege.RoleItem;
 import com.qunchuang.carmall.enums.RoleEnum;
+import com.qunchuang.carmall.graphql.annotation.GraphQLIgnore;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,7 @@ public class Admin extends BosEntity{
     private String username;
 
     @SchemaDocumentation("密码")
+    @GraphQLIgnore
     private String password;
 
     @SchemaDocumentation("手机号")
