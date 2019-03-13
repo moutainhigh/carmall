@@ -65,7 +65,7 @@ public class CarMallRestController {
         return this.wxMpService.createJsapiSignature(url);
     }
 
-    @RequestMapping("/getWxacode")
+    @RequestMapping("/getWxAuthentication")
     public Object getWxaCode(HttpServletRequest httpRequest) {
         RestTemplate rest = new RestTemplate();
         Map<String, String> params = new HashMap<>(4);
@@ -76,13 +76,7 @@ public class CarMallRestController {
         JSONObject parse = (JSONObject) JSON.parse(token);
         String value = (String) ((Map.Entry) parse.entrySet().toArray()[0]).getValue();
 
-        params.put("page", "pages/index/index");
-        params.put("scene", "1");
-        url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+value;
-        String s = rest.postForObject(url, params, String.class);
-
-        System.out.println(s);
-        return s;
+        return value;
 
     }
 
