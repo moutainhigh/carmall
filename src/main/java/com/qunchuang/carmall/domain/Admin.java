@@ -47,6 +47,9 @@ public class Admin extends BosEntity{
     @GraphQLIgnore
     private String password;
 
+    @SchemaDocumentation("二维码")
+    private String imgUrl;
+
     @SchemaDocumentation("手机号")
     @Size(min = 11, max = 11, message = "手机号长度不正确")
     private String phone;

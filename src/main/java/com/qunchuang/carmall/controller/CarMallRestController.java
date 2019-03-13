@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.auth.sts.AssumeRoleResponse;
 import com.qunchuang.carmall.config.WeChatMiniResources;
-import com.qunchuang.carmall.enums.CarMallExceptionEnum;
-import com.qunchuang.carmall.exception.CarMallException;
+import com.qunchuang.carmall.domain.Admin;
 import com.qunchuang.carmall.service.AdminService;
 import com.qunchuang.carmall.service.VerificationService;
 import com.qunchuang.carmall.utils.AliyunOSSUtil;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -76,7 +74,7 @@ public class CarMallRestController {
     }
 
     @RequestMapping("/getWxAuthentication")
-    public void getWxaCode(HttpServletResponse httpServletResponse) {
+    public String getWxaCode(HttpServletResponse httpServletResponse) throws Exception {
         RestTemplate rest = new RestTemplate();
         Map<String, String> params = new HashMap<>(4);
 
@@ -87,12 +85,12 @@ public class CarMallRestController {
         String value = (String) ((Map.Entry) parse.entrySet().toArray()[0]).getValue();
 
         params.put("page", "pages/index/index");
-        params.put("scene", "1");
+        params.put("scene", Admin.getAdmin().getId());
         url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + value;
+
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         InputStream inputStream;
-        try {
             HttpPost httpPost = new HttpPost(url);
             httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
             String body = JSON.toJSONString(params);
@@ -106,16 +104,17 @@ public class CarMallRestController {
             response = httpClient.execute(httpPost);
             inputStream = response.getEntity().getContent();
 
-            ServletOutputStream outputStream = httpServletResponse.getOutputStream();
 
-            byte[] b = new byte[1024];
-            int length;
-            while ((length = inputStream.read(b)) != -1) {
-                outputStream.write(b, 0, length);
-            }
-        } catch (Exception e) {
-            throw new CarMallException(CarMallExceptionEnum.GENERATE_WX_CODE_FAIL);
-        }
+            String name = BosUtils.getZipUuid();
+            String imgUrl = "https://image.buymycar.cn/" + name;
+            AliyunOSSUtil.uploadImage(inputStream, name);
+
+            adminService.generateWxCode(imgUrl);
+
+            return imgUrl;
+
+
+
 
     }
 

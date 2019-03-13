@@ -1,5 +1,6 @@
 package com.qunchuang.carmall.utils;
 
+import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
 import com.aliyuncs.auth.sts.AssumeRoleResponse;
@@ -8,6 +9,9 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.http.ProtocolType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * @author Curtain
@@ -82,30 +86,23 @@ public class AliyunOSSUtil {
         }
     }
 
-
-/*
-    public static void main(String[] args) {
-        try {
-            uploadImage();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-     //后端图片直传测试
-    public static void uploadImage() throws FileNotFoundException {
+    /**
+     * 后端图片直传测试
+     *
+     * @throws FileNotFoundException
+     */
+    public static void uploadImage(InputStream inputStream,String name) throws FileNotFoundException {
         // Endpoint以杭州为例，其它Region请按实际情况填写。
-        String endpoint = "http://oss-cn-shanghai.aliyuncs.com";
+        String endpoint = "https://oss-cn-hangzhou.aliyuncs.com/";
         // 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
-        String accessKeyId = "LTAIEheM35dIkduf";
-        String accessKeySecret = "5QM9Ggf1Qg1b5XS55nq6nFAhNUwwvX";
+        String accessKeyId = "LTAIypfzxz9MJ7lt";
+        String accessKeySecret = "GN7WfdI1hr1pYVdi1JvTSvsDNFPCRw";
         // 创建OSSClient实例。
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         // 上传文件流。
-        InputStream inputStream = new FileInputStream("U:/images/11.jpg");
-        ossClient.putObject("mlshopimage","11.jpg", inputStream);
+//        InputStream inputStream = new FileInputStream("U:/images/11.jpg");
+        ossClient.putObject("biya-image", name, inputStream);
         // 关闭OSSClient。
         ossClient.shutdown();
     }
-    */
 }

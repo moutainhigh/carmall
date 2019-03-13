@@ -90,6 +90,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void generateWxCode(String imgUrl) {
+        Admin admin = findOne(Admin.getAdmin().getId());
+        admin.setImgUrl(imgUrl);
+        adminRepository.save(admin);
+    }
+
+    @Override
     public void saveAll(List<Admin> admins) {
         adminRepository.saveAll(admins);
     }

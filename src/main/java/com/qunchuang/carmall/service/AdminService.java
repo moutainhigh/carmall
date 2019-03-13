@@ -101,4 +101,10 @@ public interface AdminService {
      * @param admins
      */
     void saveAll(List<Admin> admins);
+
+    /**
+     * 保存微信二维码
+     * @param imgUrl
+     */
+    void generateWxCode(String imgUrl);
 }
