@@ -48,7 +48,9 @@ public enum CarMallExceptionEnum {
     GET_USER_LOGIN_INFO_FAIL(50001, "获取当前登录的微信用户失败"),
     GET_ADMIN_LOGIN_INFO_FAIL(50002, "获取当前登录的管理员用户失败"),
 
-    PRIVILEGE_INSUFFICIENT(50003, "权限不足，操作失败"),;
+    PRIVILEGE_INSUFFICIENT(50003, "权限不足，操作失败"),
+    GENERATE_WX_CODE_FAIL(50004,"生成二维码失败"),
+    ;
 
     private Integer code;
 
