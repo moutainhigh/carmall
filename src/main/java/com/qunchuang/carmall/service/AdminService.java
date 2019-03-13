@@ -1,6 +1,9 @@
 package com.qunchuang.carmall.service;
 
 import com.qunchuang.carmall.domain.Admin;
+import com.qunchuang.carmall.domain.Store;
+
+import java.util.List;
 
 /**
  * @author Curtain
@@ -85,4 +88,17 @@ public interface AdminService {
      * @return
      */
     Admin findByUsername(String username);
+
+    /**
+     * 通过门店查询
+     * @param store
+     * @return
+     */
+    List<Admin> findByStore(Store store);
+
+    /**
+     * 保存所有
+     * @param admins
+     */
+    void saveAll(List<Admin> admins);
 }

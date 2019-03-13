@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -81,6 +82,16 @@ public class AdminServiceImpl implements AdminService {
             log.error("分配失败，销售人员不存在 salesId = {}", id);
             throw new CarMallException(CarMallExceptionEnum.SALES_CONSULTANT_NOT_EXISTS);
         }
+    }
+
+    @Override
+    public List<Admin> findByStore(Store store) {
+        return adminRepository.findByStore(store);
+    }
+
+    @Override
+    public void saveAll(List<Admin> admins) {
+        adminRepository.saveAll(admins);
     }
 
     @Override
@@ -325,14 +336,7 @@ public class AdminServiceImpl implements AdminService {
         //todo 权限限制  admin所有  门店管理销售人员
 
         Admin admin = findOne(id);
-        //将权限清空
-        admin.getRoleItems().clear();
-        //门店清空
-        admin.setStore(null);
-        //将用户名无效化
-        admin.setUsername("invalid" + admin.getUsername() + admin.getCreatetime());
-        //拉黑
-        admin.isAble();
+        admin.delete();
         return adminRepository.save(admin);
     }
 

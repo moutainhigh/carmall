@@ -1,6 +1,9 @@
 package com.qunchuang.carmall.service;
 
 import com.qunchuang.carmall.domain.Customer;
+import com.qunchuang.carmall.domain.Store;
+
+import java.util.List;
 
 /**
  * @author Curtain
@@ -81,4 +84,17 @@ public interface CustomerService {
      * @return
      */
     Customer consumerIntegral(String customerId,Integer integral,String content);
+
+    /**
+     * 通过门店查找用户
+     * @param store
+     * @return
+     */
+    List<Customer> findByStore(Store store);
+
+    /**
+     * 保存所有
+     * @param customers
+     */
+    void saveAll(List<Customer> customers);
 }

@@ -3,6 +3,7 @@ package com.qunchuang.carmall.service.impl;
 import com.qunchuang.carmall.domain.Admin;
 import com.qunchuang.carmall.domain.Customer;
 import com.qunchuang.carmall.domain.IntegralRecord;
+import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.enums.IntegralCategoryEnum;
 import com.qunchuang.carmall.enums.IntegralEnum;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -55,6 +57,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer share(Customer customer, String shareId) {
         return null;
+    }
+
+    @Override
+    public void saveAll(List<Customer> customers) {
+        customerRepository.saveAll(customers);
+    }
+
+    @Override
+    public List<Customer> findByStore(Store store) {
+        return customerRepository.findByStore(store);
     }
 
     @Override

@@ -175,4 +175,18 @@ public class Admin extends BosEntity{
         }
         return false;
     }
+
+    /**
+     * 假删除 当前账号
+     */
+    public void delete(){
+        //将权限清空
+        this.getRoleItems().clear();
+        //门店清空
+        this.setStore(null);
+        //将登录的用户名无效化
+        this.setUsername("invalid" + this.getUsername() + this.getCreatetime());
+        //假删除
+        this.isAble();
+    }
 }

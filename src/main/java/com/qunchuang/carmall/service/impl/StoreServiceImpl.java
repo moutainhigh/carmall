@@ -1,9 +1,13 @@
 package com.qunchuang.carmall.service.impl;
 
+import com.qunchuang.carmall.domain.Admin;
+import com.qunchuang.carmall.domain.Customer;
 import com.qunchuang.carmall.domain.Store;
 import com.qunchuang.carmall.enums.CarMallExceptionEnum;
 import com.qunchuang.carmall.exception.CarMallException;
 import com.qunchuang.carmall.repository.StoreRepository;
+import com.qunchuang.carmall.service.AdminService;
+import com.qunchuang.carmall.service.CustomerService;
 import com.qunchuang.carmall.service.StoreService;
 import com.qunchuang.carmall.utils.BeanCopyUtil;
 import com.qunchuang.carmall.utils.LocationUtils;
@@ -31,12 +35,35 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private StoreRepository storeRepository;
 
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private AdminService adminService;
+
 
     @Override
     @PreAuthorize("hasAuthority('STORE_MANAGEMENT')")
     public Store delete(String id) {
         Store store = findOne(id);
         store.isAble();
+        //用户重新绑定
+        List<Customer> customerList = customerService.findByStore(store);
+        customerList.forEach(customer -> {
+            customer.setStore(null);
+            customer.setSalesConsultantAdmin(null);
+        });
+        customerService.saveAll(customerList);
+
+        //门店下的 店长账号   销售人员账号也要假删除
+        List<Admin> adminList = adminService.findByStore(store);
+        adminList.forEach(admin -> {
+            admin.delete();
+        });
+
+        adminService.saveAll(adminList);
+
+        //店长账号
         return storeRepository.save(store);
     }
 
@@ -59,7 +86,8 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store nearestStore(Double latitude, Double longitude) {
-        List<Store> allStore = storeRepository.findAll();
+        //遍历可用门店
+        List<Store> allStore = storeRepository.findByDisabled(false);
         double min = 0.0;
         Store result = null;
         double distance = 0.0;

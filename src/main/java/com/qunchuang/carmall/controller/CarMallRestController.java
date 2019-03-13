@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +65,7 @@ public class CarMallRestController {
     }
 
     @RequestMapping("/getWxAuthentication")
-    public Object getWxaCode(HttpServletRequest httpRequest) {
+    public Object getWxaCode() {
         RestTemplate rest = new RestTemplate();
         Map<String, String> params = new HashMap<>(4);
 
@@ -75,6 +74,8 @@ public class CarMallRestController {
         String token = rest.getForObject(url, String.class);
         JSONObject parse = (JSONObject) JSON.parse(token);
         String value = (String) ((Map.Entry) parse.entrySet().toArray()[0]).getValue();
+
+        //todo 做缓存token 有效期为两小时
 
         return value;
 
