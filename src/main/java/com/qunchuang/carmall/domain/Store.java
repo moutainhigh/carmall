@@ -32,7 +32,7 @@ public class Store extends BosEntity {
     private String people;
 
     @SchemaDocumentation("联系方式")
-    @Size(min = 11,max = 11,message = "手机号长度不正确")
+    @Size(min = 7,max = 11,message = "手机号长度不正确")
     private String phone;
 
     @SchemaDocumentation("门店图片")
