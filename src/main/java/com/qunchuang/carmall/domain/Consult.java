@@ -69,6 +69,12 @@ public class Consult extends BosEntity {
     @SchemaDocumentation("邀请人")
     private String invitedId;
 
+    @SchemaDocumentation("首付比例")
+    private String paymentRatio;
+
+    @SchemaDocumentation("客户购车时间")
+    private String buyTime;
+
     @PrivilegeConstraint
     public QueryFilter getPrivilegeConstraint() {
         //定制查看咨询单  各角色所属权限
