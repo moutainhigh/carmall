@@ -97,13 +97,24 @@ public class ConsultServiceImpl implements ConsultService {
             store = customer.getStore();
         }
 
-        //用户已经有所属的销售人员  直接绑定销售人员  绑定门店
+        //用户已经有所属的销售人员（覆盖前面的销售人员邀请）  直接绑定销售人员  绑定门店
         if (customer.getSalesConsultantAdmin() != null) {
             rs.setSalesConsultantAdmin(customer.getSalesConsultantAdmin());
             //订单修改为已派
             rs.setStatus(OrderStatus.ALLOCATE.getCode());
             store = customer.getSalesConsultantAdmin().getStore();
             JiGuangMessagePushUtil.sendMessage(customer.getSalesConsultantAdmin().getId(), JiGuangMessagePushUtil.CONTENT);
+        } else {
+            //没有绑定销售顾问 且被销售顾问邀请
+            if (!StringUtils.isEmpty(invitedId) && invitedId.endsWith("A01")) {
+                Admin admin = adminService.findOne(invitedId);
+                rs.setSalesConsultantAdmin(admin);
+                //订单修改为已派
+                rs.setStatus(OrderStatus.ALLOCATE.getCode());
+                customer.setSalesConsultantAdmin(admin);
+                store = admin.getStore();
+                JiGuangMessagePushUtil.sendMessage(customer.getSalesConsultantAdmin().getId(), JiGuangMessagePushUtil.CONTENT);
+            }
         }
 
 
@@ -210,6 +221,7 @@ public class ConsultServiceImpl implements ConsultService {
 
     /**
      * 已完结订单不能转单
+     *
      * @param consult
      */
     private void isConsultFinish(Consult consult) {

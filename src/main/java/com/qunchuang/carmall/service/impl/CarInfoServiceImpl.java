@@ -71,12 +71,15 @@ public class CarInfoServiceImpl implements CarInfoService {
             if (carInfoRepository.existsByModel(model)) {
                 //相同则覆盖
                 CarInfo old = carInfoRepository.findByModel(model);
+                //覆盖后重新启用
+                carInfo.setDisabled(false);
                 Set<String> filter = new HashSet<>();
                 filter.add("upperShelf");
                 filter.add("financialSchemes");
                 BeanUtils.copyProperties(carInfo, old, BeanCopyUtil.filterProperty(carInfo, filter));
 
-                carInfos.set(i, old);
+                carInfos.set(
+                        i, old);
             }
 
         }
@@ -113,8 +116,7 @@ public class CarInfoServiceImpl implements CarInfoService {
     public CarInfo delete(String id) {
         CarInfo carInfo = findOne(id);
         carInfo.isAble();
-        //删除时 下架
-        carInfo.upperDownShelf();
+        carInfo.setUpperShelf(false);
         return carInfoRepository.save(carInfo);
     }
 
