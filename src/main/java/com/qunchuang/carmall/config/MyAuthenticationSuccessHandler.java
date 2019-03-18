@@ -1,6 +1,7 @@
 package com.qunchuang.carmall.config;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -46,7 +47,8 @@ public class MyAuthenticationSuccessHandler
             response.setContentType("application/json;charset=utf-8");
             ServletOutputStream outputStream = response.getOutputStream();
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            outputStream.write(JSON.toJSONString(principal).getBytes());
+
+            outputStream.write(JSON.toJSONString(principal, SerializerFeature.DisableCircularReferenceDetect).getBytes());
 
             outputStream.flush();
             outputStream.close();

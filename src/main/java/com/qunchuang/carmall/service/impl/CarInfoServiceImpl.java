@@ -78,8 +78,7 @@ public class CarInfoServiceImpl implements CarInfoService {
                 filter.add("financialSchemes");
                 BeanUtils.copyProperties(carInfo, old, BeanCopyUtil.filterProperty(carInfo, filter));
 
-                carInfos.set(
-                        i, old);
+                carInfos.set(i, old);
             }
 
         }
