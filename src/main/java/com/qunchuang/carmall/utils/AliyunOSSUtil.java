@@ -29,7 +29,7 @@ public class AliyunOSSUtil {
     static AssumeRoleResponse assumeRole(String accessKeyId, String accessKeySecret, String roleArn, String roleSessionName, String policy, long expired, ProtocolType protocolType)
             throws ClientException {
         // 创建一个 Aliyun Acs Client, 用于发起 OpenAPI 请求
-        IClientProfile profile = DefaultProfile.getProfile(REGION_CN_HANGZHOU,
+            IClientProfile profile = DefaultProfile.getProfile(REGION_CN_HANGZHOU,
                 accessKeyId, accessKeySecret);
         DefaultAcsClient client = new DefaultAcsClient(profile);
 

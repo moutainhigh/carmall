@@ -22,7 +22,7 @@ public class ConsultController {
     @SchemaDocumentation("发起咨询")
     @GraphqlMutation(path = "/add")
     public Consult add(@DomainRule("phone") Consult consult, String code, String invitedId) {
-        return consultService.add(consult, code, invitedId);
+         return consultService.add(consult, code, invitedId);
     }
 
     @SchemaDocumentation("派咨询单")
