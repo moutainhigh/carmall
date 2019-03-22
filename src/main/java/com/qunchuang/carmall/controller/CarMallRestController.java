@@ -80,12 +80,11 @@ public class CarMallRestController {
 
 
     @RequestMapping("/getWxShareInfo")
-    public WeChatMiniShareInfo getWxShareInfo(String key){
+    public WeChatMiniShareInfo getWxShareInfo(String key) {
         String value = (String) redisTemplate.opsForValue().get(key);
         JSONObject shareInfo = (JSONObject) JSON.parse(value);
         return JSONObject.toJavaObject(shareInfo, WeChatMiniShareInfo.class);
     }
-
 
 
     @RequestMapping("/getWxAuthentication")
@@ -109,10 +108,10 @@ public class CarMallRestController {
         WeChatMiniShareInfo shareInfo = new WeChatMiniShareInfo();
         shareInfo.setSalesManId(salesManId);
 
-        if (!StringUtils.isEmpty(carModel)){
+        if (!StringUtils.isEmpty(carModel)) {
             shareInfo.setCarModel(carModel);
             shareInfo.setFrom("carInfo");
-        }else {
+        } else {
             shareInfo.setFrom("home");
         }
         String jsonString = JSONObject.toJSONString(shareInfo);
@@ -121,29 +120,27 @@ public class CarMallRestController {
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         InputStream inputStream;
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
-            String body = JSON.toJSONString(params);
-            StringEntity entity;
-            entity = new StringEntity(body);
-            entity.setContentType("image/png");
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
+        String body = JSON.toJSONString(params);
+        StringEntity entity;
+        entity = new StringEntity(body);
+        entity.setContentType("image/png");
 
-            httpPost.setEntity(entity);
-            HttpResponse response;
+        httpPost.setEntity(entity);
+        HttpResponse response;
 
-            response = httpClient.execute(httpPost);
-            inputStream = response.getEntity().getContent();
-
-
-            String name = BosUtils.getZipUuid();
-            String imgUrl = "https://image.buymycar.cn/" + name;
-            AliyunOSSUtil.uploadImage(inputStream, name);
-
-            adminService.generateWxCode(imgUrl);
-
-            return imgUrl;
+        response = httpClient.execute(httpPost);
+        inputStream = response.getEntity().getContent();
 
 
+        String name = BosUtils.getZipUuid();
+        String imgUrl = "https://image.buymycar.cn/" + name;
+        AliyunOSSUtil.uploadImage(inputStream, name);
+
+        adminService.generateWxCode(imgUrl);
+
+        return imgUrl;
 
 
     }

@@ -339,10 +339,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin delete(String id) {
-
         //todo 权限限制  admin所有  门店管理销售人员
 
         Admin admin = findOne(id);
+
+        admin.getRoleItems().forEach(roleItem -> {
+            if (roleItem.getRole().getName().equals(RoleEnum.STORE_ADMINISTRATOR.getRoleName())) {
+                //如果是门店管理员那么 门店可以重新添加账号
+                storeService.initAccount(admin.getStore());
+            }
+        });
+
         admin.delete();
         return adminRepository.save(admin);
     }

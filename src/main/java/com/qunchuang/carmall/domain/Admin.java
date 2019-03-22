@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Slf4j
-public class Admin extends BosEntity{
+public class Admin extends BosEntity {
 
     @SchemaDocumentation("姓名")
     private String name;
@@ -180,7 +180,7 @@ public class Admin extends BosEntity{
     /**
      * 假删除 当前账号
      */
-    public void delete(){
+    public void delete() {
         //将权限清空
         this.getRoleItems().clear();
         //门店清空

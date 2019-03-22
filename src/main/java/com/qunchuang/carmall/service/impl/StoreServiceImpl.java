@@ -78,6 +78,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public void initAccount(Store store) {
+        store.setStoreAdminId("");
+        storeRepository.save(store);
+    }
+
+    @Override
     public Store createAccount(Store store) {
 //        Store rs = findOne(store.getId());
 //        rs.setStoreAdminId(store.getStoreAdminId());

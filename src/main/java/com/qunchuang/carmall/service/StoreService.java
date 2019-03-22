@@ -61,4 +61,11 @@ public interface StoreService {
      * @return
      */
     Store createAccount(Store store);
+
+    /**
+     * 门店账号删除后  初始化storeAdmin
+     * @param store
+     * @return
+     */
+    void initAccount(Store store);
 }

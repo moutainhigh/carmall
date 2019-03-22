@@ -1,10 +1,10 @@
 package com.qunchuang.carmall.controller;
 
 import com.qunchuang.carmall.domain.Customer;
-import com.qunchuang.carmall.service.CustomerService;
 import com.qunchuang.carmall.graphql.annotation.GraphqlController;
 import com.qunchuang.carmall.graphql.annotation.GraphqlMutation;
 import com.qunchuang.carmall.graphql.annotation.SchemaDocumentation;
+import com.qunchuang.carmall.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -42,5 +42,4 @@ public class CustomerController {
     public Customer consumerIntegral(String customerId,Integer integral,String content){
         return customerService.consumerIntegral(customerId,integral,content);
     }
-
 }
