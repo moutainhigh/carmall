@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 1234
+    password: root
     url: jdbc:mysql://127.0.0.1:3306/carmall??serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf-8
   jpa:
     show-sql: true
